@@ -1,7 +1,8 @@
 ZQL
 ===
 
-    Zql is an SQL parser written in Java. Zql parses SQL and fills in java structures representing SQL statements and expressions.
+    Zql is an SQL parser written in Java.
+    Zql parses SQL and fills in java structures representing SQL statements and expressions.
     Copyright (C) 1998-2012  Pierre-Yves Gibello
     Copyright (C) 2012 Bogdan Emil Mariesan
 
