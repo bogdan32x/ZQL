@@ -1,10 +1,18 @@
 /*
- * This file is part of Zql. Zql is free software: you can redistribute it and/or modify it under the terms of the GNU
- * General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version. Zql is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details. You should have received a copy of the GNU General Public License along with Zql. If not, see
- * <http://www.gnu.org/licenses/>.
+ * This file is part of Zql.
+ *
+ * Zql is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Zql is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.gibello.zql.data;
@@ -27,60 +35,144 @@ import org.gibello.zqlparser.ZqlParser;
  */
 public class ZEval {
 
+	/**
+	 * Unknown column error.
+	 */
 	private static final String	ZEVAL_EXP_VALUE_UNKNOWN_COLUMN						= "ZEval.evalExpValue(): unknown column ";
 
+	/**
+	 * Slash string.
+	 */
 	private static final String	SLASH_STRING										= "/";
 
+	/**
+	 * Multiplication string.
+	 */
 	private static final String	MULTIPLICATION_STRING								= "*";
 
+	/**
+	 * Minus string.
+	 */
 	private static final String	MINUS_STRING										= "-";
 
+	/**
+	 * Plus string.
+	 */
 	private static final String	PLUS_STRING											= "+";
 
+	/**
+	 * Expression not numeric error.
+	 */
 	private static final String	ZEVAL_NUMERIC_EXP_EXPRESSION_NOT_NUMERIC			= "ZEval.evalNumericExp(): expression not numeric";
 
+	/**
+	 * Like can only compare strings error.
+	 */
 	private static final String	ZEVAL_LIKE_LIKE_CAN_ONLY_COMPARE_STRINGS			= "ZEval.evalLike(): LIKE can only compare strings";
 
+	/**
+	 * Prefix string.
+	 */
 	private static final String	PREFIX												= "%";
 
+	/**
+	 * Trying to compare more than two values error.
+	 */
 	private static final String	ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES	= "ZEval.evalCmp(): Trying to compare more than two values";
 
+	/**
+	 * TWO string.
+	 */
 	private static final int	TWO													= 2;
 
+	/**
+	 * Trying to compare less than two values error.
+	 */
 	private static final String	ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES	= "ZEval.evalCmp(): Trying to compare less than two values";
 
+	/**
+	 * Unknown operator error.
+	 */
 	private static final String	ZEVAL_UNKNOWN_OPERATOR								= "ZEval.eval(): Unknown operator ";
 
+	/**
+	 * Is not null string.
+	 */
 	private static final String	IS_NOT_NULL_STRING									= "IS NOT NULL";
 
+	/**
+	 * Can't evaluate IS NOT NULL error.
+	 */
 	private static final String	ZEVAL_CAN_T_EVAL_IS_NOT_NULL						= "ZEval.eval(): can't eval IS (NOT) NULL";
 
+	/**
+	 * Is null string.
+	 */
 	private static final String	IS_NULL_STRING										= "IS NULL";
 
+	/**
+	 * Not in string.
+	 */
 	private static final String	NOT_IN_STRING										= "NOT IN";
 
+	/**
+	 * In string.
+	 */
 	private static final String	IN_STRING											= "IN";
 
+	/**
+	 * Not like string.
+	 */
 	private static final String	NOT_LIKE_STRING										= "NOT LIKE";
 
+	/**
+	 * Like string.
+	 */
 	private static final String	LIKE_STRING											= "LIKE";
 
+	/**
+	 * Not between string.
+	 */
 	private static final String	NOT_BETWEEN											= "NOT BETWEEN";
 
+	/**
+	 * Between string.
+	 */
 	private static final String	BETWEEN												= "BETWEEN";
 
+	/**
+	 * Lesser than string.
+	 */
 	private static final String	LESSER_THAN_STRING									= "<";
 
+	/**
+	 * Greather than string.
+	 */
 	private static final String	GREATHER_THAN_STRING								= ">";
 
+	/**
+	 * Operator # not supported error.
+	 */
 	private static final String	ZEVAL_OPERATOR_NOT_SUPPORTED						= "ZEval.eval(): Operator # not supported";
 
+	/**
+	 * Diez string.
+	 */
 	private static final String	DIEZ_STRING											= "#";
 
+	/**
+	 * Exclusion string.
+	 */
 	private static final String	EXCLUDING_STRING									= "<>";
 
+	/**
+	 * Not equals string.
+	 */
 	private static final String	NOT_EQUALS_STRING									= "!=";
 
+	/**
+	 * Equals string.
+	 */
 	private static final String	EQUALS_STRING										= "=";
 
 	/**
@@ -123,8 +215,10 @@ public class ZEval {
 	 * @param exp
 	 *            The expression to evaluate
 	 * @return true if the expression evaluate to true for this tuple, false if not.
+	 * @throws SQLException
+	 *             the sql exception.
 	 */
-	public boolean eval(final ZTuple tuple, final ZExp exp) throws SQLException {
+	public final boolean eval(final ZTuple tuple, final ZExp exp) throws SQLException {
 
 		if (tuple == null || exp == null) {
 			throw new SQLException(ZEval.ZEVAL_NULL_ARGUMENT_OR_OPERATOR);
@@ -462,6 +556,8 @@ public class ZEval {
 		return o2;
 	}
 
+	// CHECKSTYLE:OFF
+	// FIXME extract to proper test module!!!
 	// test
 	public static void main(String args[]) {
 		try {
@@ -489,4 +585,5 @@ public class ZEval {
 			e.printStackTrace();
 		}
 	}
-};
+	// CHECKSTYLE:ON
+}
