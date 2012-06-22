@@ -28,39 +28,41 @@ import java.util.Vector;
  */
 public class ZTuple {
 
+	private static final String			COMMA_STRING	= ",";
+
 	/**
 	 * the names of the attributes.
 	 */
-	private Vector<String>	attributes;
+	private Vector<String>				attributes;
 
 	/**
-	 * the values of the attributes
+	 * the values of the attributes.
 	 */
-	private Vector			values_;
+	private Vector<Object>				values;
 
 	/**
-	 * hashtable to locate attribute names more easily
+	 * hashtable to locate attribute names more easily.
 	 */
-	private Hashtable		searchTable_;
+	private Hashtable<String, Integer>	searchTable;
 
 	/**
-	 * The simplest constructor
+	 * The default constructor.
 	 */
 	public ZTuple() {
-		attributes = new Vector();
-		values_ = new Vector();
-		searchTable_ = new Hashtable();
+		this.attributes = new Vector<String>();
+		this.values = new Vector<Object>();
+		this.searchTable = new Hashtable<String, Integer>();
 	}
 
 	/**
-	 * Create a new tuple, given it's column names
+	 * Create a new tuple, given it's column names.
 	 * 
 	 * @param colnames
 	 *            Column names separated by commas (,).
 	 */
-	public ZTuple(String colnames) {
+	public ZTuple(final String colnames) {
 		this();
-		StringTokenizer st = new StringTokenizer(colnames, ",");
+		final StringTokenizer st = new StringTokenizer(colnames, ZTuple.COMMA_STRING);
 		while (st.hasMoreTokens()) {
 			setAtt(st.nextToken().trim(), null);
 		}
@@ -72,15 +74,16 @@ public class ZTuple {
 	 * @param row
 	 *            Column values separated by commas (,).
 	 */
-	public void setRow(String row) {
-		StringTokenizer st = new StringTokenizer(row, ",");
+	public void setRow(final String row) {
+		final StringTokenizer st = new StringTokenizer(row, ZTuple.COMMA_STRING);
 		for (int i = 0; st.hasMoreTokens(); i++) {
-			String val = st.nextToken().trim();
+			final String val = st.nextToken().trim();
 			try {
-				Double d = new Double(val);
-				setAtt(getAttName(i), d);
+				final Double d = new Double(val);
+				this.setAtt(getAttName(i), d);
 			} catch (Exception e) {
-				setAtt(getAttName(i), val);
+				// TODO check why this is needed.
+				this.setAtt(getAttName(i), val);
 			}
 		}
 	}
@@ -91,120 +94,153 @@ public class ZTuple {
 	 * @param row
 	 *            A vector of column values.
 	 */
-	public void setRow(Vector row) {
+	public void setRow(final Vector<?> row) {
 		for (int i = 0; i < row.size(); i++) {
 			setAtt(getAttName(i), row.elementAt(i));
 		}
 	}
 
 	/**
-	 * Set the value of the given attribute name
+	 * Set the value of the given attribute name.
 	 * 
 	 * @param name
 	 *            the string representing the attribute name
 	 * @param value
 	 *            the Object representing the attribute value
 	 */
-	public void setAtt(String name, Object value) {
+	public void setAtt(final String name, final Object value) {
 		if (name != null) {
-			boolean exist = searchTable_.containsKey(name);
+			final boolean exist = this.searchTable.containsKey(name);
 
 			if (exist) {
-				int i = ((Integer) searchTable_.get(name)).intValue();
-				values_.setElementAt(value, i);
+				final int i = ((Integer) this.searchTable.get(name)).intValue();
+				this.values.setElementAt(value, i);
 			} else {
-				int i = attributes.size();
-				attributes.addElement(name);
-				values_.addElement(value);
-				searchTable_.put(name, new Integer(i));
+				final int i = this.attributes.size();
+				this.attributes.addElement(name);
+				this.values.addElement(value);
+				this.searchTable.put(name, new Integer(i));
 			}
 		}
 	}
 
 	/**
-	 * Return the name of the attribute corresponding to the index
+	 * Return the name of the attribute corresponding to the index.
 	 * 
 	 * @param index
 	 *            integer giving the index of the attribute
 	 * @return a String
 	 */
-	public String getAttName(int index) {
+	public final String getAttName(final int index) {
+		String getAttributeName;
+
 		try {
-			return (String) attributes.elementAt(index);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return null;
+			getAttributeName = (String) this.attributes.elementAt(index);
+		} catch (final ArrayIndexOutOfBoundsException e) {
+			getAttributeName = null;
 		}
+
+		return getAttributeName;
 	}
 
 	/**
-	 * Return the index of the attribute corresponding to the name
+	 * Return the index of the attribute corresponding to the name.
 	 * 
-	 * @param index
-	 *            integer giving the index of the attribute
+	 * @param name
+	 *            the name of the requested attribute
 	 * @return the index as an int, -1 if name is not an attribute
 	 */
-	public int getAttIndex(String name) {
-		if (name == null) return -1;
-		Integer index = (Integer) searchTable_.get(name);
-		if (index != null)
-			return index.intValue();
-		else
-			return -1;
+	public int getAttIndex(final String name) {
+
+		int result = 0;
+
+		if (name == null) {
+			result = -1;
+		}
+
+		final Integer index = (Integer) this.searchTable.get(name);
+
+		if (index != null) {
+			result = index.intValue();
+		} else {
+			result = -1;
+		}
+
+		return result;
 	}
 
 	/**
-	 * Return the value of the attribute corresponding to the index
+	 * Return the value of the attribute corresponding to the index.
 	 * 
 	 * @param index
 	 *            integer giving the index of the attribute
 	 * @return an Object (null if index is out of bound)
 	 */
-	public Object getAttValue(int index) {
+	public Object getAttValue(final int index) {
+
+		Object getAttributeValue;
+
 		try {
-			return values_.elementAt(index);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return null;
+			getAttributeValue = this.values.elementAt(index);
+		} catch (final ArrayIndexOutOfBoundsException e) {
+			getAttributeValue = null;
 		}
+
+		return getAttributeValue;
 	}
 
 	/**
-	 * Return the value of the attribute whith the given name
+	 * Return the value of the attribute whith the given name.
 	 * 
+	 * @param name
+	 *            the name of the attribute.
 	 * @return an Object (null if name is not an existing attribute)
 	 */
-	public Object getAttValue(String name) {
+	public final Object getAttValue(final String name) {
 		boolean exist = false;
 
-		if (name != null) exist = searchTable_.containsKey(name);
+		if (name != null) {
+			exist = this.searchTable.containsKey(name);
+		}
+
+		Object getAttributeValue;
 
 		if (exist) {
-			int index = ((Integer) searchTable_.get(name)).intValue();
-			return values_.elementAt(index);
-		} else
-			return null;
+			final int index = ((Integer) this.searchTable.get(name)).intValue();
+			getAttributeValue = this.values.elementAt(index);
+		} else {
+			getAttributeValue = null;
+		}
+
+		return getAttributeValue;
 	}
 
 	/**
-	 * To know if an attributes is already defined
+	 * To know if an attributes is already defined.
 	 * 
 	 * @param attrName
 	 *            the name of the attribute
 	 * @return true if there, else false
 	 */
-	public boolean isAttribute(String attrName) {
-		if (attrName != null)
-			return searchTable_.containsKey(attrName);
-		else
-			return false;
+	public boolean isAttribute(final String attrName) {
+		boolean result;
+
+		if (attrName != null) {
+			result = this.searchTable.containsKey(attrName);
+		} else {
+			result = false;
+		}
+
+		return result;
 	}
 
 	/**
-	 * Return the number of attributes in the tupple
+	 * Return the number of attributes in the tupple.
 	 * 
 	 * @return int the number of attributes
 	 */
 	public int getNumAtt() {
-		return values_.size();
+		return values.size();
 	}
 
 	/**
@@ -227,7 +263,7 @@ public class ZTuple {
 			else
 				attS = att.toString();
 
-			value = values_.elementAt(0);
+			value = values.elementAt(0);
 			if (value == null)
 				valueS = "(null)";
 			else
@@ -242,7 +278,7 @@ public class ZTuple {
 			else
 				attS = att.toString();
 
-			value = values_.elementAt(i);
+			value = values.elementAt(i);
 			if (value == null)
 				valueS = "(null)";
 			else
