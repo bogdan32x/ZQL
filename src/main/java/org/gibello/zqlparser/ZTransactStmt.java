@@ -17,23 +17,83 @@
 
 package org.gibello.zqlparser;
 
-import java.io.*;
-import java.util.*;
-
 /**
- * ZTransactStmt: an SQL statement that concerns database transactions
- * (example: COMMIT, ROLLBACK, SET TRANSACTION)
+ * ZTransactStmt: an SQL statement that concerns database transactions (example: COMMIT, ROLLBACK, SET TRANSACTION).
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZTransactStmt implements ZStatement {
 
-  String statement_;
-  String comment_ = null;
-  boolean readOnly_ = false;
+	/**
+	 * Serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  public ZTransactStmt(String st) { statement_ = new String(st); }
+	/**
+	 * The statement string.
+	 */
+	private String				statement;
 
-  public void setComment(String c) { comment_ = new String(c); }
-  public String getComment() { return comment_; }
-  public boolean isReadOnly() { return readOnly_; }
+	/**
+	 * The comment.
+	 */
+	private String				comment				= null;
+
+	/**
+	 * Read only param.
+	 */
+	private boolean				readOnly			= false;
+
+	/**
+	 * Transaction statement constructor.
+	 * 
+	 * @param statement
+	 *            the statement string.
+	 */
+	public ZTransactStmt(final String statement) {
+		this.setStatement(new String(statement));
+	}
+
+	/**
+	 * Sets the comment.
+	 * 
+	 * @param comment
+	 *            the comment.
+	 */
+	public void setComment(final String comment) {
+		this.comment = new String(comment);
+	}
+
+	/**
+	 * Gets the comment.
+	 * 
+	 * @return the comment.
+	 */
+	public String getComment() {
+		return this.comment;
+	}
+
+	/**
+	 * Check if is read only.
+	 * 
+	 * @return check if is read only.
+	 */
+	public boolean isReadOnly() {
+		return this.readOnly;
+	}
+
+	/**
+	 * @return the statement
+	 */
+	public String getStatement() {
+		return this.statement;
+	}
+
+	/**
+	 * @param statement
+	 *            the statement to set
+	 */
+	public void setStatement(final String statement) {
+		this.statement = statement;
+	}
 };
-

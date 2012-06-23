@@ -341,7 +341,7 @@ public class ZqlJJParser implements ZqlJJParserConstants {
       throw new ParseException();
     }
     jj_consume_token(91);
-    t.readOnly_ = rdonly; {if (true) return t;}
+    t.readOnly = rdonly; {if (true) return t;}
     throw new Error("Missing return statement in function");
   }
 
