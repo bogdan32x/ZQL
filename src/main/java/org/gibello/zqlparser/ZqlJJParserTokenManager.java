@@ -1533,7 +1533,7 @@ protected Token jjFillToken()
    Token t = Token.newToken(jjmatchedKind);
    t.kind = jjmatchedKind;
    String im = jjstrLiteralImages[jjmatchedKind];
-   t.image = (im == null) ? input_stream.GetImage() : im;
+   t.image = (im == null) ? input_stream.getImage() : im;
    t.beginLine = input_stream.getBeginLine();
    t.beginColumn = input_stream.getBeginColumn();
    t.endLine = input_stream.getEndLine();
@@ -1560,7 +1560,7 @@ public Token getNextToken()
   {   
    try   
    {     
-      curChar = input_stream.BeginToken();
+      curChar = input_stream.beginToken();
    }     
    catch(java.io.IOException e)
    {        
@@ -1572,7 +1572,7 @@ public Token getNextToken()
 
    try { input_stream.backup(0);
       while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
-         curChar = input_stream.BeginToken();
+         curChar = input_stream.beginToken();
    }
    catch (java.io.IOException e1) { continue EOFLoop; }
    jjmatchedKind = 0x7fffffff;
@@ -1611,7 +1611,7 @@ public Token getNextToken()
    try { input_stream.readChar(); input_stream.backup(1); }
    catch (java.io.IOException e1) {
       EOFSeen = true;
-      error_after = curPos <= 1 ? "" : input_stream.GetImage();
+      error_after = curPos <= 1 ? "" : input_stream.getImage();
       if (curChar == '\n' || curChar == '\r') {
          error_line++;
          error_column = 0;
@@ -1621,7 +1621,7 @@ public Token getNextToken()
    }
    if (!EOFSeen) {
       input_stream.backup(1);
-      error_after = curPos <= 1 ? "" : input_stream.GetImage();
+      error_after = curPos <= 1 ? "" : input_stream.getImage();
    }
    throw new TokenMgrError(EOFSeen, curLexState, error_line, error_column, error_after, curChar, TokenMgrError.LEXICAL_ERROR);
   }
