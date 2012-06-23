@@ -27,8 +27,21 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZTuple {
+	
+	/**
+	 * Equals and whitespace string.
+	 */
+	private static final String			EQUALS_AND_WHITESPACE_STRING	= " = ";
+	
+	/**
+	 * Nullable string.
+	 */
+	private static final String			NULLABLE_STRING					= "(null)";
 
-	private static final String			COMMA_STRING	= ",";
+	/**
+	 * Comma string.
+	 */
+	private static final String			COMMA_STRING					= ",";
 
 	/**
 	 * the names of the attributes.
@@ -64,7 +77,7 @@ public class ZTuple {
 		this();
 		final StringTokenizer st = new StringTokenizer(colnames, ZTuple.COMMA_STRING);
 		while (st.hasMoreTokens()) {
-			setAtt(st.nextToken().trim(), null);
+			this.setAtt(st.nextToken().trim(), null);
 		}
 	}
 
@@ -78,13 +91,13 @@ public class ZTuple {
 		final StringTokenizer st = new StringTokenizer(row, ZTuple.COMMA_STRING);
 		for (int i = 0; st.hasMoreTokens(); i++) {
 			final String val = st.nextToken().trim();
-			try {
+			//try {
 				final Double d = new Double(val);
-				this.setAtt(getAttName(i), d);
-			} catch (Exception e) {
-				// TODO check why this is needed.
-				this.setAtt(getAttName(i), val);
-			}
+				this.setAtt(this.getAttName(i), d);
+			//} catch (Exception e) {
+				// TODO check why try/catch is needed.
+				this.setAtt(this.getAttName(i), val);
+			//}
 		}
 	}
 
@@ -96,7 +109,7 @@ public class ZTuple {
 	 */
 	public void setRow(final Vector<?> row) {
 		for (int i = 0; i < row.size(); i++) {
-			setAtt(getAttName(i), row.elementAt(i));
+			this.setAtt(this.getAttName(i), row.elementAt(i));
 		}
 	}
 
@@ -240,11 +253,11 @@ public class ZTuple {
 	 * @return int the number of attributes
 	 */
 	public int getNumAtt() {
-		return values.size();
+		return this.values.size();
 	}
 
 	/**
-	 * Returns a string representation of the object
+	 * Returns a string representation of the object.
 	 * 
 	 * @return a string representation of the object
 	 */
@@ -254,36 +267,40 @@ public class ZTuple {
 		String attS;
 		String valueS;
 
-		StringBuffer resp = new StringBuffer();
+		final StringBuffer resp = new StringBuffer();
 		resp.append("[");
-		if (attributes.size() > 0) {
-			att = attributes.elementAt(0);
-			if (att == null)
-				attS = "(null)";
-			else
+		if (this.attributes.size() > 0) {
+			att = this.attributes.elementAt(0);
+			if (att == null) {
+				attS = ZTuple.NULLABLE_STRING;
+			} else {
 				attS = att.toString();
+			}
 
-			value = values.elementAt(0);
-			if (value == null)
-				valueS = "(null)";
-			else
+			value = this.values.elementAt(0);
+			if (value == null) {
+				valueS = ZTuple.NULLABLE_STRING;
+			} else {
 				valueS = value.toString();
-			resp.append(attS + " = " + valueS);
+			}
+			resp.append(attS + ZTuple.EQUALS_AND_WHITESPACE_STRING + valueS);
 		}
 
-		for (int i = 1; i < attributes.size(); i++) {
-			att = attributes.elementAt(i);
-			if (att == null)
-				attS = "(null)";
-			else
+		for (int i = 1; i < this.attributes.size(); i++) {
+			att = this.attributes.elementAt(i);
+			if (att == null) {
+				attS = ZTuple.NULLABLE_STRING;
+			} else {
 				attS = att.toString();
+			}
 
-			value = values.elementAt(i);
-			if (value == null)
-				valueS = "(null)";
-			else
+			value = this.values.elementAt(i);
+			if (value == null) {
+				valueS = ZTuple.NULLABLE_STRING;
+			} else {
 				valueS = value.toString();
-			resp.append(", " + attS + " = " + valueS);
+			}
+			resp.append(", " + attS + EQUALS_AND_WHITESPACE_STRING + valueS);
 		}
 		resp.append("]");
 		return resp.toString();
