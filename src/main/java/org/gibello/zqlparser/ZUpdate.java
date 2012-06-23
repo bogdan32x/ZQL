@@ -17,144 +17,263 @@
 
 package org.gibello.zqlparser;
 
-import java.io.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * ZUpdate: an SQL UPDATE statement.
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZUpdate implements ZStatement {
 
-  String table_;
-  String alias_ = null;
-  Hashtable set_;
-  ZExp where_ = null;
-  Vector columns_ = null;
+	/**
+	 * 
+	 */
+	private static final long		serialVersionUID	= 1L;
 
-  /**
-   * Create an UPDATE statement on a given table.
-   */
-  public ZUpdate(String tab) {
-    table_ = new String(tab);
-  }
+	/**
+	 * The table name.
+	 */
+	private String					tableName;
 
-  public String getTable() {
-    return table_;
-  }
+	/**
+	 * The table alias.
+	 */
+	private String					tableAlias			= null;
 
-  public void setAlias(String alias) { alias_ = alias; }
-  public String getAlias() { return alias_; }
+	/**
+	 * Set values.
+	 */
+	private Hashtable<String, ZExp>	setValues;
 
-  /**
-   * Insert a SET... clause in the UPDATE statement
-   * @param t A Hashtable, where keys are column names (the columns to update),
-   * and values are ZExp objects (the column values).
-   * For example, the values may be ZConstant objects (like "Smith") or
-   * more complex SQL Expressions.
-   */
-  public void addSet(Hashtable t) {
-    set_ = t;
-  }
+	/**
+	 * Where expression.
+	 */
+	private ZExp					whereClause			= null;
 
-  /**
-   * Get the whole SET... clause
-   * @return A Hashtable, where keys are column names (the columns to update),
-   * and values are ZExp objects (Expressions that specify column values: for
-   * example, ZConstant objects like "Smith").
-   */
-  public Hashtable getSet() { return set_; }
+	/**
+	 * Columns vector.
+	 */
+	private Vector<String>			tableColumns		= null;
 
-  /**
-   * Add one column=value pair to the SET... clause
-   * This method also keeps track of the column order
-   * @param col The column name
-   * @param val The column value
-   */
-  public void addColumnUpdate(String col, ZExp val) {
-    if(set_ == null) set_ = new Hashtable();
-    set_.put(col, val);
-    if(columns_ == null) columns_ = new Vector();
-    columns_.addElement(col);
-  }
+	/**
+	 * Create an UPDATE statement on a given table.
+	 * 
+	 * @param tableName
+	 *            the table name.
+	 */
+	public ZUpdate(final String tableName) {
+		this.tableName = new String(tableName);
+	}
 
-  /**
-   * Get the SQL expression that specifies a given column's update value.
-   * (for example, a ZConstant object like "Smith").
-   * @param col The column name.
-   * @return a ZExp, like a ZConstant representing a value, or a more complex
-   * SQL expression.
-   */
-  public ZExp getColumnUpdate(String col) { return (ZExp)set_.get(col); }
+	/**
+	 * Gets the table name.
+	 * 
+	 * @return the table name.
+	 */
+	public String getTable() {
+		return this.tableName;
+	}
 
-  /**
-   * Get the SQL expression that specifies a given column's update value.
-   * (for example, a ZConstant object like "Smith").<br>
-   * WARNING: This method will work only if column/value pairs have been
-   * inserted using addColumnUpdate() - otherwise it is not possible to guess
-   * what the right order is, and null will be returned.
-   * @param num The column index (starting from 1).
-   * @return a ZExp, like a ZConstant representing a value, or a more complex
-   * SQL expression.
-   */
-  public ZExp getColumnUpdate(int index) {
-    if(--index < 0) return null;
-    if(columns_ == null || index >= columns_.size()) return null;
-    String col = (String)columns_.elementAt(index);
-    return (ZExp)set_.get(col);
-  }
+	/**
+	 * Set table alias.
+	 * 
+	 * @param tableAlias
+	 *            the table alias.
+	 */
+	public void setAlias(final String tableAlias) {
+		this.tableAlias = tableAlias;
+	}
 
-  /**
-   * Get the column name that corresponds to a given index.<br>
-   * WARNING: This method will work only if column/value pairs have been
-   * inserted using addColumnUpdate() - otherwise it is not possible to guess
-   * what the right order is, and null will be returned.
-   * @param num The column index (starting from 1).
-   * @return The corresponding column name.
-   */
-  public String getColumnUpdateName(int index) {
-    if(--index < 0) return null;
-    if(columns_ == null || index >= columns_.size()) return null;
-    return (String)columns_.elementAt(index);
-  }
+	/**
+	 * Gets the table alias.
+	 * 
+	 * @return the table alias.
+	 */
+	public String getAlias() {
+		return this.tableAlias;
+	}
 
-  /**
-   * Returns the number of column/value pairs in the SET... clause.
-   */
-  public int getColumnUpdateCount() {
-    if(set_ == null) return 0;
-    return set_.size();
-  }
+	/**
+	 * Insert a SET... clause in the UPDATE statement
+	 * 
+	 * @param setValues
+	 *            A Hashtable, where keys are column names (the columns to update), and values are ZExp objects (the
+	 *            column values). For example, the values may be ZConstant objects (like "Smith") or more complex SQL
+	 *            Expressions.
+	 */
+	public void addSet(final Hashtable<String, ZExp> setValues) {
+		this.setValues = setValues;
+	}
 
-  /**
-   * Insert a WHERE... clause in the UPDATE statement
-   * @param w An SQL Expression compatible with a WHERE... clause.
-   */
-  public void addWhere(ZExp w) { where_ = w; }
+	/**
+	 * Get the whole SET... clause
+	 * 
+	 * @return A Hashtable, where keys are column names (the columns to update), and values are ZExp objects
+	 *         (Expressions that specify column values: for example, ZConstant objects like "Smith").
+	 */
+	public Hashtable<String, ZExp> getSet() {
+		return this.setValues;
+	}
 
-  /**
-   * Get the WHERE clause of this UPDATE statement.
-   * @return An SQL Expression compatible with a WHERE... clause.
-   */
-  public ZExp getWhere() { return where_; }
+	/**
+	 * Add one column=value pair to the SET... clause This method also keeps track of the column order
+	 * 
+	 * @param col
+	 *            The column name
+	 * @param val
+	 *            The column value
+	 */
+	public void addColumnUpdate(final String col, final ZExp val) {
+		if (this.setValues == null) {
+			this.setValues = new Hashtable<String, ZExp>();
+		}
 
-  public String toString() {
-    StringBuffer buf = new StringBuffer("update " + table_);
-    if(alias_ != null) buf.append(" " + alias_);
-    buf.append(" set ");
+		this.setValues.put(col, val);
 
-    Enumeration e;
-    if(columns_ != null) e = columns_.elements();
-    else e = set_.keys();
-    boolean first = true;
-    while(e.hasMoreElements()) {
-      String key = e.nextElement().toString();
-      if(!first) buf.append(", ");
-      buf.append(key + "=" + set_.get(key).toString()); 
-      first = false;
-    }
+		if (this.tableColumns == null) {
+			this.tableColumns = new Vector<String>();
+		}
 
-    if(where_ != null) buf.append(" where " + where_.toString());
-    return buf.toString();
-  }
+		this.tableColumns.addElement(col);
+	}
+
+	/**
+	 * Get the SQL expression that specifies a given column's update value. (for example, a ZConstant object like
+	 * "Smith").
+	 * 
+	 * @param col
+	 *            The column name.
+	 * @return a ZExp, like a ZConstant representing a value, or a more complex SQL expression.
+	 */
+	public ZExp getColumnUpdate(final String col) {
+		return this.setValues.get(col);
+	}
+
+	/**
+	 * Get the SQL expression that specifies a given column's update value. (for example, a ZConstant object like
+	 * "Smith").<br>
+	 * WARNING: This method will work only if column/value pairs have been inserted using addColumnUpdate() - otherwise
+	 * it is not possible to guess what the right order is, and null will be returned.
+	 * 
+	 * @param index
+	 *            The column index (starting from 1).
+	 * @return a ZExp, like a ZConstant representing a value, or a more complex SQL expression.
+	 */
+	public ZExp getColumnUpdate(final int index) {
+		int i = index;
+		ZExp result;
+
+		if (--i < 0) {
+			result = null;
+		}
+
+		if (this.tableColumns == null || i >= this.tableColumns.size()) {
+			result = null;
+		}
+
+		final String col = this.tableColumns.elementAt(index);
+		result = this.setValues.get(col);
+
+		return result;
+	}
+
+	/**
+	 * Get the column name that corresponds to a given index.<br>
+	 * WARNING: This method will work only if column/value pairs have been inserted using addColumnUpdate() - otherwise
+	 * it is not possible to guess what the right order is, and null will be returned.
+	 * 
+	 * @param index
+	 *            The column index (starting from 1).
+	 * @return The corresponding column name.
+	 */
+	public String getColumnUpdateName(final int index) {
+		int i = index;
+		String result;
+
+		if (--i < 0) {
+			result = null;
+		}
+
+		if (this.tableColumns == null || i >= this.tableColumns.size()) {
+			result = null;
+		}
+
+		result = this.tableColumns.elementAt(index);
+
+		return result;
+	}
+
+	/**
+	 * Returns the number of column/value pairs in the SET... clause.
+	 * 
+	 * @return the number of pairs in the SET clause.
+	 */
+	public int getColumnUpdateCount() {
+		int result;
+
+		if (this.setValues == null) {
+			result = 0;
+		}
+
+		result = this.setValues.size();
+
+		return result;
+	}
+
+	/**
+	 * Insert a WHERE... clause in the UPDATE statement
+	 * 
+	 * @param whereExpr
+	 *            An SQL Expression compatible with a WHERE... clause.
+	 */
+	public void addWhere(final ZExp whereExpr) {
+		this.whereClause = whereExpr;
+	}
+
+	/**
+	 * Get the WHERE clause of this UPDATE statement.
+	 * 
+	 * @return An SQL Expression compatible with a WHERE... clause.
+	 */
+	public ZExp getWhere() {
+		return this.whereClause;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer buf = new StringBuffer("update " + this.tableName);
+		if (this.tableAlias != null) {
+			buf.append(" " + this.tableAlias);
+		}
+
+		buf.append(" set ");
+
+		Enumeration<String> e;
+		if (this.tableColumns != null) {
+			e = this.tableColumns.elements();
+		} else {
+			e = this.setValues.keys();
+		}
+
+		boolean first = true;
+		while (e.hasMoreElements()) {
+			final String key = e.nextElement().toString();
+
+			if (!first) {
+				buf.append(", ");
+			}
+
+			buf.append(key + "=" + this.setValues.get(key).toString());
+			first = false;
+		}
+
+		if (this.whereClause != null) {
+			buf.append(" where " + this.whereClause.toString());
+		}
+
+		return buf.toString();
+	}
 };
-

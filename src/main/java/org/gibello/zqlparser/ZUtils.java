@@ -19,40 +19,150 @@ package org.gibello.zqlparser;
 
 import java.util.Hashtable;
 
-public class ZUtils {
+/**
+ * Utils class.
+ * 
+ * @author Bogdan Mariesan, Romania
+ */
+public final class ZUtils {
 
-  private static Hashtable fcts_ = null;
+	/**
+	 * The count operator.
+	 */
+	private static final String					COUNT_OPERATOR	= "COUNT";
 
-  public static final int VARIABLE_PLIST = 10000;
+	/**
+	 * The min operator.
+	 */
+	private static final String					MIN_OPERATOR	= "MIN";
 
-  public static void addCustomFunction(String fct, int nparm) {
-    if(fcts_ == null) fcts_ = new Hashtable();
-    if(nparm < 0) nparm = 1;
-    fcts_.put(fct.toUpperCase(), new Integer(nparm));
-  }
+	/**
+	 * The max operator.
+	 */
+	private static final String					MAX_OPERATOR	= "MAX";
 
-  public static int isCustomFunction(String fct) {
-    Integer nparm;
-    if(fct == null || fct.length()<1 || fcts_ == null
-      || (nparm = (Integer)fcts_.get(fct.toUpperCase())) == null)
-       return -1;
-    return nparm.intValue();
-  }
+	/**
+	 * The average operator.
+	 */
+	private static final String					AVG_OPERATOR	= "AVG";
 
-  public static boolean isAggregate(String op) {
-    String tmp = op.toUpperCase().trim();
-    return tmp.equals("SUM") || tmp.equals("AVG")
-        || tmp.equals("MAX") || tmp.equals("MIN")
-        || tmp.equals("COUNT") || (fcts_ != null && fcts_.get(tmp) != null);
-  }
+	/**
+	 * The sum operator.
+	 */
+	private static final String					SUM_OPERATOR	= "SUM";
 
-  public static String getAggregateCall(String c) {
-    int pos = c.indexOf('(');
-    if(pos <= 0) return null;
-    String call = c.substring(0,pos);
-    if(ZUtils.isAggregate(call)) return call.trim();
-    else return null;
-  }
+	/**
+	 * Functions hash table.
+	 */
+	private static Hashtable<String, Integer>	fcts			= null;
+
+	/**
+	 * Variable plist.
+	 */
+	public static final int						VARIABLE_PLIST	= 10000;
+
+	/**
+	 * Default constructor.
+	 */
+	private ZUtils() {
+
+	}
+
+	/**
+	 * Add custom function.
+	 * 
+	 * @param fct
+	 *            the function
+	 * @param noParams
+	 *            the number of parammeters.
+	 */
+	public static void addCustomFunction(final String fct, final int noParams) {
+		int params = noParams;
+
+		if (ZUtils.fcts == null) {
+			ZUtils.fcts = new Hashtable<String, Integer>();
+		}
+
+		if (params < 0) {
+			params = 1;
+		}
+
+		ZUtils.fcts.put(fct.toUpperCase(), new Integer(params));
+	}
+
+	/**
+	 * Check if function is custom.
+	 * 
+	 * @param fct
+	 *            the function name
+	 * @return the result of the check.
+	 */
+	public static int isCustomFunction(final String fct) {
+		Integer nparam;
+
+		nparam = (Integer) ZUtils.fcts.get(fct.toUpperCase());
+		if (fct == null || fct.length() < 1 || fcts == null || nparam == null) {
+			nparam = -1;
+		}
+
+		return nparam.intValue();
+	}
+
+	/**
+	 * Check if is aggregate.
+	 * 
+	 * @param operator
+	 *            the operator.
+	 * @return result of the aggregate check.
+	 */
+	public static boolean isAggregate(final String operator) {
+		final String tmp = operator.toUpperCase().trim();
+		boolean result = false;
+
+		if (tmp.equals(ZUtils.SUM_OPERATOR)) {
+			result = true;
+		} else
+			if (tmp.equals(ZUtils.AVG_OPERATOR)) {
+				result = true;
+			} else
+				if (tmp.equals(ZUtils.MAX_OPERATOR)) {
+					result = true;
+				} else
+					if (tmp.equals(ZUtils.MIN_OPERATOR)) {
+						result = true;
+					} else
+						if (tmp.equals(ZUtils.COUNT_OPERATOR)) {
+							result = true;
+						} else
+							if (fcts != null && fcts.get(tmp) != null) {
+								result = true;
+							}
+
+		return result;
+	}
+
+	/**
+	 * Get the aggregate call.
+	 * 
+	 * @param c
+	 *            the call string.
+	 * @return the aggregate call.
+	 */
+	public static String getAggregateCall(final String c) {
+		final int pos = c.indexOf('(');
+
+		String result;
+		if (pos <= 0) {
+			result = null;
+		}
+		final String call = c.substring(0, pos);
+		if (ZUtils.isAggregate(call)) {
+			result = call.trim();
+		} else {
+			result = null;
+		}
+
+		return result;
+	}
 
 };
-
