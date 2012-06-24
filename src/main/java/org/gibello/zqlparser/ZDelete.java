@@ -17,49 +17,74 @@
 
 package org.gibello.zqlparser;
 
-import java.io.*;
-import java.util.*;
-
 /**
  * ZDelete: an SQL DELETE statement.<br>
  * SQL Syntax: DELETE [from] table [where Expression];
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZDelete implements ZStatement {
 
-  String table_;
-  ZExp where_ = null;
+	/**
+	 * The serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  /**
-   * Create a DELETE statement on a given table
-   * @param tab the table name
-   */
-  public ZDelete(String tab) {
-    table_ = new String(tab);
-  }
+	/**
+	 * The table name.
+	 */
+	private String				table;
 
-  /**
-   * Add a WHERE clause to the DELETE statement
-   * @param w An SQL expression compatible with a WHERE clause
-   */
-  public void addWhere(ZExp w) { where_ = w; }
+	/**
+	 * The where clause.
+	 */
+	private ZExp				where				= null;
 
-  /**
-   * @return The table concerned by the DELETE statement.
-   */
-  public String getTable() { return table_; }
+	/**
+	 * Create a DELETE statement on a given table.
+	 * 
+	 * @param tab
+	 *            the table name
+	 */
+	public ZDelete(final String tab) {
+		this.table = new String(tab);
+	}
 
-  /**
-   * @return The SQL Where clause of the DELETE statement (an SQL Expression
-   * or Subquery, compatible with an SQL WHERE clause).
-   */
-  public ZExp getWhere() { return where_; }
+	/**
+	 * Add a WHERE clause to the DELETE statement.
+	 * 
+	 * @param where
+	 *            An SQL expression compatible with a WHERE clause
+	 */
+	public void addWhere(final ZExp where) {
+		this.where = where;
+	}
 
-  public String toString() {
-    StringBuffer buf = new StringBuffer("delete ");
-    if(where_ != null) buf.append("from ");
-    buf.append(table_);
-    if(where_ != null) buf.append(" where " + where_.toString());
-    return buf.toString();
-  }
+	/**
+	 * @return The table concerned by the DELETE statement.
+	 */
+	public String getTable() {
+		return this.table;
+	}
+
+	/**
+	 * @return The SQL Where clause of the DELETE statement (an SQL Expression or Subquery, compatible with an SQL WHERE
+	 *         clause).
+	 */
+	public ZExp getWhere() {
+		return this.where;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer buf = new StringBuffer("delete ");
+		if (this.where != null) {
+			buf.append("from ");
+		}
+		buf.append(this.table);
+		if (this.where != null) {
+			buf.append(" where " + this.where.toString());
+		}
+		return buf.toString();
+	}
 };
-

@@ -22,25 +22,34 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Vector;
 
-import org.gibello.zqlparser.ParseException;
-import org.gibello.zqlparser.ZExp;
-import org.gibello.zqlparser.ZStatement;
-import org.gibello.zqlparser.ZUtils;
-import org.gibello.zqlparser.ZqlJJParser;
-
 /**
- * ZqlParser: an SQL parser
+ * ZqlParser: an SQL parser.
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZqlParser {
 
-	ZqlJJParser _parser = null;
+	/**
+	 * The parse exception error message.
+	 */
+	private static final String	PARSE_EXCEPTION	= "Parser not initialized: use initParser(InputStream);";
+
+	/**
+	 * The parser.
+	 */
+	private ZqlJJParser			parser			= null;
 
 	/**
 	 * Test program: Parses SQL statements from stdin or from a text file.<br>
-	 * If the program receives one argument, it is an SQL text file name; if
-	 * there's no argument, the program reads from stdin.
+	 * If the program receives one argument, it is an SQL text file name; if there's no argument, the program reads from
+	 * stdin.
+	 * 
+	 * @param args
+	 *            the argument list.
+	 * @throws ParseException
+	 *             the parse exception.
 	 */
-	public static void main(String args[]) throws ParseException {
+	public static void main(final String[] args) throws ParseException {
 
 		ZqlParser p = null;
 
@@ -52,7 +61,7 @@ public class ZqlParser {
 
 			try {
 				p = new ZqlParser(new DataInputStream(new FileInputStream(args[0])));
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				System.out.println("/* File " + args[0] + " not found. Reading from stdin */");
 				p = new ZqlParser(System.in);
 			}
@@ -78,29 +87,40 @@ public class ZqlParser {
 	 * @param in
 	 *            The InputStream from which SQL statements will be read.
 	 */
-	public ZqlParser(InputStream in) {
-		initParser(in);
+	public ZqlParser(final InputStream in) {
+		this.initParser(in);
 	}
 
 	/**
-	 * Create a new parser: before use, call initParser(InputStream) to specify
-	 * an input stream for the parsing.
+	 * Create a new parser: before use, call initParser(InputStream) to specify an input stream for the parsing.
 	 */
 	public ZqlParser() {
+
 	};
 
 	/**
 	 * Initialize (or re-initialize) the input stream for the parser.
+	 * 
+	 * @param in
+	 *            the input stream.
 	 */
-	public void initParser(InputStream in) {
-		if (_parser == null) {
-			_parser = new ZqlJJParser(in);
+	public void initParser(final InputStream in) {
+		if (this.parser == null) {
+			this.parser = new ZqlJJParser(in);
 		} else {
-			_parser.ReInit(in);
+			this.parser.ReInit(in);
 		}
 	}
 
-	public void addCustomFunction(String fct, int nparm) {
+	/**
+	 * Adds a custom fuction string.
+	 * 
+	 * @param fct
+	 *            the function names.
+	 * @param nparm
+	 *            the function params.
+	 */
+	public void addCustomFunction(final String fct, final int nparm) {
 		ZUtils.addCustomFunction(fct, nparm);
 	}
 
@@ -108,34 +128,43 @@ public class ZqlParser {
 	 * Parse an SQL Statement from the parser's input stream.
 	 * 
 	 * @return An SQL statement, or null if there's no more statement.
+	 * @throws ParseException
+	 *             the parse exception.
 	 */
 	public ZStatement readStatement() throws ParseException {
-		if (_parser == null)
-			throw new ParseException("Parser not initialized: use initParser(InputStream);");
-		return _parser.SQLStatement();
+		if (this.parser == null) {
+			throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+		}
+		return this.parser.SQLStatement();
 	}
 
 	/**
-	 * Parse a set of SQL Statements from the parser's input stream (all the
-	 * available statements are parsed and returned).
+	 * Parse a set of SQL Statements from the parser's input stream (all the available statements are parsed and
+	 * returned).
 	 * 
 	 * @return A vector of ZStatement objects (SQL statements).
+	 * @throws ParseException
+	 *             the parse exception.
 	 */
-	public Vector readStatements() throws ParseException {
-		if (_parser == null)
-			throw new ParseException("Parser not initialized: use initParser(InputStream);");
-		return _parser.SQLStatements();
+	public Vector<?> readStatements() throws ParseException {
+		if (this.parser == null) {
+			throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+		}
+		return this.parser.SQLStatements();
 	}
 
 	/**
 	 * Parse an SQL Expression (like the WHERE clause of an SQL query).
 	 * 
 	 * @return An SQL expression.
+	 * @throws ParseException
+	 *             the parase exception.
 	 */
 	public ZExp readExpression() throws ParseException {
-		if (_parser == null)
-			throw new ParseException("Parser not initialized: use initParser(InputStream);");
-		return _parser.SQLExpression();
+		if (this.parser == null) {
+			throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+		}
+		return this.parser.SQLExpression();
 	}
 
 };
