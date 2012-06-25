@@ -32,6 +32,7 @@ import org.gibello.zqlparser.ZqlParser;
  * Evaluate SQL expressions.
  * 
  * @author Bogdan Mariesan, Romania
+ * @param <ZTuple>
  */
 public class ZEval {
 

@@ -17,205 +17,299 @@
 
 package org.gibello.zqlparser;
 
-import java.io.* ;
-import java.util.* ;
+import java.util.Vector;
 
 /**
- * ZExpression: an SQL Expression
- * An SQL expression is an operator and one or more operands 
- * Example: a AND b AND c -> operator = AND, operands = (a, b, c)
+ * ZExpression: an SQL Expression An SQL expression is an operator and one or more operands Example: a AND b AND c ->
+ * operator = AND, operands = (a, b, c).
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZExpression implements ZExp {
 
-  String op_ = null;
-  Vector operands_ = null;
+	/**
+	 * Serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  /**
-   * Create an SQL Expression given the operator
-   * @param op The operator
-   */
-  public ZExpression(String op) {
-    op_ = new String(op);
-  }
+	/**
+	 * The operator.
+	 */
+	private String				operator			= null;
 
-  /**
-   * Create an SQL Expression given the operator and 1st operand
-   * @param op The operator
-   * @param o1 The 1st operand
-   */
-  public ZExpression(String op, ZExp o1) {
-    op_ = new String(op);
-    addOperand(o1);
-  }
+	/**
+	 * The list of operands.
+	 */
+	private Vector<ZExp>		operands			= null;
 
-  /**
-   * Create an SQL Expression given the operator, 1st and 2nd operands
-   * @param op The operator
-   * @param o1 The 1st operand
-   * @param o2 The 2nd operand
-   */
-  public ZExpression(String op, ZExp o1, ZExp o2) {
-    op_ = new String(op);
-    addOperand(o1);
-    addOperand(o2);
-  }
+	/**
+	 * Create an SQL Expression given the operator.
+	 * 
+	 * @param operator
+	 *            The operator
+	 */
+	public ZExpression(final String operator) {
+		this.operator = new String(operator);
+	}
 
-  /**
-   * Get this expression's operator.
-   * @return the operator.
-   */
-  public String getOperator() { return op_; }
+	/**
+	 * Create an SQL Expression given the operator and 1st operand.
+	 * 
+	 * @param operator
+	 *            The operator
+	 * @param firstOperand
+	 *            The 1st operand
+	 */
+	public ZExpression(final String operator, final ZExp firstOperand) {
+		this.operator = new String(operator);
+		this.addOperand(firstOperand);
+	}
 
-  /**
-   * Set the operands list
-   * @param v A vector that contains all operands (ZExp objects).
-   */
-  public void setOperands(Vector v) {
-    operands_ = v;
-  }
+	/**
+	 * Create an SQL Expression given the operator, 1st and 2nd operands.
+	 * 
+	 * @param operator
+	 *            The operator
+	 * @param secondOperand
+	 *            The 1st operand
+	 * @param thirdOperand
+	 *            The 2nd operand
+	 */
+	public ZExpression(final String operator, final ZExp secondOperand, final ZExp thirdOperand) {
+		this.operator = new String(operator);
+		this.addOperand(secondOperand);
+		this.addOperand(thirdOperand);
+	}
 
-  /**
-   * Get this expression's operands.
-   * @return the operands (as a Vector of ZExp objects).
-   */
-  public Vector getOperands() {
-    return operands_;
-  }
+	/**
+	 * Get this expression's operator.
+	 * 
+	 * @return the operator.
+	 */
+	public String getOperator() {
+		return this.operator;
+	}
 
-  /**
-   * Add an operand to the current expression.
-   * @param o The operand to add.
-   */
-  public void addOperand(ZExp o) {
-    if(operands_ == null) operands_ = new Vector();
-    operands_.addElement(o);
-  }
+	/**
+	 * Set the operands list.
+	 * 
+	 * @param operands
+	 *            A vector that contains all operands (ZExp objects).
+	 */
+	public void setOperands(final Vector<ZExp> operands) {
+		this.operands = operands;
+	}
 
-  /**
-   * Get an operand according to its index (position).
-   * @param pos The operand index, starting at 0.
-   * @return The operand at the specified index, null if out of bounds.
-   */
-  public ZExp getOperand(int pos) {
-    if(operands_ == null || pos >= operands_.size()) return null;
-    return (ZExp)operands_.elementAt(pos);
-  }
+	/**
+	 * Get this expression's operands.
+	 * 
+	 * @return the operands (as a Vector of ZExp objects).
+	 */
+	public Vector<ZExp> getOperands() {
+		return this.operands;
+	}
 
-  /**
-   * Get the number of operands
-   * @return The number of operands
-   */
-  public int nbOperands() {
-    if(operands_ == null) return 0;
-    return operands_.size();
-  }
+	/**
+	 * Add an operand to the current expression.
+	 * 
+	 * @param operand
+	 *            The operand to add.
+	 */
+	public void addOperand(final ZExp operand) {
+		if (this.operands == null) {
+			this.operands = new Vector<ZExp>();
+		}
+		this.operands.addElement(operand);
+	}
 
-  /**
-   * String form of the current expression (reverse polish notation).
-   * Example: a > 1 AND b = 2 -> (AND (> a 1) (= b 2))
-   * @return The current expression in reverse polish notation (a String)
-   */
-  public String toReversePolish() {
-    StringBuffer buf = new StringBuffer("(");
-    buf.append(op_);
-    for(int i = 0; i < nbOperands(); i++) {
-      ZExp opr = getOperand(i);
-      if(opr instanceof ZExpression)
-        buf.append(" " + ((ZExpression)opr).toReversePolish()); // Warning recursive call
-      else if(opr instanceof ZQuery)
-        buf.append(" (" + opr.toString() + ")");
-      else
-        buf.append(" " + opr.toString());
-    }
-    buf.append(")");
-    return buf.toString();
-  }
+	/**
+	 * Get an operand according to its index (position).
+	 * 
+	 * @param pos
+	 *            The operand index, starting at 0.
+	 * @return The operand at the specified index, null if out of bounds.
+	 */
+	public ZExp getOperand(final int pos) {
 
-  public String toString() {
+		ZExp result;
 
-    if(op_.equals("?")) return op_; // For prepared columns ("?")
+		if (this.operands == null || pos >= this.operands.size()) {
+			result = null;
+		}
 
-    if(ZUtils.isCustomFunction(op_) >= 0)
-      return formatFunction();
+		result = this.operands.elementAt(pos);
 
-    StringBuffer buf = new StringBuffer();
-    if(needPar(op_)) buf.append("(");
+		return result;
+	}
 
-    ZExp operand;
-    switch(nbOperands()) {
+	/**
+	 * Get the number of operands.
+	 * 
+	 * @return The number of operands
+	 */
+	public int nbOperands() {
+		int result;
 
-      case 1:
-        operand = getOperand(0);
-        if(operand instanceof ZConstant) {
-          // Operator may be an aggregate function (MAX, SUM...)
-          if(ZUtils.isAggregate(op_))
-           buf.append(op_ + "(" + operand.toString() + ")");
-          else if(op_.equals("IS NULL") || op_.equals("IS NOT NULL"))
-           buf.append(operand.toString() + " " + op_);
-          // "," = list of values, here just one single value
-          else if(op_.equals(",")) buf.append(operand.toString());
-          else buf.append(op_ + " " + operand.toString());
-        } else if(operand instanceof ZQuery) {
-          buf.append(op_ + " (" + operand.toString() + ")");
-        } else {
-          if(op_.equals("IS NULL") || op_.equals("IS NOT NULL"))
-           buf.append(operand.toString() + " " + op_);
-          // "," = list of values, here just one single value
-          else if(op_.equals(",")) buf.append(operand.toString());
-          else buf.append(op_ + " " + operand.toString());
-        }
-        break;
+		if (this.operands == null) {
+			result = 0;
+		}
 
-      case 3:
-        if(op_.toUpperCase().endsWith("BETWEEN")) {
-          buf.append(getOperand(0).toString() + " " + op_ + " "
-           + getOperand(1).toString()
-           + " AND " + getOperand(2).toString()); 
-          break;
-        }
+		result = this.operands.size();
+		return result;
+	}
 
-      default:
+	/**
+	 * String form of the current expression (reverse polish notation). Example: a > 1 AND b = 2 -> (AND (> a 1) (= b
+	 * 2))
+	 * 
+	 * @return The current expression in reverse polish notation (a String)
+	 */
+	public String toReversePolish() {
+		final StringBuffer buf = new StringBuffer("(");
+		buf.append(this.operator);
+		for (int i = 0; i < this.nbOperands(); i++) {
+			final ZExp opr = this.getOperand(i);
+			if (opr instanceof ZExpression) {
+				// Warning recursive call
+				buf.append(" " + ((ZExpression) opr).toReversePolish());
+			} else
+				if (opr instanceof ZQuery) {
+					buf.append(" (" + opr.toString() + ")");
+				} else {
+					buf.append(" " + opr.toString());
+				}
+		}
+		buf.append(")");
+		return buf.toString();
+	}
 
-        boolean in_op = op_.equals("IN") || op_.equals("NOT IN");
+	@Override
+	public String toString() {
 
-        int nb = nbOperands();
-        for(int i = 0; i < nb; i++) {
+		if (this.operator.equals("?")) {
+			// For prepared columns ("?")
+			return this.operator;
+		}
 
-          if(in_op && i==1) buf.append(" " + op_ + " (");
+		if (ZUtils.isCustomFunction(this.operator) >= 0) {
+			return this.formatFunction();
+		}
 
-          operand = getOperand(i);
-          if(operand instanceof ZQuery && !in_op) {
-            buf.append("(" + operand.toString() + ")");
-          } else {
-            buf.append(operand.toString());
-          }
-          if(i < nb-1) {
-            if(op_.equals(",") || (in_op && i>0)) buf.append(", ");
-            else if(!in_op) buf.append(" " + op_ + " ");
-          }
-        }
-        if(in_op) buf.append(")");
-        break;
-    }
+		final StringBuffer buf = new StringBuffer();
+		if (needPar(this.operator)) {
+			buf.append("(");
+		}
 
-    if(needPar(op_)) buf.append(")");
-    return buf.toString();
-  }
+		ZExp operand;
+		switch (this.nbOperands()) {
 
-  private boolean needPar(String op) {
-    String tmp = op.toUpperCase();
-    return ! (tmp.equals("ANY") || tmp.equals("ALL")
-     || tmp.equals("UNION") || ZUtils.isAggregate(tmp));
-  }
+			case 1:
+				operand = this.getOperand(0);
+				if (operand instanceof ZConstant) {
+					// Operator may be an aggregate function (MAX, SUM...)
+					if (ZUtils.isAggregate(this.operator)) {
+						buf.append(this.operator + "(" + operand.toString() + ")");
+					} else
+						if (this.operator.equals("IS NULL") || this.operator.equals("IS NOT NULL")) {
+							buf.append(operand.toString() + " " + this.operator);
+						}
+						// "," = list of values, here just one single value
+						else
+							if (this.operator.equals(",")) {
+								buf.append(operand.toString());
+							} else {
+								buf.append(this.operator + " " + operand.toString());
+							}
+				} else
+					if (operand instanceof ZQuery) {
+						buf.append(this.operator + " (" + operand.toString() + ")");
+					} else {
+						if (this.operator.equals("IS NULL") || this.operator.equals("IS NOT NULL")) {
+							buf.append(operand.toString() + " " + this.operator);
+						}
+						// "," = list of values, here just one single value
+						else
+							if (this.operator.equals(",")) {
+								buf.append(operand.toString());
+							} else {
+								buf.append(this.operator + " " + operand.toString());
+							}
+					}
+				break;
 
-  private String formatFunction() {
-    StringBuffer b = new StringBuffer(op_ + "(");
-    int nb = nbOperands();
-    for(int i = 0; i < nb; i++) {
-      b.append(getOperand(i).toString() + (i < nb-1 ? "," : ""));
-    }
-    b.append(")");
-    return b.toString();
-  }
+			case 3:
+				if (this.operator.toUpperCase().endsWith("BETWEEN")) {
+					buf.append(this.getOperand(0).toString() + " " + this.operator + " "
+							+ this.getOperand(1).toString() + " AND " + this.getOperand(2).toString());
+					break;
+				}
+
+			default:
+
+				boolean inOperator = false;
+				if (this.operator.equals("IN") || this.operator.equals("NOT IN")) {
+					inOperator = true;
+				}
+
+				final int nb = this.nbOperands();
+				for (int i = 0; i < nb; i++) {
+
+					if (inOperator && i == 1) {
+						buf.append(" " + this.operator + " (");
+					}
+
+					operand = this.getOperand(i);
+					if (operand instanceof ZQuery && !inOperator) {
+						buf.append("(" + operand.toString() + ")");
+					} else {
+						buf.append(operand.toString());
+					}
+					if (i < nb - 1) {
+						if (this.operator.equals(",") || (inOperator && i > 0)) {
+							buf.append(", ");
+						} else
+							if (!inOperator) {
+								buf.append(" " + this.operator + " ");
+							}
+					}
+				}
+				if (inOperator) {
+					buf.append(")");
+				}
+				break;
+		}
+
+		if (this.needPar(this.operator)) {
+			buf.append(")");
+		}
+
+		return buf.toString();
+	}
+
+	/**
+	 * Checks for special operators.
+	 * 
+	 * @param op
+	 *            the operator.
+	 * @return the result of the check.
+	 */
+	private boolean needPar(final String op) {
+		final String tmp = op.toUpperCase();
+		return !(tmp.equals("ANY") || tmp.equals("ALL") || tmp.equals("UNION") || ZUtils.isAggregate(tmp));
+	}
+
+	/**
+	 * Formatting function.
+	 * 
+	 * @return the formatted string.
+	 */
+	private String formatFunction() {
+		final StringBuffer b = new StringBuffer(this.operator + "(");
+		final int nb = this.nbOperands();
+		for (int i = 0; i < nb; i++) {
+			b.append(this.getOperand(i).toString() + (i < nb - 1 ? "," : ""));
+		}
+		b.append(")");
+		return b.toString();
+	}
 };
-

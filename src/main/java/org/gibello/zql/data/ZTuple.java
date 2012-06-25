@@ -27,12 +27,12 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZTuple {
-	
+
 	/**
 	 * Equals and whitespace string.
 	 */
 	private static final String			EQUALS_AND_WHITESPACE_STRING	= " = ";
-	
+
 	/**
 	 * Nullable string.
 	 */
@@ -91,13 +91,13 @@ public class ZTuple {
 		final StringTokenizer st = new StringTokenizer(row, ZTuple.COMMA_STRING);
 		for (int i = 0; st.hasMoreTokens(); i++) {
 			final String val = st.nextToken().trim();
-			//try {
-				final Double d = new Double(val);
-				this.setAtt(this.getAttName(i), d);
-			//} catch (Exception e) {
-				// TODO check why try/catch is needed.
-				this.setAtt(this.getAttName(i), val);
-			//}
+			// try {
+			final Double d = new Double(val);
+			this.setAtt(this.getAttName(i), d);
+			// } catch (Exception e) {
+			// TODO check why try/catch is needed.
+			this.setAtt(this.getAttName(i), val);
+			// }
 		}
 	}
 
@@ -144,7 +144,7 @@ public class ZTuple {
 	 *            integer giving the index of the attribute
 	 * @return a String
 	 */
-	public final String getAttName(final int index) {
+	public String getAttName(final int index) {
 		String getAttributeName;
 
 		try {
@@ -209,7 +209,7 @@ public class ZTuple {
 	 *            the name of the attribute.
 	 * @return an Object (null if name is not an existing attribute)
 	 */
-	public final Object getAttValue(final String name) {
+	public Object getAttValue(final String name) {
 		boolean exist = false;
 
 		if (name != null) {

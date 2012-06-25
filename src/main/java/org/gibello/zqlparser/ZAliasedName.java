@@ -209,4 +209,32 @@ public class ZAliasedName implements java.io.Serializable {
 	public void setAlias(final String alias) {
 		this.alias = new String(alias);
 	}
+
+	public String getStrform() {
+		return strform;
+	}
+
+	public void setStrform(String strform) {
+		this.strform = strform;
+	}
+
+	public int getFormColumn() {
+		return formColumn;
+	}
+
+	public void setFormColumn(int formColumn) {
+		this.formColumn = formColumn;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+
+	public void setTable(String table) {
+		this.table = table;
+	}
+
+	public void setColumn(String column) {
+		this.column = column;
+	}
 }

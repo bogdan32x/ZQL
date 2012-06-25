@@ -17,98 +17,143 @@
 
 package org.gibello.zqlparser;
 
-import java.io.*;
-import java.util.*;
+import java.util.Vector;
 
 /**
- * ZInsert: an SQL INSERT statement
+ * ZInsert: an SQL INSERT statement.
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZInsert implements ZStatement {
 
-  String table_;
-  Vector columns_ = null;
-  ZExp valueSpec_ = null;
+	/**
+	 * The default serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  /**
-   * Create an INSERT statement on a given table
-   */
-  public ZInsert(String tab) {
-    table_ = new String(tab);
-  }
+	/**
+	 * The table name.
+	 */
+	private String				tableName;
 
-  /**
-   * Get the name of the table involved in the INSERT statement.
-   * @return A String equal to the table name
-   */
-  public String getTable() {
-    return table_;
-  }
+	/**
+	 * The table columns.
+	 */
+	private Vector<ZExp>		tableColumns		= null;
 
-  /**
-   * Get the columns involved in the INSERT statement.
-   * @return A Vector of Strings equal to the column names
-   */
-  public Vector getColumns() {
-    return columns_;
-  }
+	/**
+	 * The specified values.
+	 */
+	private ZExp				specifiedValues		= null;
 
-  /**
-   * Specify which columns to insert
-   * @param c A vector of column names (Strings)
-   */
-  public void addColumns(Vector c) { columns_ = c; }
+	/**
+	 * Create an INSERT statement on a given table.
+	 * 
+	 * @param tableName
+	 *            the table name.
+	 */
+	public ZInsert(final String tableName) {
+		this.tableName = new String(tableName);
+	}
 
-  /**
-   * Specify the VALUES part or SQL sub-query of the INSERT statement
-   * @param e An SQL expression or a SELECT statement.
-   * If it is a list of SQL expressions, e should be represented by ONE
-   * SQL expression with operator = "," and operands = the expressions in
-   * the list.
-   * If it is a SELECT statement, e should be a ZQuery object.
-   */
-  public void addValueSpec(ZExp e) { valueSpec_ = e; }
+	/**
+	 * Get the name of the table involved in the INSERT statement.
+	 * 
+	 * @return A String equal to the table name
+	 */
+	public String getTable() {
+		return this.tableName;
+	}
 
-  /**
-   * Get the VALUES part of the INSERT statement
-   * @return A vector of SQL Expressions (ZExp objects);
-   * If there's no VALUES but a subquery, returns null (use getQuery() method).
-   */
-  public Vector getValues() {
-    if(! (valueSpec_ instanceof ZExpression)) return null;
-    return ((ZExpression)valueSpec_).getOperands();
-  }
+	/**
+	 * Get the columns involved in the INSERT statement.
+	 * 
+	 * @return A Vector of Strings equal to the column names
+	 */
+	public Vector<ZExp> getColumns() {
+		return this.tableColumns;
+	}
 
-  /**
-   * Get the sub-query (ex. in INSERT INTO table1 SELECT * FROM table2;, the
-   * sub-query is SELECT * FROM table2;)
-   * @return A ZQuery object (A SELECT statement), or null if there's no
-   * sub-query (in that case, use the getValues() method to get the VALUES
-   * part).
-   */
-  public ZQuery getQuery() {
-    if(! (valueSpec_ instanceof ZQuery)) return null;
-    return (ZQuery)valueSpec_;
-  }
+	/**
+	 * Specify which columns to insert.
+	 * 
+	 * @param tableColumns
+	 *            A vector of column names (Strings)
+	 */
+	public void addColumns(final Vector<ZExp> tableColumns) {
+		this.tableColumns = tableColumns;
+	}
 
-  public String toString() {
-    StringBuffer buf = new StringBuffer("insert into " + table_);
-    if(columns_ != null && columns_.size() > 0) {
-      //buf.append(" " + columns_.toString());
-      buf.append("(" + columns_.elementAt(0));
-      for(int i=1; i<columns_.size(); i++) {
-        buf.append("," + columns_.elementAt(i));
-      }
-      buf.append(")");
-    }
+	/**
+	 * Specify the VALUES part or SQL sub-query of the INSERT statement.
+	 * 
+	 * @param specifiedValues
+	 *            An SQL expression or a SELECT statement. If it is a list of SQL expressions, e should be represented
+	 *            by ONE SQL expression with operator = "," and operands = the expressions in the list. If it is a
+	 *            SELECT statement, e should be a ZQuery object.
+	 */
+	public void addValueSpec(final ZExp specifiedValues) {
+		this.specifiedValues = specifiedValues;
+	}
 
-    String vlist = valueSpec_.toString();
-    buf.append(" ");
-    if(getValues() != null)
-      buf.append("values ");
-    if(vlist.startsWith("(")) buf.append(vlist);
-    else buf.append(" (" + vlist + ")");
+	/**
+	 * Get the VALUES part of the INSERT statement.
+	 * 
+	 * @return A vector of SQL Expressions (ZExp objects); If there's no VALUES but a subquery, returns null (use
+	 *         getQuery() method).
+	 */
+	public Vector<ZExp> getValues() {
 
-    return buf.toString();
-  }
+		Vector<ZExp> result;
+
+		if (!(this.specifiedValues instanceof ZExpression)) {
+			result = null;
+		}
+		result = ((ZExpression) this.specifiedValues).getOperands();
+
+		return result;
+	}
+
+	/**
+	 * Get the sub-query (ex. in INSERT INTO table1 SELECT * FROM table2;, the sub-query is SELECT * FROM table2;)
+	 * 
+	 * @return A ZQuery object (A SELECT statement), or null if there's no sub-query (in that case, use the getValues()
+	 *         method to get the VALUES part).
+	 */
+	public ZQuery getQuery() {
+		ZQuery result;
+
+		if (!(this.specifiedValues instanceof ZQuery)) {
+			result = null;
+		}
+		result = (ZQuery) this.specifiedValues;
+
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
+		if (this.tableColumns != null && this.tableColumns.size() > 0) {
+			// buf.append(" " + columns_.toString());
+			buf.append("(" + this.tableColumns.elementAt(0));
+			for (int i = 1; i < this.tableColumns.size(); i++) {
+				buf.append("," + this.tableColumns.elementAt(i));
+			}
+			buf.append(")");
+		}
+
+		final String vlist = this.specifiedValues.toString();
+		buf.append(" ");
+		if (getValues() != null) {
+			buf.append("values ");
+		}
+		if (vlist.startsWith("(")) {
+			buf.append(vlist);
+		} else {
+			buf.append(" (" + vlist + ")");
+		}
+
+		return buf.toString();
+	}
 };
-

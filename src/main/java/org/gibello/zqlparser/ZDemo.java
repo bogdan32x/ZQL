@@ -76,9 +76,10 @@ public class ZDemo {
 
 				if (st instanceof ZQuery) { // An SQL query: query the DB
 					queryDB((ZQuery) st);
-				} else if (st instanceof ZInsert) { // An SQL insert
-					insertDB((ZInsert) st);
-				}
+				} else
+					if (st instanceof ZInsert) { // An SQL insert
+						insertDB((ZInsert) st);
+					}
 			}
 
 		} catch (Exception e) {
@@ -107,7 +108,8 @@ public class ZDemo {
 		// <tableName> is the table name in the FROM clause
 		// BufferedReader db1 = new BufferedReader(new
 		// FileReader(table.getTable() + ".db"));
-		BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable() + ".db")));
+		BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable()
+				+ ".db")));
 
 		// Read the column names (the 1st line of the .db file)
 		ZTuple tuple = new ZTuple(db.readLine());

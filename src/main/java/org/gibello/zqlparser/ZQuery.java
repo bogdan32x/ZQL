@@ -251,4 +251,52 @@ public class ZQuery implements ZStatement, ZExp {
 		return buf.toString();
 	}
 
+	public ZGroupBy getGroupby() {
+		return groupby;
+	}
+
+	public void setGroupby(ZGroupBy groupby) {
+		this.groupby = groupby;
+	}
+
+	public ZExpression getSetclause() {
+		return setclause;
+	}
+
+	public void setSetclause(ZExpression setclause) {
+		this.setclause = setclause;
+	}
+
+	public Vector<?> getOrderby() {
+		return orderby;
+	}
+
+	public void setOrderby(Vector<?> orderby) {
+		this.orderby = orderby;
+	}
+
+	public boolean isForupdate() {
+		return forupdate;
+	}
+
+	public void setForupdate(boolean forupdate) {
+		this.forupdate = forupdate;
+	}
+
+	public void setSelect(Vector<?> select) {
+		this.select = select;
+	}
+
+	public void setDistinct(boolean distinct) {
+		this.distinct = distinct;
+	}
+
+	public void setFrom(Vector<?> from) {
+		this.from = from;
+	}
+
+	public void setWhere(ZExp where) {
+		this.where = where;
+	}
+
 };

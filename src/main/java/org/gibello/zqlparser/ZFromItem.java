@@ -17,28 +17,33 @@
 
 package org.gibello.zqlparser;
 
-import java.io.* ;
-import java.util.* ;
-
 /**
  * ZFromItem: an SQL FROM clause (example: the FROM part of a SELECT...FROM).
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZFromItem extends ZAliasedName {
 
-  /**
-   * Create a new FROM clause.
-   * See the ZAliasedName constructor for more information.
-   */
-  public ZFromItem() { super(); }
+	/**
+	 * The default serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  /**
-   * Create a new FROM clause on a given table.
-   * See the ZAliasedName constructor for more information.
-   * @param fullname the table name.
-   */
-  public ZFromItem(String fullname) {
-    super(fullname, ZAliasedName.FORM_TABLE);
-  }
+	/**
+	 * Create a new FROM clause. See the ZAliasedName constructor for more information.
+	 */
+	public ZFromItem() {
+		super();
+	}
+
+	/**
+	 * Create a new FROM clause on a given table. See the ZAliasedName constructor for more information.
+	 * 
+	 * @param fullname
+	 *            the table name.
+	 */
+	public ZFromItem(final String fullname) {
+		super(fullname, ZAliasedName.FORM_TABLE);
+	}
 
 };
-

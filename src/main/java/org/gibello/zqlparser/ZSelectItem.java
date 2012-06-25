@@ -86,7 +86,7 @@ public class ZSelectItem extends ZAliasedName {
 	 */
 	public void setExpression(final ZExp expression) {
 		this.expression = expression;
-		this.strform = this.expression.toString();
+		this.setStrform(this.expression.toString());
 	}
 
 	/**

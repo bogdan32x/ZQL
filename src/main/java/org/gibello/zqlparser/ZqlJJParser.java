@@ -341,7 +341,7 @@ public class ZqlJJParser implements ZqlJJParserConstants {
       throw new ParseException();
     }
     jj_consume_token(91);
-    t.readOnly = rdonly; {if (true) return t;}
+    t.setReadOnly(rdonly); {if (true) return t;}
     throw new Error("Missing return statement in function");
   }
 
@@ -789,7 +789,7 @@ public class ZqlJJParser implements ZqlJJParserConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case K_FOR:
       ForUpdateClause();
-                        q.forupdate_ = true;
+                        q.setForupdate(true);
       break;
     default:
       jj_la1[36] = jj_gen;
@@ -816,7 +816,7 @@ public class ZqlJJParser implements ZqlJJParserConstants {
         break;
       case K_DISTINCT:
         jj_consume_token(K_DISTINCT);
-                                  q.distinct_ = true;
+                                  q.setDistinct(true);
         break;
       default:
         jj_la1[37] = jj_gen;
@@ -3376,7 +3376,7 @@ public class ZqlJJParser implements ZqlJJParserConstants {
      ReInit(stream, null);
   }
   public void ReInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream.reInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;

@@ -96,4 +96,8 @@ public class ZTransactStmt implements ZStatement {
 	public void setStatement(final String statement) {
 		this.statement = statement;
 	}
+
+	public void setReadOnly(final boolean readOnly) {
+		this.readOnly = readOnly;
+	}
 };
