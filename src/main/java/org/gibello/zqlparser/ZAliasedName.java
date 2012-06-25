@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
@@ -30,6 +30,31 @@ import java.util.StringTokenizer;
  * @author Bogdan Mariesan, Romania
  */
 public class ZAliasedName implements java.io.Serializable {
+
+	/**
+	 * Right brace.
+	 */
+	private static final String	RIGHT_BRACE			= ")";
+
+	/**
+	 * Left brace.
+	 */
+	private static final String	LEFT_BRACE			= "(";
+
+	/**
+	 * Magic number.
+	 */
+	private static final int	MAGIC_NUMBER_3		= 3;
+
+	/**
+	 * Magic number.
+	 */
+	private static final int	MAGIC_NUMBER_2		= 2;
+
+	/**
+	 * Magic number.
+	 */
+	private static final int	MAGIC_NUMBER_1		= 1;
 
 	/**
 	 * Serial version UID.
@@ -98,14 +123,14 @@ public class ZAliasedName implements java.io.Serializable {
 
 		final StringTokenizer st = new StringTokenizer(fullname, ".");
 		switch (st.countTokens()) {
-			case 1:
+			case ZAliasedName.MAGIC_NUMBER_1:
 				if (form == ZAliasedName.FORM_TABLE) {
 					this.table = new String(st.nextToken());
 				} else {
 					this.column = new String(st.nextToken());
 				}
 				break;
-			case 2:
+			case ZAliasedName.MAGIC_NUMBER_2:
 				if (form == ZAliasedName.FORM_TABLE) {
 					this.schema = new String(st.nextToken());
 					this.table = new String(st.nextToken());
@@ -114,7 +139,7 @@ public class ZAliasedName implements java.io.Serializable {
 					this.column = new String(st.nextToken());
 				}
 				break;
-			case 3:
+			case ZAliasedName.MAGIC_NUMBER_3:
 			default:
 				this.schema = new String(st.nextToken());
 				this.table = new String(st.nextToken());
@@ -139,11 +164,11 @@ public class ZAliasedName implements java.io.Serializable {
 		if (val == null) {
 			result = null;
 		}
-		if (val.indexOf("(") >= 0) {
-			result = val.substring(val.lastIndexOf("(") + 1);
+		if (val.indexOf(ZAliasedName.LEFT_BRACE) >= 0) {
+			result = val.substring(val.lastIndexOf(ZAliasedName.LEFT_BRACE) + 1);
 		}
-		if (val.indexOf(")") >= 0) {
-			result = val.substring(0, val.indexOf(")"));
+		if (val.indexOf(ZAliasedName.RIGHT_BRACE) >= 0) {
+			result = val.substring(0, val.indexOf(ZAliasedName.RIGHT_BRACE));
 		}
 		return result.trim();
 	}
@@ -210,31 +235,57 @@ public class ZAliasedName implements java.io.Serializable {
 		this.alias = new String(alias);
 	}
 
+	/**
+	 * @return the string form.
+	 */
 	public String getStrform() {
-		return strform;
+		return this.strform;
 	}
 
-	public void setStrform(String strform) {
+	/**
+	 * @param strform
+	 *            the string form.
+	 */
+	public void setStrform(final String strform) {
 		this.strform = strform;
 	}
 
+	/**
+	 * @return the form column.
+	 */
 	public int getFormColumn() {
-		return formColumn;
+		return this.formColumn;
 	}
 
-	public void setFormColumn(int formColumn) {
+	/**
+	 * @param formColumn
+	 *            the form column.
+	 */
+	public void setFormColumn(final int formColumn) {
 		this.formColumn = formColumn;
 	}
 
-	public void setSchema(String schema) {
+	/**
+	 * @param schema
+	 *            the schema.
+	 */
+	public void setSchema(final String schema) {
 		this.schema = schema;
 	}
 
-	public void setTable(String table) {
+	/**
+	 * @param table
+	 *            the table name.
+	 */
+	public void setTable(final String table) {
 		this.table = table;
 	}
 
-	public void setColumn(String column) {
+	/**
+	 * @param column
+	 *            the column.
+	 */
+	public void setColumn(final String column) {
 		this.column = column;
 	}
 }

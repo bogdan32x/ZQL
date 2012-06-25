@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
@@ -25,6 +25,16 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZQuery implements ZStatement, ZExp {
+
+	/**
+	 * Empty string.
+	 */
+	private static final String	EMPTY_STRING		= " ";
+
+	/**
+	 * Comma.
+	 */
+	private static final String	COMMA				= ",";
 
 	/**
 	 * 
@@ -217,24 +227,24 @@ public class ZQuery implements ZStatement, ZExp {
 		int i;
 		buf.append(this.select.elementAt(0).toString());
 		for (i = 1; i < this.select.size(); i++) {
-			buf.append(", " + this.select.elementAt(i).toString());
+			buf.append(ZQuery.COMMA + ZQuery.EMPTY_STRING + this.select.elementAt(i).toString());
 		}
 
 		// buf.append(" from " + from_.toString());
 		buf.append(" from ");
 		buf.append(this.from.elementAt(0).toString());
 		for (i = 1; i < this.from.size(); i++) {
-			buf.append(", " + this.from.elementAt(i).toString());
+			buf.append(ZQuery.COMMA + ZQuery.EMPTY_STRING + this.from.elementAt(i).toString());
 		}
 
 		if (this.where != null) {
 			buf.append(" where " + this.where.toString());
 		}
 		if (this.groupby != null) {
-			buf.append(" " + this.groupby.toString());
+			buf.append(EMPTY_STRING + this.groupby.toString());
 		}
 		if (this.setclause != null) {
-			buf.append(" " + this.setclause.toString());
+			buf.append(EMPTY_STRING + this.setclause.toString());
 		}
 		if (this.orderby != null) {
 			buf.append(" order by ");
@@ -251,51 +261,95 @@ public class ZQuery implements ZStatement, ZExp {
 		return buf.toString();
 	}
 
+	/**
+	 * @return group by.
+	 */
 	public ZGroupBy getGroupby() {
-		return groupby;
+		return this.groupby;
 	}
 
-	public void setGroupby(ZGroupBy groupby) {
+	/**
+	 * @param groupby
+	 *            the group by.
+	 */
+	public void setGroupby(final ZGroupBy groupby) {
 		this.groupby = groupby;
 	}
 
+	/**
+	 * @return the set clause.
+	 */
 	public ZExpression getSetclause() {
-		return setclause;
+		return this.setclause;
 	}
 
-	public void setSetclause(ZExpression setclause) {
+	/**
+	 * @param setclause
+	 *            the set clause.
+	 */
+	public void setSetclause(final ZExpression setclause) {
 		this.setclause = setclause;
 	}
 
+	/**
+	 * @return get order by.
+	 */
 	public Vector<?> getOrderby() {
-		return orderby;
+		return this.orderby;
 	}
 
-	public void setOrderby(Vector<?> orderby) {
+	/**
+	 * @param orderby
+	 *            set order by.
+	 */
+	public void setOrderby(final Vector<?> orderby) {
 		this.orderby = orderby;
 	}
 
+	/**
+	 * @return is for update.
+	 */
 	public boolean isForupdate() {
-		return forupdate;
+		return this.forupdate;
 	}
 
-	public void setForupdate(boolean forupdate) {
+	/**
+	 * @param forupdate
+	 *            set for update.
+	 */
+	public void setForupdate(final boolean forupdate) {
 		this.forupdate = forupdate;
 	}
 
-	public void setSelect(Vector<?> select) {
+	/**
+	 * @param select
+	 *            set select.
+	 */
+	public void setSelect(final Vector<?> select) {
 		this.select = select;
 	}
 
-	public void setDistinct(boolean distinct) {
+	/**
+	 * @param distinct
+	 *            set distinct.
+	 */
+	public void setDistinct(final boolean distinct) {
 		this.distinct = distinct;
 	}
 
-	public void setFrom(Vector<?> from) {
+	/**
+	 * @param from
+	 *            set from.
+	 */
+	public void setFrom(final Vector<?> from) {
 		this.from = from;
 	}
 
-	public void setWhere(ZExp where) {
+	/**
+	 * @param where
+	 *            set where clause.
+	 */
+	public void setWhere(final ZExp where) {
 		this.where = where;
 	}
 

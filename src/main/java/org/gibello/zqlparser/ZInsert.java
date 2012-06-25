@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
@@ -25,6 +25,21 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZInsert implements ZStatement {
+
+	/**
+	 * Empty string.
+	 */
+	private static final String	EMPTY_STRING		= " ";
+
+	/**
+	 * Right bracket.
+	 */
+	private static final String	RIGHT_BRACKET		= ")";
+
+	/**
+	 * Left bracket.
+	 */
+	private static final String	LEFT_BRACKET		= "(";
 
 	/**
 	 * The default serial version UID.
@@ -136,22 +151,22 @@ public class ZInsert implements ZStatement {
 		final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
 		if (this.tableColumns != null && this.tableColumns.size() > 0) {
 			// buf.append(" " + columns_.toString());
-			buf.append("(" + this.tableColumns.elementAt(0));
+			buf.append(ZInsert.LEFT_BRACKET + this.tableColumns.elementAt(0));
 			for (int i = 1; i < this.tableColumns.size(); i++) {
 				buf.append("," + this.tableColumns.elementAt(i));
 			}
-			buf.append(")");
+			buf.append(ZInsert.RIGHT_BRACKET);
 		}
 
 		final String vlist = this.specifiedValues.toString();
-		buf.append(" ");
-		if (getValues() != null) {
+		buf.append(ZInsert.EMPTY_STRING);
+		if (this.getValues() != null) {
 			buf.append("values ");
 		}
-		if (vlist.startsWith("(")) {
+		if (vlist.startsWith(ZInsert.LEFT_BRACKET)) {
 			buf.append(vlist);
 		} else {
-			buf.append(" (" + vlist + ")");
+			buf.append(ZInsert.EMPTY_STRING + ZInsert.LEFT_BRACKET + vlist + ZInsert.RIGHT_BRACKET);
 		}
 
 		return buf.toString();

@@ -1,5 +1,3 @@
-package org.gibello.zqlparser;
-
 /*
  * This file is part of Zql.
  *
@@ -14,12 +12,30 @@ package org.gibello.zqlparser;
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
+package org.gibello.zqlparser;
+
+/*
+ *
+ * Zql is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Zql is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ */
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -53,10 +69,25 @@ import org.gibello.zql.data.ZTuple;
  *  select * from num where a = b or e = d - 1;
  *  select * from num where b ** a <= 2;
  * </pre>
+ * 
+ * @author Bogdan Mariesan, Romania
  */
-public class ZDemo {
+public final class ZDemo {
 
-	public static void main(String args[]) {
+	/**
+	 * Default constructor.
+	 */
+	private ZDemo() {
+
+	}
+
+	/**
+	 * Non commented main method.
+	 * 
+	 * @param args
+	 *            args.
+	 */
+	public static void main(final String[] args) {
 		try {
 
 			ZqlParser p = null;
@@ -72,49 +103,66 @@ public class ZDemo {
 			ZStatement st;
 			while ((st = p.readStatement()) != null) {
 
-				System.out.println(st.toString()); // Display the statement
+				// Display the statement
+				System.out.println(st.toString());
 
-				if (st instanceof ZQuery) { // An SQL query: query the DB
+				// An SQL query: query the DB
+				if (st instanceof ZQuery) {
 					queryDB((ZQuery) st);
 				} else
-					if (st instanceof ZInsert) { // An SQL insert
+					// An SQL insert
+					if (st instanceof ZInsert) {
 						insertDB((ZInsert) st);
 					}
 			}
 
-		} catch (Exception e) {
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} catch (final ParseException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Query the database
+	 * Query the database.
+	 * 
+	 * @param q
+	 *            the query.
+	 * @throws SQLException
+	 *             the exception.
+	 * @throws IOException
+	 *             the exception.
 	 */
-	static void queryDB(ZQuery q) throws Exception {
+	static void queryDB(final ZQuery q) throws IOException, SQLException {
 
-		Vector sel = q.getSelect(); // SELECT part of the query
-		Vector from = q.getFrom(); // FROM part of the query
-		ZExpression where = (ZExpression) q.getWhere(); // WHERE part of the
-														// query
+		// SELECT part of the query
+		final Vector<?> sel = q.getSelect();
+		// FROM part of the query
+		final Vector<?> from = q.getFrom();
+		// WHERE part of the
+		final ZExpression where = (ZExpression) q.getWhere();
+		// query
 
 		if (from.size() > 1) {
 			throw new SQLException("Joins are not supported");
 		}
 
 		// Retrieve the table name in the FROM clause
-		ZFromItem table = (ZFromItem) from.elementAt(0);
+		final ZFromItem table = (ZFromItem) from.elementAt(0);
 
 		// We suppose the data is in a text file called <tableName>.db
 		// <tableName> is the table name in the FROM clause
 		// BufferedReader db1 = new BufferedReader(new
 		// FileReader(table.getTable() + ".db"));
-		BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable()
-				+ ".db")));
+		final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table
+				.getTable() + ".db")));
 
 		// Read the column names (the 1st line of the .db file)
-		ZTuple tuple = new ZTuple(db.readLine());
+		final ZTuple tuple = new ZTuple(db.readLine());
 
-		ZEval evaluator = new ZEval();
+		final ZEval evaluator = new ZEval();
 
 		// Now, each line in the .db file is a tuple
 		String tpl;
@@ -126,7 +174,7 @@ public class ZDemo {
 			// Display the tuple if the condition evaluates to true
 
 			if (where == null || evaluator.eval(tuple, where)) {
-				DisplayTuple(tuple, sel);
+				displayTuple(tuple, sel);
 			}
 
 		}
@@ -135,9 +183,16 @@ public class ZDemo {
 	}
 
 	/**
-	 * Display a tuple, according to a SELECT map
+	 * Display a tuple, according to a SELECT map.
+	 * 
+	 * @param tuple
+	 *            the tuple.
+	 * @param map
+	 *            the element map.
+	 * @throws SQLException
+	 *             the exception.
 	 */
-	static void DisplayTuple(ZTuple tuple, Vector map) throws Exception {
+	static void displayTuple(final ZTuple tuple, final Vector<?> map) throws SQLException {
 
 		// If it is a "select *", display the whole tuple
 		if (((ZSelectItem) map.elementAt(0)).isWildcard()) {
@@ -145,22 +200,29 @@ public class ZDemo {
 			return;
 		}
 
-		ZEval evaluator = new ZEval();
+		final ZEval evaluator = new ZEval();
 
 		// Evaluate the value of each select item
 		for (int i = 0; i < map.size(); i++) {
 
-			ZSelectItem item = (ZSelectItem) map.elementAt(i);
+			final ZSelectItem item = (ZSelectItem) map.elementAt(i);
 			System.out.print(evaluator.evalExpValue(tuple, item.getExpression()).toString());
 
-			if (i == map.size() - 1)
+			if (i == map.size() - 1) {
 				System.out.println("");
-			else
+			} else {
 				System.out.print(", ");
+			}
 		}
 	}
 
-	static void insertDB(ZInsert ins) throws Exception {
+	/**
+	 * @param ins
+	 *            insert query.
+	 * @throws IOException
+	 *             the exception.
+	 */
+	static void insertDB(final ZInsert ins) throws IOException {
 		System.out.println("Should implement INSERT here");
 		System.out.println(ins.toString());
 	}

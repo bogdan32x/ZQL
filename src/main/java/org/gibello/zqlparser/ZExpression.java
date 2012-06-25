@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
@@ -26,6 +26,46 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZExpression implements ZExp {
+
+	/**
+	 * Magic number.
+	 */
+	private static final int	MAGIC_NUMBER_3		= 3;
+
+	/**
+	 * Is not null string.
+	 */
+	private static final String	IS_NOT_NULL_STRING	= "IS NOT NULL";
+
+	/**
+	 * Is null string.
+	 */
+	private static final String	IS_NULL_STRING		= "IS NULL";
+
+	/**
+	 * Comma.
+	 */
+	private static final String	COMMA				= ",";
+
+	/**
+	 * Magic number.
+	 */
+	private static final int	MAGIC_NUMBER_2		= 2;
+
+	/**
+	 * Right bracket.
+	 */
+	private static final String	RIGHT_BRACKET		= ")";
+
+	/**
+	 * Left bracket.
+	 */
+	private static final String	LEFT_BRACKET		= "(";
+
+	/**
+	 * Empty string.
+	 */
+	private static final String	EMPTY_STRING		= " ";
 
 	/**
 	 * Serial version UID.
@@ -165,21 +205,22 @@ public class ZExpression implements ZExp {
 	 * @return The current expression in reverse polish notation (a String)
 	 */
 	public String toReversePolish() {
-		final StringBuffer buf = new StringBuffer("(");
+		final StringBuffer buf = new StringBuffer(ZExpression.LEFT_BRACKET);
 		buf.append(this.operator);
 		for (int i = 0; i < this.nbOperands(); i++) {
 			final ZExp opr = this.getOperand(i);
 			if (opr instanceof ZExpression) {
 				// Warning recursive call
-				buf.append(" " + ((ZExpression) opr).toReversePolish());
+				buf.append(ZExpression.EMPTY_STRING + ((ZExpression) opr).toReversePolish());
 			} else
 				if (opr instanceof ZQuery) {
-					buf.append(" (" + opr.toString() + ")");
+					buf.append(ZExpression.EMPTY_STRING + ZExpression.LEFT_BRACKET + opr.toString()
+							+ ZExpression.RIGHT_BRACKET);
 				} else {
-					buf.append(" " + opr.toString());
+					buf.append(ZExpression.EMPTY_STRING + opr.toString());
 				}
 		}
-		buf.append(")");
+		buf.append(ZExpression.RIGHT_BRACKET);
 		return buf.toString();
 	}
 
@@ -197,7 +238,7 @@ public class ZExpression implements ZExp {
 
 		final StringBuffer buf = new StringBuffer();
 		if (needPar(this.operator)) {
-			buf.append("(");
+			buf.append(ZExpression.LEFT_BRACKET);
 		}
 
 		ZExp operand;
@@ -208,39 +249,44 @@ public class ZExpression implements ZExp {
 				if (operand instanceof ZConstant) {
 					// Operator may be an aggregate function (MAX, SUM...)
 					if (ZUtils.isAggregate(this.operator)) {
-						buf.append(this.operator + "(" + operand.toString() + ")");
+						buf.append(this.operator + ZExpression.LEFT_BRACKET + operand.toString()
+								+ ZExpression.RIGHT_BRACKET);
 					} else
-						if (this.operator.equals("IS NULL") || this.operator.equals("IS NOT NULL")) {
-							buf.append(operand.toString() + " " + this.operator);
+						if (this.operator.equals(ZExpression.IS_NULL_STRING)
+								|| this.operator.equals(ZExpression.IS_NOT_NULL_STRING)) {
+							buf.append(operand.toString() + ZExpression.EMPTY_STRING + this.operator);
 						}
 						// "," = list of values, here just one single value
 						else
-							if (this.operator.equals(",")) {
+							if (this.operator.equals(ZExpression.COMMA)) {
 								buf.append(operand.toString());
 							} else {
-								buf.append(this.operator + " " + operand.toString());
+								buf.append(this.operator + ZExpression.EMPTY_STRING + operand.toString());
 							}
 				} else
 					if (operand instanceof ZQuery) {
-						buf.append(this.operator + " (" + operand.toString() + ")");
+						buf.append(this.operator + ZExpression.EMPTY_STRING + ZExpression.LEFT_BRACKET
+								+ operand.toString() + ZExpression.RIGHT_BRACKET);
 					} else {
-						if (this.operator.equals("IS NULL") || this.operator.equals("IS NOT NULL")) {
-							buf.append(operand.toString() + " " + this.operator);
+						if (this.operator.equals(ZExpression.IS_NULL_STRING)
+								|| this.operator.equals(ZExpression.IS_NOT_NULL_STRING)) {
+							buf.append(operand.toString() + ZExpression.EMPTY_STRING + this.operator);
 						}
 						// "," = list of values, here just one single value
 						else
-							if (this.operator.equals(",")) {
+							if (this.operator.equals(ZExpression.COMMA)) {
 								buf.append(operand.toString());
 							} else {
-								buf.append(this.operator + " " + operand.toString());
+								buf.append(this.operator + ZExpression.EMPTY_STRING + operand.toString());
 							}
 					}
 				break;
 
-			case 3:
+			case ZExpression.MAGIC_NUMBER_3:
 				if (this.operator.toUpperCase().endsWith("BETWEEN")) {
-					buf.append(this.getOperand(0).toString() + " " + this.operator + " "
-							+ this.getOperand(1).toString() + " AND " + this.getOperand(2).toString());
+					buf.append(this.getOperand(0).toString() + ZExpression.EMPTY_STRING + this.operator
+							+ ZExpression.EMPTY_STRING + this.getOperand(1).toString() + " AND "
+							+ this.getOperand(ZExpression.MAGIC_NUMBER_2).toString());
 					break;
 				}
 
@@ -255,32 +301,32 @@ public class ZExpression implements ZExp {
 				for (int i = 0; i < nb; i++) {
 
 					if (inOperator && i == 1) {
-						buf.append(" " + this.operator + " (");
+						buf.append(ZExpression.EMPTY_STRING + this.operator + " (");
 					}
 
 					operand = this.getOperand(i);
 					if (operand instanceof ZQuery && !inOperator) {
-						buf.append("(" + operand.toString() + ")");
+						buf.append(ZExpression.LEFT_BRACKET + operand.toString() + ZExpression.RIGHT_BRACKET);
 					} else {
 						buf.append(operand.toString());
 					}
 					if (i < nb - 1) {
-						if (this.operator.equals(",") || (inOperator && i > 0)) {
+						if (this.operator.equals(ZExpression.COMMA) || (inOperator && i > 0)) {
 							buf.append(", ");
 						} else
 							if (!inOperator) {
-								buf.append(" " + this.operator + " ");
+								buf.append(ZExpression.EMPTY_STRING + this.operator + ZExpression.EMPTY_STRING);
 							}
 					}
 				}
 				if (inOperator) {
-					buf.append(")");
+					buf.append(ZExpression.RIGHT_BRACKET);
 				}
 				break;
 		}
 
 		if (this.needPar(this.operator)) {
-			buf.append(")");
+			buf.append(ZExpression.RIGHT_BRACKET);
 		}
 
 		return buf.toString();
@@ -304,12 +350,12 @@ public class ZExpression implements ZExp {
 	 * @return the formatted string.
 	 */
 	private String formatFunction() {
-		final StringBuffer b = new StringBuffer(this.operator + "(");
+		final StringBuffer b = new StringBuffer(this.operator + ZExpression.LEFT_BRACKET);
 		final int nb = this.nbOperands();
 		for (int i = 0; i < nb; i++) {
-			b.append(this.getOperand(i).toString() + (i < nb - 1 ? "," : ""));
+			b.append(this.getOperand(i).toString() + (i < nb - 1 ? COMMA : ""));
 		}
-		b.append(")");
+		b.append(ZExpression.RIGHT_BRACKET);
 		return b.toString();
 	}
 };

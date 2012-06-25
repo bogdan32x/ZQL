@@ -12,29 +12,89 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
 
-import java.io.*;
-import java.util.*;
+import java.util.Vector;
 
 /**
- * ZLockTable: an SQL LOCK TABLE statement
+ * ZLockTable: an SQL LOCK TABLE statement.
+ * 
+ * @author Bogdan Mariesan, Romania
  */
 public class ZLockTable implements ZStatement {
 
-  boolean nowait_ = false;
-  String lockMode_ = null;
-  Vector tables_ = null;
+	/**
+	 * The default serial UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
 
-  public ZLockTable() {}
+	/**
+	 * Is no wait.
+	 */
+	private boolean				noWait				= false;
 
-  public void addTables(Vector v) { tables_ = v; }
-  public Vector getTables() { return tables_; } 
-  public void setLockMode(String lc) { lockMode_ = new String(lc); }
-  public String getLockMode() { return lockMode_; }
-  public boolean isNowait() { return nowait_; }
+	/**
+	 * The lock mode.
+	 */
+	private String				lockMode			= null;
+
+	/**
+	 * The tables.
+	 */
+	private Vector<?>			tables				= null;
+
+	/**
+	 * Default constructor.
+	 */
+	public ZLockTable() {
+
+	}
+
+	/**
+	 * @param tables
+	 *            the tables.
+	 */
+	public void addTables(final Vector<?> tables) {
+		this.tables = tables;
+	}
+
+	/**
+	 * @return the tables.
+	 */
+	public Vector<?> getTables() {
+		return this.tables;
+	}
+
+	/**
+	 * @param lc
+	 *            sets the lock mode.
+	 */
+	public void setLockMode(final String lc) {
+		this.lockMode = new String(lc);
+	}
+
+	/**
+	 * @return the lock mode.
+	 */
+	public String getLockMode() {
+		return this.lockMode;
+	}
+
+	/**
+	 * @return is no wait.
+	 */
+	public boolean isNowait() {
+		return this.noWait;
+	}
+
+	/**
+	 * @param noWait
+	 *            is no wait.
+	 */
+	public void setNowait(final boolean noWait) {
+		this.noWait = noWait;
+	}
 };
-

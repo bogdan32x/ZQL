@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Zql.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
 package org.gibello.zqlparser;
@@ -97,6 +97,10 @@ public class ZTransactStmt implements ZStatement {
 		this.statement = statement;
 	}
 
+	/**
+	 * @param readOnly
+	 *            sets read only.
+	 */
 	public void setReadOnly(final boolean readOnly) {
 		this.readOnly = readOnly;
 	}
