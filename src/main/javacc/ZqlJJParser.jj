@@ -190,11 +190,12 @@ SPECIAL_TOKEN:
 
 TOKEN:
 {
-	< S_IDENTIFIER: ( <LETTER> )+ ( <DIGIT> | <LETTER> |<SPECIAL_CHARS>)* >
-| 	< #LETTER: ["a"-"z", "A"-"Z"] >
-|   < #SPECIAL_CHARS: "$" | "_">
+    < S_IDENTIFIER: ( <LETTER> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> | <MISC_UNICODE_CHARACTER> )* >
+|   < #LETTER: ["a"-"z", "A"-"Z"] >
+|   < #SPECIAL_CHARS: "$" | "_" >
+|   < #MISC_UNICODE_CHARACTER: ["\u007B"-"\uFFFF"] >
 |   < S_BIND: ":" <S_IDENTIFIER> ("." <S_IDENTIFIER>)? >
-|   < S_CHAR_LITERAL: "'" (~["'"])* "'" ("'" (~["'"])* "'")*>
+|   < S_CHAR_LITERAL: "'" (~["'"])* "'" ("'" (~["'"])* "'")* >
 |   < S_QUOTED_IDENTIFIER: "\"" (~["\n","\r","\""])* "\"" >
 }
 
