@@ -15,13 +15,35 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zqlparser;
+package org.gibello.zql;
 
 /**
- * A common interface for all SQL Expressions (ZQueries, ZExpressions and ZConstants are ZExps).
+ * ZFromItem: an SQL FROM clause (example: the FROM part of a SELECT...FROM).
  * 
  * @author Bogdan Mariesan, Romania
  */
-public interface ZExp extends java.io.Serializable {
+public class ZFromItem extends ZAliasedName {
+
+	/**
+	 * The default serial version UID.
+	 */
+	private static final long	serialVersionUID	= 1L;
+
+	/**
+	 * Create a new FROM clause. See the ZAliasedName constructor for more information.
+	 */
+	public ZFromItem() {
+		super();
+	}
+
+	/**
+	 * Create a new FROM clause on a given table. See the ZAliasedName constructor for more information.
+	 * 
+	 * @param fullname
+	 *            the table name.
+	 */
+	public ZFromItem(final String fullname) {
+		super(fullname, ZAliasedName.FORM_TABLE);
+	}
 
 };

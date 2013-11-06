@@ -15,7 +15,7 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zqlparser;
+package org.gibello.zql;
 
 /**
  * ZSelectItem: an item in the SELECT part of an SQL query. (The SELECT part of a query is a Vector of ZSelectItem).
