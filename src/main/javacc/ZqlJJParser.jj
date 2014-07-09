@@ -177,7 +177,7 @@ TOKEN : /* Numeric Constants */
 	    | <INTEGER> ( "." <INTEGER> )?
 	    | "." <INTEGER>
     	>
-  | 	< #INTEGER: ( <DIGIT> )+ >
+  | 	< #INTEGER: ( ([ "-","+"])? <DIGIT> )+ >
   | 	< #DIGIT: ["0" - "9"] >
 }
 
