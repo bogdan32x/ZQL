@@ -23,10 +23,10 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.gibello.zqlparser.ZConstant;
-import org.gibello.zqlparser.ZExp;
-import org.gibello.zqlparser.ZExpression;
-import org.gibello.zqlparser.ZqlParser;
+import org.gibello.zql.ZConstant;
+import org.gibello.zql.ZExp;
+import org.gibello.zql.ZExpression;
+import org.gibello.zql.ZqlParser;
 
 /**
  * Evaluate SQL expressions.

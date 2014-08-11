@@ -15,15 +15,13 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zqlparser;
-
-import java.io.Serializable;
+package org.gibello.zql;
 
 /**
- * ZStatement: a common interface for all SQL statements.
+ * A common interface for all SQL Expressions (ZQueries, ZExpressions and ZConstants are ZExps).
  * 
  * @author Bogdan Mariesan, Romania
  */
-public interface ZStatement extends Serializable {
+public interface ZExp extends java.io.Serializable {
 
 };

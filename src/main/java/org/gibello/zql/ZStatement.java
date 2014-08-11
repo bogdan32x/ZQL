@@ -15,8 +15,15 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-/**
- * Custom parser data types.
- */
-package org.gibello.zqlparser;
+package org.gibello.zql;
 
+import java.io.Serializable;
+
+/**
+ * ZStatement: a common interface for all SQL statements.
+ * 
+ * @author Bogdan Mariesan, Romania
+ */
+public interface ZStatement extends Serializable {
+
+};

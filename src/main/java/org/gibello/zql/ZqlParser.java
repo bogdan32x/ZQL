@@ -15,7 +15,7 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zqlparser;
+package org.gibello.zql;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
