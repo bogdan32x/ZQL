@@ -10,8 +10,28 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
+	<dependencies>
+		<!-- Dependencies used in test classes only -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
+			<!-- Compiling sources are Java 7 compliant. Some features might be migrated 
+				to Java 8 at source level, but at runtime we will still support Java 7 for 
+				some time. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -21,6 +41,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<!-- Generating Parser specific classes from the javacc template ZqlJJParser.java -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
@@ -35,6 +56,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Eclipse specific configuration that allows the code to be compilable 
+				at IDE level. Note that the code is compilable and runnable if using command 
+				line parammeters! These plugins were added to speed up in development for 
+				Eclipse developers. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
