@@ -221,11 +221,6 @@ public class ZCommonConstants {
     public static final String SUM_OPERATOR = "SUM";
 
     /**
-     * Variable plist.
-     */
-    public static final int VARIABLE_PLIST = 10000;
-
-    /**
      * Empty string.
      */
     public static final String EMPTY_STRING = " ";

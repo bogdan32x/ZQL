@@ -29,6 +29,11 @@ import org.gibello.zql.utils.ZCommonConstants;
 public final class ZUtils {
 
     /**
+     * Variable plist.
+     */
+    public static final int VARIABLE_PLIST = 10000;
+
+    /**
      * Functions hash table.
      */
     private static Hashtable<String, Integer> fcts = null;
