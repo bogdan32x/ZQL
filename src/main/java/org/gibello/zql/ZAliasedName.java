@@ -17,6 +17,7 @@
 
 package org.gibello.zql;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /**
@@ -29,7 +30,7 @@ import java.util.StringTokenizer;
  * 
  * @author Bogdan Mariesan, Romania
  */
-public class ZAliasedName implements java.io.Serializable {
+public class ZAliasedName implements Serializable {
 
     /**
      * Right brace.

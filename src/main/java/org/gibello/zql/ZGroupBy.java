@@ -17,6 +17,7 @@
 
 package org.gibello.zql;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Vector;
  * 
  * @author Bogdan Mariesan, Romania
  */
-public class ZGroupBy implements java.io.Serializable {
+public class ZGroupBy implements Serializable {
 
     /**
      * The default serial version UID.

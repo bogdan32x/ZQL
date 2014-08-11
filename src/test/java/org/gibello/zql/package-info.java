@@ -15,15 +15,7 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
-
-import java.io.Serializable;
-
 /**
- * A common interface for all SQL Expressions (ZQueries, ZExpressions and ZConstants are ZExps).
- * 
- * @author Bogdan Mariesan, Romania
+ * Base test package for ZQL.
  */
-public interface ZExp extends Serializable {
-
-};
+package org.gibello.zql;
