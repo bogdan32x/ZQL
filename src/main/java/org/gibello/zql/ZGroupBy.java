@@ -26,71 +26,71 @@ import java.util.Vector;
  */
 public class ZGroupBy implements java.io.Serializable {
 
-	/**
-	 * The default serial version UID.
-	 */
-	private static final long	serialVersionUID	= 1L;
+    /**
+     * The default serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Group by clause.
-	 */
-	private Vector<?>			groupBy;
+    /**
+     * Group by clause.
+     */
+    private Vector<?> groupBy;
 
-	/**
-	 * Having clause.
-	 */
-	private ZExp				having				= null;
+    /**
+     * Having clause.
+     */
+    private ZExp having = null;
 
-	/**
-	 * Create a GROUP BY given a set of Expressions.
-	 * 
-	 * @param groupBy
-	 *            A vector of SQL Expressions (ZExp objects).
-	 */
-	public ZGroupBy(final Vector<?> groupBy) {
-		this.groupBy = groupBy;
-	}
+    /**
+     * Create a GROUP BY given a set of Expressions.
+     * 
+     * @param groupBy
+     *            A vector of SQL Expressions (ZExp objects).
+     */
+    public ZGroupBy(final Vector<?> groupBy) {
+        this.groupBy = groupBy;
+    }
 
-	/**
-	 * Initiallize the HAVING part of the GROUP BY.
-	 * 
-	 * @param having
-	 *            An SQL Expression (the HAVING clause)
-	 */
-	public void setHaving(final ZExp having) {
-		this.having = having;
-	}
+    /**
+     * Initiallize the HAVING part of the GROUP BY.
+     * 
+     * @param having
+     *            An SQL Expression (the HAVING clause)
+     */
+    public void setHaving(final ZExp having) {
+        this.having = having;
+    }
 
-	/**
-	 * Get the GROUP BY expressions.
-	 * 
-	 * @return A vector of SQL Expressions (ZExp objects)
-	 */
-	public Vector<?> getGroupBy() {
-		return this.groupBy;
-	}
+    /**
+     * Get the GROUP BY expressions.
+     * 
+     * @return A vector of SQL Expressions (ZExp objects)
+     */
+    public Vector<?> getGroupBy() {
+        return this.groupBy;
+    }
 
-	/**
-	 * Get the HAVING clause.
-	 * 
-	 * @return An SQL expression
-	 */
-	public ZExp getHaving() {
-		return this.having;
-	}
+    /**
+     * Get the HAVING clause.
+     * 
+     * @return An SQL expression
+     */
+    public ZExp getHaving() {
+        return this.having;
+    }
 
-	@Override
-	public String toString() {
-		final StringBuffer buf = new StringBuffer("group by ");
+    @Override
+    public String toString() {
+        final StringBuffer buf = new StringBuffer("group by ");
 
-		// buf.append(groupby_.toString());
-		buf.append(this.groupBy.elementAt(0).toString());
-		for (int i = 1; i < this.groupBy.size(); i++) {
-			buf.append(", " + this.groupBy.elementAt(i).toString());
-		}
-		if (this.having != null) {
-			buf.append(" having " + this.having.toString());
-		}
-		return buf.toString();
-	}
+        // buf.append(groupby_.toString());
+        buf.append(this.groupBy.elementAt(0).toString());
+        for (int i = 1; i < this.groupBy.size(); i++) {
+            buf.append(", " + this.groupBy.elementAt(i).toString());
+        }
+        if (this.having != null) {
+            buf.append(" having " + this.having.toString());
+        }
+        return buf.toString();
+    }
 };

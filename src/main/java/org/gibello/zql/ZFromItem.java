@@ -24,26 +24,26 @@ package org.gibello.zql;
  */
 public class ZFromItem extends ZAliasedName {
 
-	/**
-	 * The default serial version UID.
-	 */
-	private static final long	serialVersionUID	= 1L;
+    /**
+     * The default serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Create a new FROM clause. See the ZAliasedName constructor for more information.
-	 */
-	public ZFromItem() {
-		super();
-	}
+    /**
+     * Create a new FROM clause. See the ZAliasedName constructor for more information.
+     */
+    public ZFromItem() {
+        super();
+    }
 
-	/**
-	 * Create a new FROM clause on a given table. See the ZAliasedName constructor for more information.
-	 * 
-	 * @param fullname
-	 *            the table name.
-	 */
-	public ZFromItem(final String fullname) {
-		super(fullname, ZAliasedName.FORM_TABLE);
-	}
+    /**
+     * Create a new FROM clause on a given table. See the ZAliasedName constructor for more information.
+     * 
+     * @param fullname
+     *            the table name.
+     */
+    public ZFromItem(final String fullname) {
+        super(fullname, ZAliasedName.FORM_TABLE);
+    }
 
 };

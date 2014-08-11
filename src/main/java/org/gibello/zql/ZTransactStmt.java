@@ -24,84 +24,84 @@ package org.gibello.zql;
  */
 public class ZTransactStmt implements ZStatement {
 
-	/**
-	 * Serial version UID.
-	 */
-	private static final long	serialVersionUID	= 1L;
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * The statement string.
-	 */
-	private String				statement;
+    /**
+     * The statement string.
+     */
+    private String statement;
 
-	/**
-	 * The comment.
-	 */
-	private String				comment				= null;
+    /**
+     * The comment.
+     */
+    private String comment = null;
 
-	/**
-	 * Read only param.
-	 */
-	private boolean				readOnly			= false;
+    /**
+     * Read only param.
+     */
+    private boolean readOnly = false;
 
-	/**
-	 * Transaction statement constructor.
-	 * 
-	 * @param statement
-	 *            the statement string.
-	 */
-	public ZTransactStmt(final String statement) {
-		this.setStatement(new String(statement));
-	}
+    /**
+     * Transaction statement constructor.
+     * 
+     * @param statement
+     *            the statement string.
+     */
+    public ZTransactStmt(final String statement) {
+        this.setStatement(new String(statement));
+    }
 
-	/**
-	 * Sets the comment.
-	 * 
-	 * @param comment
-	 *            the comment.
-	 */
-	public void setComment(final String comment) {
-		this.comment = new String(comment);
-	}
+    /**
+     * Sets the comment.
+     * 
+     * @param comment
+     *            the comment.
+     */
+    public void setComment(final String comment) {
+        this.comment = new String(comment);
+    }
 
-	/**
-	 * Gets the comment.
-	 * 
-	 * @return the comment.
-	 */
-	public String getComment() {
-		return this.comment;
-	}
+    /**
+     * Gets the comment.
+     * 
+     * @return the comment.
+     */
+    public String getComment() {
+        return this.comment;
+    }
 
-	/**
-	 * Check if is read only.
-	 * 
-	 * @return check if is read only.
-	 */
-	public boolean isReadOnly() {
-		return this.readOnly;
-	}
+    /**
+     * Check if is read only.
+     * 
+     * @return check if is read only.
+     */
+    public boolean isReadOnly() {
+        return this.readOnly;
+    }
 
-	/**
-	 * @return the statement
-	 */
-	public String getStatement() {
-		return this.statement;
-	}
+    /**
+     * @return the statement
+     */
+    public String getStatement() {
+        return this.statement;
+    }
 
-	/**
-	 * @param statement
-	 *            the statement to set
-	 */
-	public void setStatement(final String statement) {
-		this.statement = statement;
-	}
+    /**
+     * @param statement
+     *            the statement to set
+     */
+    public void setStatement(final String statement) {
+        this.statement = statement;
+    }
 
-	/**
-	 * @param readOnly
-	 *            sets read only.
-	 */
-	public void setReadOnly(final boolean readOnly) {
-		this.readOnly = readOnly;
-	}
+    /**
+     * @param readOnly
+     *            sets read only.
+     */
+    public void setReadOnly(final boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 };
