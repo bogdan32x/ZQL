@@ -19,6 +19,8 @@ package org.gibello.zql;
 
 import java.util.Vector;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * ZExpression: an SQL Expression An SQL expression is an operator and one or more operands Example: a AND b AND c -> operator = AND,
  * operands = (a, b, c).
@@ -26,46 +28,6 @@ import java.util.Vector;
  * @author Bogdan Mariesan, Romania
  */
 public class ZExpression implements ZExp {
-
-    /**
-     * Magic number.
-     */
-    private static final int MAGIC_NUMBER_3 = 3;
-
-    /**
-     * Is not null string.
-     */
-    private static final String IS_NOT_NULL_STRING = "IS NOT NULL";
-
-    /**
-     * Is null string.
-     */
-    private static final String IS_NULL_STRING = "IS NULL";
-
-    /**
-     * Comma.
-     */
-    private static final String COMMA = ",";
-
-    /**
-     * Magic number.
-     */
-    private static final int MAGIC_NUMBER_2 = 2;
-
-    /**
-     * Right bracket.
-     */
-    private static final String RIGHT_BRACKET = ")";
-
-    /**
-     * Left bracket.
-     */
-    private static final String LEFT_BRACKET = "(";
-
-    /**
-     * Empty string.
-     */
-    private static final String EMPTY_STRING = " ";
 
     /**
      * Serial version UID.
@@ -204,20 +166,20 @@ public class ZExpression implements ZExp {
      * @return The current expression in reverse polish notation (a String)
      */
     public String toReversePolish() {
-        final StringBuffer buf = new StringBuffer(ZExpression.LEFT_BRACKET);
+        final StringBuffer buf = new StringBuffer(ZCommonConstants.LEFT_BRACKET);
         buf.append(this.operator);
         for (int i = 0; i < this.nbOperands(); i++) {
             final ZExp opr = this.getOperand(i);
             if (opr instanceof ZExpression) {
                 // Warning recursive call
-                buf.append(ZExpression.EMPTY_STRING + ((ZExpression) opr).toReversePolish());
+                buf.append(ZCommonConstants.EMPTY_STRING + ((ZExpression) opr).toReversePolish());
             } else if (opr instanceof ZQuery) {
-                buf.append(ZExpression.EMPTY_STRING + ZExpression.LEFT_BRACKET + opr.toString() + ZExpression.RIGHT_BRACKET);
+                buf.append(ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET + opr.toString() + ZCommonConstants.RIGHT_BRACKET);
             } else {
-                buf.append(ZExpression.EMPTY_STRING + opr.toString());
+                buf.append(ZCommonConstants.EMPTY_STRING + opr.toString());
             }
         }
-        buf.append(ZExpression.RIGHT_BRACKET);
+        buf.append(ZCommonConstants.RIGHT_BRACKET);
         return buf.toString();
     }
 
@@ -235,7 +197,7 @@ public class ZExpression implements ZExp {
 
         final StringBuffer buf = new StringBuffer();
         if (needPar(this.operator)) {
-            buf.append(ZExpression.LEFT_BRACKET);
+            buf.append(ZCommonConstants.LEFT_BRACKET);
         }
 
         ZExp operand;
@@ -246,35 +208,35 @@ public class ZExpression implements ZExp {
             if (operand instanceof ZConstant) {
                 // Operator may be an aggregate function (MAX, SUM...)
                 if (ZUtils.isAggregate(this.operator)) {
-                    buf.append(this.operator + ZExpression.LEFT_BRACKET + operand.toString() + ZExpression.RIGHT_BRACKET);
-                } else if (this.operator.equals(ZExpression.IS_NULL_STRING) || this.operator.equals(ZExpression.IS_NOT_NULL_STRING)) {
-                    buf.append(operand.toString() + ZExpression.EMPTY_STRING + this.operator);
+                    buf.append(this.operator + ZCommonConstants.LEFT_BRACKET + operand.toString() + ZCommonConstants.RIGHT_BRACKET);
+                } else if (this.operator.equals(ZCommonConstants.IS_NULL) || this.operator.equals(ZCommonConstants.IS_NOT_NULL)) {
+                    buf.append(operand.toString() + ZCommonConstants.EMPTY_STRING + this.operator);
                 }
                 // "," = list of values, here just one single value
-                else if (this.operator.equals(ZExpression.COMMA)) {
+                else if (this.operator.equals(ZCommonConstants.COMMA)) {
                     buf.append(operand.toString());
                 } else {
-                    buf.append(this.operator + ZExpression.EMPTY_STRING + operand.toString());
+                    buf.append(this.operator + ZCommonConstants.EMPTY_STRING + operand.toString());
                 }
             } else if (operand instanceof ZQuery) {
-                buf.append(this.operator + ZExpression.EMPTY_STRING + ZExpression.LEFT_BRACKET + operand.toString() + ZExpression.RIGHT_BRACKET);
+                buf.append(this.operator + ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET + operand.toString() + ZCommonConstants.RIGHT_BRACKET);
             } else {
-                if (this.operator.equals(ZExpression.IS_NULL_STRING) || this.operator.equals(ZExpression.IS_NOT_NULL_STRING)) {
-                    buf.append(operand.toString() + ZExpression.EMPTY_STRING + this.operator);
+                if (this.operator.equals(ZCommonConstants.IS_NULL) || this.operator.equals(ZCommonConstants.IS_NOT_NULL)) {
+                    buf.append(operand.toString() + ZCommonConstants.EMPTY_STRING + this.operator);
                 }
                 // "," = list of values, here just one single value
-                else if (this.operator.equals(ZExpression.COMMA)) {
+                else if (this.operator.equals(ZCommonConstants.COMMA)) {
                     buf.append(operand.toString());
                 } else {
-                    buf.append(this.operator + ZExpression.EMPTY_STRING + operand.toString());
+                    buf.append(this.operator + ZCommonConstants.EMPTY_STRING + operand.toString());
                 }
             }
             break;
 
-        case ZExpression.MAGIC_NUMBER_3:
+        case ZCommonConstants.MAGIC_NUMBER_3:
             if (this.operator.toUpperCase().endsWith("BETWEEN")) {
-                buf.append(this.getOperand(0).toString() + ZExpression.EMPTY_STRING + this.operator + ZExpression.EMPTY_STRING + this.getOperand(1).toString() + " AND "
-                        + this.getOperand(ZExpression.MAGIC_NUMBER_2).toString());
+                buf.append(this.getOperand(0).toString() + ZCommonConstants.EMPTY_STRING + this.operator + ZCommonConstants.EMPTY_STRING + this.getOperand(1).toString() + " AND "
+                        + this.getOperand(ZCommonConstants.MAGIC_NUMBER_2).toString());
                 break;
             }
 
@@ -289,31 +251,31 @@ public class ZExpression implements ZExp {
             for (int i = 0; i < nb; i++) {
 
                 if (inOperator && i == 1) {
-                    buf.append(ZExpression.EMPTY_STRING + this.operator + " (");
+                    buf.append(ZCommonConstants.EMPTY_STRING + this.operator + " (");
                 }
 
                 operand = this.getOperand(i);
                 if (operand instanceof ZQuery && !inOperator) {
-                    buf.append(ZExpression.LEFT_BRACKET + operand.toString() + ZExpression.RIGHT_BRACKET);
+                    buf.append(ZCommonConstants.LEFT_BRACKET + operand.toString() + ZCommonConstants.RIGHT_BRACKET);
                 } else {
                     buf.append(operand.toString());
                 }
                 if (i < nb - 1) {
-                    if (this.operator.equals(ZExpression.COMMA) || (inOperator && i > 0)) {
+                    if (this.operator.equals(ZCommonConstants.COMMA) || (inOperator && i > 0)) {
                         buf.append(", ");
                     } else if (!inOperator) {
-                        buf.append(ZExpression.EMPTY_STRING + this.operator + ZExpression.EMPTY_STRING);
+                        buf.append(ZCommonConstants.EMPTY_STRING + this.operator + ZCommonConstants.EMPTY_STRING);
                     }
                 }
             }
             if (inOperator) {
-                buf.append(ZExpression.RIGHT_BRACKET);
+                buf.append(ZCommonConstants.RIGHT_BRACKET);
             }
             break;
         }
 
         if (this.needPar(this.operator)) {
-            buf.append(ZExpression.RIGHT_BRACKET);
+            buf.append(ZCommonConstants.RIGHT_BRACKET);
         }
 
         return buf.toString();
@@ -337,12 +299,12 @@ public class ZExpression implements ZExp {
      * @return the formatted string.
      */
     private String formatFunction() {
-        final StringBuffer b = new StringBuffer(this.operator + ZExpression.LEFT_BRACKET);
+        final StringBuffer b = new StringBuffer(this.operator + ZCommonConstants.LEFT_BRACKET);
         final int nb = this.nbOperands();
         for (int i = 0; i < nb; i++) {
-            b.append(this.getOperand(i).toString() + (i < nb - 1 ? COMMA : ""));
+            b.append(this.getOperand(i).toString() + (i < nb - 1 ? ZCommonConstants.COMMA : ""));
         }
-        b.append(ZExpression.RIGHT_BRACKET);
+        b.append(ZCommonConstants.RIGHT_BRACKET);
         return b.toString();
     }
 };

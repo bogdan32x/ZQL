@@ -23,17 +23,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Vector;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * ZqlParser: an SQL parser.
  * 
  * @author Bogdan Mariesan, Romania
  */
 public class ZqlParser {
-
-    /**
-     * The parse exception error message.
-     */
-    private static final String PARSE_EXCEPTION = "Parser not initialized: use initParser(InputStream);";
 
     /**
      * The parser.
@@ -133,7 +130,7 @@ public class ZqlParser {
      */
     public ZStatement readStatement() throws ParseException {
         if (this.parser == null) {
-            throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+            throw new ParseException(ZCommonConstants.PARSE_EXCEPTION);
         }
         return this.parser.SQLStatement();
     }
@@ -147,7 +144,7 @@ public class ZqlParser {
      */
     public Vector<?> readStatements() throws ParseException {
         if (this.parser == null) {
-            throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+            throw new ParseException(ZCommonConstants.PARSE_EXCEPTION);
         }
         return this.parser.SQLStatements();
     }
@@ -161,7 +158,7 @@ public class ZqlParser {
      */
     public ZExp readExpression() throws ParseException {
         if (this.parser == null) {
-            throw new ParseException(ZqlParser.PARSE_EXCEPTION);
+            throw new ParseException(ZCommonConstants.PARSE_EXCEPTION);
         }
         return this.parser.SQLExpression();
     }

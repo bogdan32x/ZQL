@@ -19,6 +19,8 @@ package org.gibello.zql;
 
 import java.util.Hashtable;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * Utils class.
  * 
@@ -27,39 +29,9 @@ import java.util.Hashtable;
 public final class ZUtils {
 
     /**
-     * The count operator.
-     */
-    private static final String COUNT_OPERATOR = "COUNT";
-
-    /**
-     * The min operator.
-     */
-    private static final String MIN_OPERATOR = "MIN";
-
-    /**
-     * The max operator.
-     */
-    private static final String MAX_OPERATOR = "MAX";
-
-    /**
-     * The average operator.
-     */
-    private static final String AVG_OPERATOR = "AVG";
-
-    /**
-     * The sum operator.
-     */
-    private static final String SUM_OPERATOR = "SUM";
-
-    /**
      * Functions hash table.
      */
     private static Hashtable<String, Integer> fcts = null;
-
-    /**
-     * Variable plist.
-     */
-    public static final int VARIABLE_PLIST = 10000;
 
     /**
      * Default constructor.
@@ -119,15 +91,15 @@ public final class ZUtils {
         final String tmp = operator.toUpperCase().trim();
         boolean result = false;
 
-        if (tmp.equals(ZUtils.SUM_OPERATOR)) {
+        if (tmp.equals(ZCommonConstants.SUM_OPERATOR)) {
             result = true;
-        } else if (tmp.equals(ZUtils.AVG_OPERATOR)) {
+        } else if (tmp.equals(ZCommonConstants.AVG_OPERATOR)) {
             result = true;
-        } else if (tmp.equals(ZUtils.MAX_OPERATOR)) {
+        } else if (tmp.equals(ZCommonConstants.MAX_OPERATOR)) {
             result = true;
-        } else if (tmp.equals(ZUtils.MIN_OPERATOR)) {
+        } else if (tmp.equals(ZCommonConstants.MIN_OPERATOR)) {
             result = true;
-        } else if (tmp.equals(ZUtils.COUNT_OPERATOR)) {
+        } else if (tmp.equals(ZCommonConstants.COUNT_OPERATOR)) {
             result = true;
         } else if (fcts != null && fcts.get(tmp) != null) {
             result = true;
@@ -158,10 +130,10 @@ public final class ZUtils {
             }
         }
 
-        if(result == null && c != null) {
+        if (result == null && c != null) {
             result = c;
         }
-        
+
         return result;
     }
 

@@ -19,22 +19,14 @@ package org.gibello.zql;
 
 import java.util.Vector;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * ZQuery: an SQL SELECT statement.
  * 
  * @author Bogdan Mariesan, Romania
  */
 public class ZQuery implements ZStatement, ZExp {
-
-    /**
-     * Empty string.
-     */
-    private static final String EMPTY_STRING = " ";
-
-    /**
-     * Comma.
-     */
-    private static final String COMMA = ",";
 
     /**
 	 * 
@@ -227,24 +219,24 @@ public class ZQuery implements ZStatement, ZExp {
         int i;
         buf.append(this.select.elementAt(0).toString());
         for (i = 1; i < this.select.size(); i++) {
-            buf.append(ZQuery.COMMA + ZQuery.EMPTY_STRING + this.select.elementAt(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.elementAt(i).toString());
         }
 
         // buf.append(" from " + from_.toString());
         buf.append(" from ");
         buf.append(this.from.elementAt(0).toString());
         for (i = 1; i < this.from.size(); i++) {
-            buf.append(ZQuery.COMMA + ZQuery.EMPTY_STRING + this.from.elementAt(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.elementAt(i).toString());
         }
 
         if (this.where != null) {
             buf.append(" where " + this.where.toString());
         }
         if (this.groupby != null) {
-            buf.append(EMPTY_STRING + this.groupby.toString());
+            buf.append(ZCommonConstants.EMPTY_STRING + this.groupby.toString());
         }
         if (this.setclause != null) {
-            buf.append(EMPTY_STRING + this.setclause.toString());
+            buf.append(ZCommonConstants.EMPTY_STRING + this.setclause.toString());
         }
         if (this.orderby != null) {
             buf.append(" order by ");

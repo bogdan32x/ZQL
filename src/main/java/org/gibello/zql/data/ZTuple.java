@@ -21,27 +21,14 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * Handles tuples.
  * 
  * @author Bogdan Mariesan, Romania
  */
 public class ZTuple {
-
-    /**
-     * Equals and whitespace string.
-     */
-    private static final String EQUALS_AND_WHITESPACE_STRING = " = ";
-
-    /**
-     * Nullable string.
-     */
-    private static final String NULLABLE_STRING = "(null)";
-
-    /**
-     * Comma string.
-     */
-    private static final String COMMA_STRING = ",";
 
     /**
      * the names of the attributes.
@@ -75,7 +62,7 @@ public class ZTuple {
      */
     public ZTuple(final String colnames) {
         this();
-        final StringTokenizer st = new StringTokenizer(colnames, ZTuple.COMMA_STRING);
+        final StringTokenizer st = new StringTokenizer(colnames, ZCommonConstants.COMMA);
         while (st.hasMoreTokens()) {
             this.setAtt(st.nextToken().trim(), null);
         }
@@ -88,7 +75,7 @@ public class ZTuple {
      *            Column values separated by commas (,).
      */
     public void setRow(final String row) {
-        final StringTokenizer st = new StringTokenizer(row, ZTuple.COMMA_STRING);
+        final StringTokenizer st = new StringTokenizer(row, ZCommonConstants.COMMA);
         for (int i = 0; st.hasMoreTokens(); i++) {
             final String val = st.nextToken().trim();
             // try {
@@ -272,35 +259,35 @@ public class ZTuple {
         if (this.attributes.size() > 0) {
             att = this.attributes.elementAt(0);
             if (att == null) {
-                attS = ZTuple.NULLABLE_STRING;
+                attS = ZCommonConstants.NULLABLE;
             } else {
                 attS = att.toString();
             }
 
             value = this.values.elementAt(0);
             if (value == null) {
-                valueS = ZTuple.NULLABLE_STRING;
+                valueS = ZCommonConstants.NULLABLE;
             } else {
                 valueS = value.toString();
             }
-            resp.append(attS + ZTuple.EQUALS_AND_WHITESPACE_STRING + valueS);
+            resp.append(attS + ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING + valueS);
         }
 
         for (int i = 1; i < this.attributes.size(); i++) {
             att = this.attributes.elementAt(i);
             if (att == null) {
-                attS = ZTuple.NULLABLE_STRING;
+                attS = ZCommonConstants.NULLABLE;
             } else {
                 attS = att.toString();
             }
 
             value = this.values.elementAt(i);
             if (value == null) {
-                valueS = ZTuple.NULLABLE_STRING;
+                valueS = ZCommonConstants.NULLABLE;
             } else {
                 valueS = value.toString();
             }
-            resp.append(", " + attS + EQUALS_AND_WHITESPACE_STRING + valueS);
+            resp.append(", " + attS + ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING + valueS);
         }
         resp.append("]");
         return resp.toString();

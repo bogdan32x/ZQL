@@ -27,6 +27,7 @@ import org.gibello.zql.ZConstant;
 import org.gibello.zql.ZExp;
 import org.gibello.zql.ZExpression;
 import org.gibello.zql.ZqlParser;
+import org.gibello.zql.utils.ZCommonConstants;
 
 /**
  * Evaluate SQL expressions.
@@ -34,171 +35,6 @@ import org.gibello.zql.ZqlParser;
  * @author Bogdan Mariesan, Romania
  */
 public class ZEval {
-
-    /**
-     * Unknown column error.
-     */
-    private static final String ZEVAL_EXP_VALUE_UNKNOWN_COLUMN = "ZEval.evalExpValue(): unknown column ";
-
-    /**
-     * Slash string.
-     */
-    private static final String SLASH_STRING = "/";
-
-    /**
-     * Multiplication string.
-     */
-    private static final String MULTIPLICATION_STRING = "*";
-
-    /**
-     * Minus string.
-     */
-    private static final String MINUS_STRING = "-";
-
-    /**
-     * Plus string.
-     */
-    private static final String PLUS_STRING = "+";
-
-    /**
-     * Expression not numeric error.
-     */
-    private static final String ZEVAL_NUMERIC_EXP_EXPRESSION_NOT_NUMERIC = "ZEval.evalNumericExp(): expression not numeric";
-
-    /**
-     * Like can only compare strings error.
-     */
-    private static final String ZEVAL_LIKE_LIKE_CAN_ONLY_COMPARE_STRINGS = "ZEval.evalLike(): LIKE can only compare strings";
-
-    /**
-     * Prefix string.
-     */
-    private static final String PREFIX = "%";
-
-    /**
-     * Trying to compare more than two values error.
-     */
-    private static final String ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES = "ZEval.evalCmp(): Trying to compare more than two values";
-
-    /**
-     * TWO string.
-     */
-    private static final int TWO = 2;
-
-    /**
-     * Trying to compare less than two values error.
-     */
-    private static final String ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES = "ZEval.evalCmp(): Trying to compare less than two values";
-
-    /**
-     * Unknown operator error.
-     */
-    private static final String ZEVAL_UNKNOWN_OPERATOR = "ZEval.eval(): Unknown operator ";
-
-    /**
-     * Is not null string.
-     */
-    private static final String IS_NOT_NULL_STRING = "IS NOT NULL";
-
-    /**
-     * Can't evaluate IS NOT NULL error.
-     */
-    private static final String ZEVAL_CAN_T_EVAL_IS_NOT_NULL = "ZEval.eval(): can't eval IS (NOT) NULL";
-
-    /**
-     * Is null string.
-     */
-    private static final String IS_NULL_STRING = "IS NULL";
-
-    /**
-     * Not in string.
-     */
-    private static final String NOT_IN_STRING = "NOT IN";
-
-    /**
-     * In string.
-     */
-    private static final String IN_STRING = "IN";
-
-    /**
-     * Not like string.
-     */
-    private static final String NOT_LIKE_STRING = "NOT LIKE";
-
-    /**
-     * Like string.
-     */
-    private static final String LIKE_STRING = "LIKE";
-
-    /**
-     * Not between string.
-     */
-    private static final String NOT_BETWEEN = "NOT BETWEEN";
-
-    /**
-     * Between string.
-     */
-    private static final String BETWEEN = "BETWEEN";
-
-    /**
-     * Lesser than string.
-     */
-    private static final String LESSER_THAN_STRING = "<";
-
-    /**
-     * Greather than string.
-     */
-    private static final String GREATHER_THAN_STRING = ">";
-
-    /**
-     * Operator # not supported error.
-     */
-    private static final String ZEVAL_OPERATOR_NOT_SUPPORTED = "ZEval.eval(): Operator # not supported";
-
-    /**
-     * Diez string.
-     */
-    private static final String DIEZ_STRING = "#";
-
-    /**
-     * Exclusion string.
-     */
-    private static final String EXCLUDING_STRING = "<>";
-
-    /**
-     * Not equals string.
-     */
-    private static final String NOT_EQUALS_STRING = "!=";
-
-    /**
-     * Equals string.
-     */
-    private static final String EQUALS_STRING = "=";
-
-    /**
-     * Not string.
-     */
-    private static final String NOT_STRING = "NOT";
-
-    /**
-     * ZEval null argument or operator.
-     */
-    private static final String ZEVAL_NULL_ARGUMENT_OR_OPERATOR = "ZEval.eval(): null argument or operator";
-
-    /**
-     * ZEval only expressions are supported.
-     */
-    private static final String ZEVAL_ONLY_EXPRESSIONS_ARE_SUPPORTED = "ZEval.eval(): only expressions are supported";
-
-    /**
-     * And string.
-     */
-    private static final String AND_STRING = "AND";
-
-    /**
-     * Or string.
-     */
-    private static final String OR_STING = "OR";
 
     /**
      * Default constructor.
@@ -221,79 +57,79 @@ public class ZEval {
     public final boolean eval(final ZTuple tuple, final ZExp exp) throws SQLException {
 
         if (tuple == null || exp == null) {
-            throw new SQLException(ZEval.ZEVAL_NULL_ARGUMENT_OR_OPERATOR);
+            throw new SQLException(ZCommonConstants.ZEVAL_NULL_ARGUMENT_OR_OPERATOR);
         }
 
         if (!(exp instanceof ZExpression)) {
-            throw new SQLException(ZEval.ZEVAL_ONLY_EXPRESSIONS_ARE_SUPPORTED);
+            throw new SQLException(ZCommonConstants.ZEVAL_ONLY_EXPRESSIONS_ARE_SUPPORTED);
         }
 
         final ZExpression pred = (ZExpression) exp;
         final String op = pred.getOperator();
 
-        if (op.equals(ZEval.AND_STRING)) {
+        if (op.equals(ZCommonConstants.AND)) {
             boolean and = true;
             for (int i = 0; i < pred.nbOperands(); i++) {
                 and &= this.eval(tuple, pred.getOperand(i));
             }
             return and;
-        } else if (op.equals(ZEval.OR_STING)) {
+        } else if (op.equals(ZCommonConstants.OR)) {
             boolean or = false;
             for (int i = 0; i < pred.nbOperands(); i++) {
                 or |= this.eval(tuple, pred.getOperand(i));
             }
             return or;
-        } else if (op.equals(ZEval.NOT_STRING)) {
+        } else if (op.equals(ZCommonConstants.NOT)) {
             return !this.eval(tuple, pred.getOperand(0));
 
-        } else if (op.equals(ZEval.EQUALS_STRING)) {
+        } else if (op.equals(ZCommonConstants.EQUALS)) {
             return evalCmp(tuple, pred.getOperands()) == 0;
-        } else if (op.equals(ZEval.NOT_EQUALS_STRING)) {
+        } else if (op.equals(ZCommonConstants.NOT_EQUALS)) {
             return evalCmp(tuple, pred.getOperands()) != 0;
-        } else if (op.equals(ZEval.EXCLUDING_STRING)) {
+        } else if (op.equals(ZCommonConstants.EXCLUDING)) {
             return evalCmp(tuple, pred.getOperands()) != 0;
-        } else if (op.equals(ZEval.DIEZ_STRING)) {
-            throw new SQLException(ZEval.ZEVAL_OPERATOR_NOT_SUPPORTED);
-        } else if (op.equals(ZEval.GREATHER_THAN_STRING)) {
+        } else if (op.equals(ZCommonConstants.DIEZ)) {
+            throw new SQLException(ZCommonConstants.ZEVAL_OPERATOR_NOT_SUPPORTED);
+        } else if (op.equals(ZCommonConstants.GREATER_THAN)) {
             return evalCmp(tuple, pred.getOperands()) > 0;
-        } else if (op.equals(ZEval.GREATHER_THAN_STRING + ZEval.EQUALS_STRING)) {
+        } else if (op.equals(ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS)) {
             return evalCmp(tuple, pred.getOperands()) >= 0;
-        } else if (op.equals(ZEval.LESSER_THAN_STRING)) {
+        } else if (op.equals(ZCommonConstants.LESSER_THAN)) {
             return evalCmp(tuple, pred.getOperands()) < 0;
-        } else if (op.equals(ZEval.LESSER_THAN_STRING + ZEval.EQUALS_STRING)) {
+        } else if (op.equals(ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS)) {
             return evalCmp(tuple, pred.getOperands()) <= 0;
 
-        } else if (op.equals(ZEval.BETWEEN) || op.equals(ZEval.NOT_BETWEEN)) {
+        } else if (op.equals(ZCommonConstants.BETWEEN) || op.equals(ZCommonConstants.NOT_BETWEEN)) {
 
             // Between: borders included
-            final ZExpression newexp = new ZExpression(AND_STRING, new ZExpression(ZEval.GREATHER_THAN_STRING + ZEval.EQUALS_STRING, pred.getOperand(0), pred.getOperand(1)),
-                    new ZExpression(ZEval.LESSER_THAN_STRING + ZEval.EQUALS_STRING, pred.getOperand(0), pred.getOperand(2)));
+            final ZExpression newexp = new ZExpression(ZCommonConstants.AND, new ZExpression(ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0),
+                    pred.getOperand(1)), new ZExpression(ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(2)));
 
-            if (op.equals(ZEval.NOT_BETWEEN)) {
+            if (op.equals(ZCommonConstants.NOT_BETWEEN)) {
                 return !this.eval(tuple, newexp);
             } else {
                 return this.eval(tuple, newexp);
             }
 
-        } else if (op.equals(ZEval.LIKE_STRING) || op.equals(ZEval.NOT_LIKE_STRING)) {
+        } else if (op.equals(ZCommonConstants.LIKE) || op.equals(ZCommonConstants.NOT_LIKE)) {
             final boolean like = this.evalLike(tuple, pred.getOperands());
-            return op.equals(ZEval.LIKE_STRING) ? like : !like;
+            return op.equals(ZCommonConstants.LIKE) ? like : !like;
 
-        } else if (op.equals(ZEval.IN_STRING) || op.equals(ZEval.NOT_IN_STRING)) {
+        } else if (op.equals(ZCommonConstants.IN) || op.equals(ZCommonConstants.NOT_IN)) {
 
-            final ZExpression newexp = new ZExpression(ZEval.OR_STING);
+            final ZExpression newexp = new ZExpression(ZCommonConstants.OR);
 
             for (int i = 1; i < pred.nbOperands(); i++) {
-                newexp.addOperand(new ZExpression(ZEval.EQUALS_STRING, pred.getOperand(0), pred.getOperand(i)));
+                newexp.addOperand(new ZExpression(ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(i)));
             }
 
-            if (op.equals(ZEval.NOT_IN_STRING)) {
+            if (op.equals(ZCommonConstants.NOT_IN)) {
                 return !this.eval(tuple, newexp);
             } else {
                 return this.eval(tuple, newexp);
             }
 
-        } else if (op.equals(ZEval.IS_NULL_STRING)) {
+        } else if (op.equals(ZCommonConstants.IS_NULL)) {
 
             if (pred.nbOperands() <= 0 || pred.getOperand(0) == null) {
                 return true;
@@ -302,17 +138,17 @@ public class ZEval {
             if (x instanceof ZConstant) {
                 return ((ZConstant) x).getType() == ZConstant.NULL;
             } else {
-                throw new SQLException(ZEval.ZEVAL_CAN_T_EVAL_IS_NOT_NULL);
+                throw new SQLException(ZCommonConstants.ZEVAL_CAN_T_EVAL_IS_NOT_NULL);
             }
 
-        } else if (op.equals(ZEval.IS_NOT_NULL_STRING)) {
+        } else if (op.equals(ZCommonConstants.IS_NOT_NULL)) {
 
-            final ZExpression x = new ZExpression(ZEval.IS_NULL_STRING);
+            final ZExpression x = new ZExpression(ZCommonConstants.IS_NULL);
             x.setOperands(pred.getOperands());
             return !this.eval(tuple, x);
 
         } else {
-            throw new SQLException(ZEval.ZEVAL_UNKNOWN_OPERATOR + op);
+            throw new SQLException(ZCommonConstants.ZEVAL_UNKNOWN_OPERATOR + op);
         }
 
     }
@@ -330,11 +166,11 @@ public class ZEval {
      */
     final double evalCmp(final ZTuple tuple, final Vector<?> operands) throws SQLException {
 
-        if (operands.size() < ZEval.TWO) {
-            throw new SQLException(ZEval.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
+        if (operands.size() < ZCommonConstants.MAGIC_NUMBER_2) {
+            throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
         }
-        if (operands.size() > ZEval.TWO) {
-            throw new SQLException(ZEval.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
+        if (operands.size() > ZCommonConstants.MAGIC_NUMBER_2) {
+            throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
         }
 
         Object o1 = null;
@@ -350,7 +186,7 @@ public class ZEval {
         if (o1 instanceof Number && o2 instanceof Number) {
             return ((Number) o1).doubleValue() - ((Number) o2).doubleValue();
         } else {
-            throw new SQLException("ZEval.evalCmp(): can't compare (" + o1.toString() + ") with (" + o2.toString() + ")");
+            throw new SQLException("ZConstans.evalCmp(): can't compare (" + o1.toString() + ") with (" + o2.toString() + ")");
         }
     }
 
@@ -366,11 +202,11 @@ public class ZEval {
      *             the sql exception.
      */
     private boolean evalLike(final ZTuple tuple, final Vector<?> operands) throws SQLException {
-        if (operands.size() < ZEval.TWO) {
-            throw new SQLException(ZEval.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
+        if (operands.size() < ZCommonConstants.MAGIC_NUMBER_2) {
+            throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
         }
-        if (operands.size() > ZEval.TWO) {
-            throw new SQLException(ZEval.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
+        if (operands.size() > ZCommonConstants.MAGIC_NUMBER_2) {
+            throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
         }
 
         final Object o1 = evalExpValue(tuple, (ZExp) operands.elementAt(0));
@@ -379,15 +215,15 @@ public class ZEval {
         if ((o1 instanceof String) && (o2 instanceof String)) {
             final String s1 = (String) o1;
             final String s2 = (String) o2;
-            if (s2.startsWith(ZEval.PREFIX)) {
+            if (s2.startsWith(ZCommonConstants.PREFIX)) {
                 return s1.endsWith(s2.substring(1));
-            } else if (s2.endsWith(ZEval.PREFIX)) {
+            } else if (s2.endsWith(ZCommonConstants.PREFIX)) {
                 return s1.startsWith(s2.substring(0, s2.length() - 1));
             } else {
                 return s1.equalsIgnoreCase(s2);
             }
         } else {
-            throw new SQLException(ZEval.ZEVAL_LIKE_LIKE_CAN_ONLY_COMPARE_STRINGS);
+            throw new SQLException(ZCommonConstants.ZEVAL_LIKE_LIKE_CAN_ONLY_COMPARE_STRINGS);
         }
 
     }
@@ -406,19 +242,19 @@ public class ZEval {
     final double evalNumericExp(final ZTuple tuple, final ZExpression exp) throws SQLException {
 
         if (tuple == null || exp == null || exp.getOperator() == null) {
-            throw new SQLException(ZEval.ZEVAL_NULL_ARGUMENT_OR_OPERATOR);
+            throw new SQLException(ZCommonConstants.ZEVAL_NULL_ARGUMENT_OR_OPERATOR);
         }
 
         final String op = exp.getOperator();
 
         final Object o1 = this.evalExpValue(tuple, (ZExp) exp.getOperand(0));
         if (!(o1 instanceof Double)) {
-            throw new SQLException(ZEval.ZEVAL_NUMERIC_EXP_EXPRESSION_NOT_NUMERIC);
+            throw new SQLException(ZCommonConstants.ZEVAL_NUMERIC_EXP_EXPRESSION_NOT_NUMERIC);
         }
 
         final Double dobj = (Double) o1;
 
-        if (op.equals(ZEval.PLUS_STRING)) {
+        if (op.equals(ZCommonConstants.PLUS)) {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
@@ -427,7 +263,7 @@ public class ZEval {
             }
             return val;
 
-        } else if (op.equals(ZEval.MINUS_STRING)) {
+        } else if (op.equals(ZCommonConstants.MINUS)) {
 
             double val = dobj.doubleValue();
             if (exp.nbOperands() == 1) {
@@ -439,7 +275,7 @@ public class ZEval {
             }
             return val;
 
-        } else if (op.equals(ZEval.MULTIPLICATION_STRING)) {
+        } else if (op.equals(ZCommonConstants.MULTIPLICATION)) {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
@@ -448,7 +284,7 @@ public class ZEval {
             }
             return val;
 
-        } else if (op.equals(ZEval.SLASH_STRING)) {
+        } else if (op.equals(ZCommonConstants.SLASH)) {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
@@ -457,7 +293,7 @@ public class ZEval {
             }
             return val;
 
-        } else if (op.equals(ZEval.MULTIPLICATION_STRING + ZEval.MULTIPLICATION_STRING)) {
+        } else if (op.equals(ZCommonConstants.MULTIPLICATION + ZCommonConstants.MULTIPLICATION)) {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
@@ -467,7 +303,7 @@ public class ZEval {
             return val;
 
         } else {
-            throw new SQLException("ZEval.evalNumericExp(): Unknown operator " + op);
+            throw new SQLException("ZConstans.evalNumericExp(): Unknown operator " + op);
         }
     }
 
@@ -496,7 +332,7 @@ public class ZEval {
 
                 final Object o1 = tuple.getAttValue(c.getValue());
                 if (o1 == null) {
-                    throw new SQLException(ZEval.ZEVAL_EXP_VALUE_UNKNOWN_COLUMN + c.getValue());
+                    throw new SQLException(ZCommonConstants.ZEVAL_EXP_VALUE_UNKNOWN_COLUMN + c.getValue());
                 }
                 try {
                     o2 = new Double(o1.toString());

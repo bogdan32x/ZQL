@@ -19,27 +19,14 @@ package org.gibello.zql;
 
 import java.util.Vector;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * ZInsert: an SQL INSERT statement.
  * 
  * @author Bogdan Mariesan, Romania
  */
 public class ZInsert implements ZStatement {
-
-    /**
-     * Empty string.
-     */
-    private static final String EMPTY_STRING = " ";
-
-    /**
-     * Right bracket.
-     */
-    private static final String RIGHT_BRACKET = ")";
-
-    /**
-     * Left bracket.
-     */
-    private static final String LEFT_BRACKET = "(";
 
     /**
      * The default serial version UID.
@@ -149,22 +136,22 @@ public class ZInsert implements ZStatement {
         final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
         if (this.tableColumns != null && this.tableColumns.size() > 0) {
             // buf.append(" " + columns_.toString());
-            buf.append(ZInsert.LEFT_BRACKET + this.tableColumns.elementAt(0));
+            buf.append(ZCommonConstants.LEFT_BRACKET + this.tableColumns.elementAt(0));
             for (int i = 1; i < this.tableColumns.size(); i++) {
                 buf.append("," + this.tableColumns.elementAt(i));
             }
-            buf.append(ZInsert.RIGHT_BRACKET);
+            buf.append(ZCommonConstants.RIGHT_BRACKET);
         }
 
         final String vlist = this.specifiedValues.toString();
-        buf.append(ZInsert.EMPTY_STRING);
+        buf.append(ZCommonConstants.EMPTY_STRING);
         if (this.getValues() != null) {
             buf.append("values ");
         }
-        if (vlist.startsWith(ZInsert.LEFT_BRACKET)) {
+        if (vlist.startsWith(ZCommonConstants.LEFT_BRACKET)) {
             buf.append(vlist);
         } else {
-            buf.append(ZInsert.EMPTY_STRING + ZInsert.LEFT_BRACKET + vlist + ZInsert.RIGHT_BRACKET);
+            buf.append(ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET + vlist + ZCommonConstants.RIGHT_BRACKET);
         }
 
         return buf.toString();

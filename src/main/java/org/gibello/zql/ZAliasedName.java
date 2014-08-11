@@ -20,6 +20,8 @@ package org.gibello.zql;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
+import org.gibello.zql.utils.ZCommonConstants;
+
 /**
  * A name/alias association. <br>
  * Names can have two forms:
@@ -31,31 +33,6 @@ import java.util.StringTokenizer;
  * @author Bogdan Mariesan, Romania
  */
 public class ZAliasedName implements Serializable {
-
-    /**
-     * Right brace.
-     */
-    private static final String RIGHT_BRACE = ")";
-
-    /**
-     * Left brace.
-     */
-    private static final String LEFT_BRACE = "(";
-
-    /**
-     * Magic number.
-     */
-    private static final int MAGIC_NUMBER_3 = 3;
-
-    /**
-     * Magic number.
-     */
-    private static final int MAGIC_NUMBER_2 = 2;
-
-    /**
-     * Magic number.
-     */
-    private static final int MAGIC_NUMBER_1 = 1;
 
     /**
      * Serial version UID.
@@ -124,14 +101,14 @@ public class ZAliasedName implements Serializable {
 
         final StringTokenizer st = new StringTokenizer(fullname, ".");
         switch (st.countTokens()) {
-        case ZAliasedName.MAGIC_NUMBER_1:
+        case ZCommonConstants.MAGIC_NUMBER_1:
             if (form == ZAliasedName.FORM_TABLE) {
                 this.table = new String(st.nextToken());
             } else {
                 this.column = new String(st.nextToken());
             }
             break;
-        case ZAliasedName.MAGIC_NUMBER_2:
+        case ZCommonConstants.MAGIC_NUMBER_2:
             if (form == ZAliasedName.FORM_TABLE) {
                 this.schema = new String(st.nextToken());
                 this.table = new String(st.nextToken());
@@ -140,7 +117,7 @@ public class ZAliasedName implements Serializable {
                 this.column = new String(st.nextToken());
             }
             break;
-        case ZAliasedName.MAGIC_NUMBER_3:
+        case ZCommonConstants.MAGIC_NUMBER_3:
         default:
             this.schema = new String(st.nextToken());
             this.table = new String(st.nextToken());
@@ -174,11 +151,11 @@ public class ZAliasedName implements Serializable {
         if (val == null) {
             result = null;
         }
-        if (val.indexOf(ZAliasedName.LEFT_BRACE) >= 0) {
-            result = val.substring(val.lastIndexOf(ZAliasedName.LEFT_BRACE) + 1);
+        if (val.indexOf(ZCommonConstants.LEFT_BRACKET) >= 0) {
+            result = val.substring(val.lastIndexOf(ZCommonConstants.LEFT_BRACKET) + 1);
         }
-        if (val.indexOf(ZAliasedName.RIGHT_BRACE) >= 0) {
-            result = val.substring(0, val.indexOf(ZAliasedName.RIGHT_BRACE));
+        if (val.indexOf(ZCommonConstants.RIGHT_BRACKET) >= 0) {
+            result = val.substring(0, val.indexOf(ZCommonConstants.RIGHT_BRACKET));
         }
 
         if (result == null && val != null) {
