@@ -149,14 +149,19 @@ public final class ZUtils {
         String result;
         if (pos <= 0) {
             result = null;
-        }
-        final String call = c.substring(0, pos);
-        if (ZUtils.isAggregate(call)) {
-            result = call.trim();
         } else {
-            result = null;
+            final String call = c.substring(0, pos);
+            if (ZUtils.isAggregate(call)) {
+                result = call.trim();
+            } else {
+                result = null;
+            }
         }
 
+        if(result == null && c != null) {
+            result = c;
+        }
+        
         return result;
     }
 

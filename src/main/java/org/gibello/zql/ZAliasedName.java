@@ -147,9 +147,18 @@ public class ZAliasedName implements Serializable {
             this.column = new String(st.nextToken());
             break;
         }
-        this.schema = this.postProcess(this.schema);
-        this.table = this.postProcess(this.table);
-        this.column = this.postProcess(this.column);
+
+        if (this.schema != null) {
+            this.schema = this.postProcess(this.schema);
+        }
+
+        if (this.table != null) {
+            this.table = this.postProcess(this.table);
+        }
+
+        if (this.column != null) {
+            this.column = this.postProcess(this.column);
+        }
     }
 
     /**
@@ -170,6 +179,10 @@ public class ZAliasedName implements Serializable {
         }
         if (val.indexOf(ZAliasedName.RIGHT_BRACE) >= 0) {
             result = val.substring(0, val.indexOf(ZAliasedName.RIGHT_BRACE));
+        }
+
+        if (result == null && val != null) {
+            result = val;
         }
         return result.trim();
     }
