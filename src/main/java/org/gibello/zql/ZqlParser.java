@@ -17,9 +17,6 @@
 
 package org.gibello.zql;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -37,47 +34,6 @@ public class ZqlParser {
      * The parser.
      */
     private ZqlJJParser parser = null;
-
-    /**
-     * Test program: Parses SQL statements from stdin or from a text file.<br>
-     * If the program receives one argument, it is an SQL text file name; if there's no argument, the program reads from stdin.
-     * 
-     * @param args
-     *            the argument list.
-     * @throws ParseException
-     *             the parse exception.
-     */
-    public static void main(final String[] args) throws ParseException {
-
-        ZqlParser p = null;
-
-        if (args.length < 1) {
-            System.out.println("/* Reading from stdin (exit; to finish) */");
-            p = new ZqlParser(System.in);
-
-        } else {
-
-            try {
-                p = new ZqlParser(new DataInputStream(new FileInputStream(args[0])));
-            } catch (final FileNotFoundException e) {
-                System.out.println("/* File " + args[0] + " not found. Reading from stdin */");
-                p = new ZqlParser(System.in);
-            }
-        } // else ends here
-
-        if (args.length > 0) {
-            System.out.println("/* Reading from " + args[0] + "*/");
-        }
-
-        ZStatement st = null;
-        while ((st = p.readStatement()) != null) {
-            System.out.println(st.toString() + ";");
-        }
-
-        System.out.println("exit;");
-        System.out.println("/* Parse Successful */");
-
-    } // main ends here
 
     /**
      * Create a new parser to parse SQL statements from a given input stream.
@@ -143,7 +99,7 @@ public class ZqlParser {
      * @throws ParseException
      *             the parse exception.
      */
-    public List<?> readStatements() throws ParseException {
+    public List<ZStatement> readStatements() throws ParseException {
         if (this.parser == null) {
             throw new ParseException(ZCommonConstants.PARSE_EXCEPTION);
         }
