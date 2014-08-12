@@ -17,5 +17,6 @@
 
 /**
  * Base test package for ZQL.
+ * @author Bogdan Mariesan, Romania
  */
 package org.gibello.zql;
