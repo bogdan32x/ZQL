@@ -61,15 +61,6 @@ public class ZqlJJParser {
     while((st = p.SQLStatement()) != null) {
       System.out.println(st.toString());
     }
-/*
-    Vector v = p.SQLStatements();
-
-    for(int i=0; i<v.size(); i++) {
-      ZStatement st = (ZStatement)v.elementAt(i);
-      System.out.println(st.toString());
-    }
-*/
-
     System.out.println("Parse Successful") ;
 
   } // main ends here
@@ -170,15 +161,15 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 
 TOKEN : /* Numeric Constants */
 {
-	< S_NUMBER: <FLOAT>
-	    | <FLOAT> ( ["e","E"] ([ "-","+"])? <FLOAT> )?
-    	>
-  | 	< #FLOAT: <INTEGER>
-	    | <INTEGER> ( "." <INTEGER> )?
-	    | "." <INTEGER>
-    	>
-  | 	< #INTEGER: ( ([ "-","+"])? <DIGIT> )+ >
-  | 	< #DIGIT: ["0" - "9"] >
+    < S_NUMBER: <FLOAT>
+        | <FLOAT> ( ["e","E"] ([ "-","+"])? <FLOAT> )?
+        >
+  |     < #FLOAT: <INTEGER>
+        | <INTEGER> ( "." <INTEGER> )?
+        | "." <INTEGER>
+        >
+  |     < #INTEGER: ( ([ "-","+"])? <DIGIT> )+ >
+  |     < #DIGIT: ["0" - "9"] >
 }
 
 SPECIAL_TOKEN:
@@ -223,13 +214,13 @@ void BasicDataTypeDeclaration():
 
 /* ---------------- Code Section starts here ---------------------- */
 
-Vector SQLStatements():
+List<ZStatement> SQLStatements():
 {
-  Vector v = new Vector();
+  List<ZStatement> v = new ArrayList<ZStatement>();
   ZStatement s;
 }
 {
-    (s = SQLStatement() { if(s == null) return v; else v.addElement(s); })+
+    (s = SQLStatement() { if(s == null) return v; else v.add(s); })+
     { return v; }
 }
 
@@ -274,12 +265,12 @@ ZTransactStmt CommitStatement():
 ZLockTable LockTableStatement():
 {
   ZLockTable lck = new ZLockTable();
-  Vector v = new Vector();
+  List v = new ArrayList();
   String s;
 }
 {
-  "LOCK" "TABLE" s = TableReference() { v.addElement(s); }
-  ("," s = TableReference() { v.addElement(s); } )*
+  "LOCK" "TABLE" s = TableReference() { v.add(s); }
+  ("," s = TableReference() { v.add(s); } )*
   "IN" s = LockMode() { lck.setLockMode(s); } "MODE"
   ["NOWAIT" { lck.setNowait(true); }] ";"
   { lck.addTables(v); return lck; }
@@ -333,7 +324,6 @@ ZUpdate UpdateStatement():
 {
   ZUpdate u;
   ZExp e;
-  Hashtable t;
   String s;
   Token tk;
 }
@@ -380,13 +370,13 @@ ZInsert InsertStatement():
 {
   ZInsert ins;
   String s;
-  Vector v;
+  List v;
   ZQuery q;
 }
 {
   "INSERT" "INTO" s = TableReference() { ins = new ZInsert(s); }
-   ["(" s = TableColumn() { v = new Vector(); v.addElement(s); }
-    ("," s = TableColumn() { v.addElement(s); } )* ")" { ins.addColumns(v); } ]
+   ["(" s = TableColumn() { v = new ArrayList(); v.add(s); }
+    ("," s = TableColumn() { v.add(s); } )* ")" { ins.addColumns(v); } ]
    ( "VALUES" "(" v = SQLExpressionList() ")"
      { ZExpression e = new ZExpression(",");
        e.setOperands(v); ins.addValueSpec(e); }
@@ -483,7 +473,7 @@ void NumOrID():
 ZQuery SelectStatement():
 {
   ZQuery q;
-  Vector v;
+  List v;
 }
 {
   q = SelectWithoutOrder()
@@ -496,8 +486,8 @@ ZQuery SelectStatement():
 ZQuery SelectWithoutOrder():
 {
   ZQuery q = new ZQuery();
-  Vector select;
-  Vector from;
+  List select;
+  List from;
   ZExp where = null;
   ZGroupBy groupby = null;
   ZExpression setclause = null;
@@ -526,17 +516,17 @@ ZQuery SelectWithoutOrder():
 // SelectList ::= * | COUNT(*) | SelectItem (, SelectItem)*
 // 18/10/01 PY. Gibello - Removed "COUNT(*)" from here
 // COUNT is an aggregate, like AVG...
-Vector SelectList():
+List SelectList():
 {
-  Vector v = new Vector(8);
+  List v = new ArrayList();
   ZSelectItem elem;
 }
 {
-  "*" { v.addElement(new ZSelectItem("*")); return v; }
+  "*" { v.add(new ZSelectItem("*")); return v; }
 //  | LOOKAHEAD(3) "COUNT" "(" "*" ")"
 //  { v.addElement(new ZSelectItem("COUNT(*)")); return v; } //TBD Expression ?
-  | elem = SelectItem() { v.addElement(elem); }
-    ("," elem = SelectItem() { v.addElement(elem); } )* { return v; }
+  | elem = SelectItem() { v.add(elem); }
+    ("," elem = SelectItem() { v.add(elem); } )* { return v; }
 }
 
 
@@ -595,14 +585,14 @@ String SelectStar():
 }
 
 // FromClause ::= FromItem (, FromItem)*
-Vector FromClause():
+List FromClause():
 {
-  Vector v = new Vector(8);
+    List v = new ArrayList();
   ZFromItem f;
 }
 {
-    "FROM" f = FromItem() { v.addElement(f); }
-    ( "," f = FromItem() { v.addElement(f); } )*
+    "FROM" f = FromItem() { v.add(f); }
+    ( "," f = FromItem() { v.add(f); } )*
     { return v; }
 }
 
@@ -641,7 +631,7 @@ void ConnectClause():
 ZGroupBy GroupByClause():
 {
   ZGroupBy g = null;
-  Vector v;
+  List v;
   ZExp e;
 }
 {
@@ -668,17 +658,17 @@ ZExpression SetClause():
   { return e; }
 }
 
-Vector OrderByClause():
+List OrderByClause():
 {
-  Vector v = new Vector();
+  List v = new ArrayList();
   ZExp e;
   ZOrderBy ob;
 }
 {
     "ORDER" "BY" e = SQLSimpleExpression() { ob = new ZOrderBy(e); }
-    ["ASC" | "DESC" { ob.setAscOrder(false); }] { v.addElement(ob); }
+    ["ASC" | "DESC" { ob.setAscOrder(false); }] { v.add(ob); }
     ("," e = SQLSimpleExpression() { ob = new ZOrderBy(e); }
-     ["ASC" | "DESC" { ob.setAscOrder(false); }] { v.addElement(ob); } )*
+     ["ASC" | "DESC" { ob.setAscOrder(false); }] { v.add(ob); } )*
     { return v; }
 }
 
@@ -759,7 +749,7 @@ ZExp SQLRelationalExpression():
 {
   ZExp e1, eleft;
   ZExpression eright = null;
-  Vector v;
+  List v;
   boolean prior = false;
 }
 {
@@ -789,22 +779,22 @@ ZExp SQLRelationalExpression():
 
    {
      if(eright == null) return eleft;
-     Vector v2 = eright.getOperands();
-     if(v2 == null) v2 = new Vector(); //For IS NULL, which is unary!
-     v2.insertElementAt(eleft, 0);
+     List v2 = eright.getOperands();
+     if(v2 == null) v2 = new ArrayList(); //For IS NULL, which is unary!
+     v2.add(eleft);
      eright.setOperands(v2);
      return eright;
    }
 }
 
-Vector SQLExpressionList():
+List SQLExpressionList():
 {
-  Vector v = new Vector(8);
+  List v = new ArrayList();
   ZExp e;
 }
 {
-    e = SQLSimpleExpressionOrPreparedCol() { v.addElement(e); }
-    ("," e = SQLSimpleExpressionOrPreparedCol() { v.addElement(e); } )*
+    e = SQLSimpleExpressionOrPreparedCol() { v.add(e); }
+    ("," e = SQLSimpleExpressionOrPreparedCol() { v.add(e); } )*
     { return v; }
 }
 
@@ -859,7 +849,7 @@ ZExpression SQLInClause():
   ZExpression e;
   ZQuery q;
   boolean not = false;
-  Vector v;
+  List v;
 }
 {
   ["NOT" { not = true; }]
@@ -1046,7 +1036,7 @@ ZExpression FunctionCall():
   Token t;
   String s;
   ZExpression e;
-  Vector parm = null;
+  List parm = null;
 }
 {
   (t = <S_IDENTIFIER> { s = t.toString(); } | s = AggregateFunc()) "("

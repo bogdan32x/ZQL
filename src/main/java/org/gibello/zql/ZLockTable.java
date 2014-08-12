@@ -17,7 +17,7 @@
 
 package org.gibello.zql;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * ZLockTable: an SQL LOCK TABLE statement.
@@ -45,7 +45,7 @@ public class ZLockTable implements ZStatement {
     /**
      * The tables.
      */
-    private Vector<?> tables = null;
+    private List<?> tables = null;
 
     /**
      * Default constructor.
@@ -58,14 +58,14 @@ public class ZLockTable implements ZStatement {
      * @param tables
      *            the tables.
      */
-    public void addTables(final Vector<?> tables) {
+    public void addTables(final List<?> tables) {
         this.tables = tables;
     }
 
     /**
      * @return the tables.
      */
-    public Vector<?> getTables() {
+    public List<?> getTables() {
         return this.tables;
     }
 

@@ -17,7 +17,7 @@
 
 package org.gibello.zql;
 
-import java.util.Vector;
+import java.util.List;
 
 import org.gibello.zql.utils.ZCommonConstants;
 
@@ -42,7 +42,7 @@ public class ZInsert implements ZStatement {
     /**
      * The table columns.
      */
-    private Vector<ZExp> tableColumns = null;
+    private List<ZExp> tableColumns = null;
 
     /**
      * The specified values.
@@ -73,7 +73,7 @@ public class ZInsert implements ZStatement {
      * 
      * @return A Vector of Strings equal to the column names
      */
-    public Vector<ZExp> getColumns() {
+    public List<ZExp> getColumns() {
         return this.tableColumns;
     }
 
@@ -83,7 +83,7 @@ public class ZInsert implements ZStatement {
      * @param tableColumns
      *            A vector of column names (Strings)
      */
-    public void addColumns(final Vector<ZExp> tableColumns) {
+    public void addColumns(final List<ZExp> tableColumns) {
         this.tableColumns = tableColumns;
     }
 
@@ -103,9 +103,9 @@ public class ZInsert implements ZStatement {
      * 
      * @return A vector of SQL Expressions (ZExp objects); If there's no VALUES but a subquery, returns null (use getQuery() method).
      */
-    public Vector<ZExp> getValues() {
+    public List<ZExp> getValues() {
 
-        Vector<ZExp> result;
+        List<ZExp> result;
 
         if (!(this.specifiedValues instanceof ZExpression)) {
             result = null;
@@ -137,9 +137,9 @@ public class ZInsert implements ZStatement {
         final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
         if (this.tableColumns != null && this.tableColumns.size() > 0) {
             // buf.append(" " + columns_.toString());
-            buf.append(ZCommonConstants.LEFT_BRACKET + this.tableColumns.elementAt(0));
+            buf.append(ZCommonConstants.LEFT_BRACKET + this.tableColumns.get(0));
             for (int i = 1; i < this.tableColumns.size(); i++) {
-                buf.append("," + this.tableColumns.elementAt(i));
+                buf.append("," + this.tableColumns.get(i));
             }
             buf.append(ZCommonConstants.RIGHT_BRACKET);
         }

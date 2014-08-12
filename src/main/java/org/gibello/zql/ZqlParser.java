@@ -21,7 +21,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Vector;
+import java.util.List;
 
 import org.gibello.zql.utils.ZCommonConstants;
 
@@ -143,7 +143,7 @@ public class ZqlParser {
      * @throws ParseException
      *             the parse exception.
      */
-    public Vector<?> readStatements() throws ParseException {
+    public List<?> readStatements() throws ParseException {
         if (this.parser == null) {
             throw new ParseException(ZCommonConstants.PARSE_EXCEPTION);
         }

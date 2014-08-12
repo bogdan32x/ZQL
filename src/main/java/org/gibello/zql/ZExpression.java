@@ -17,6 +17,7 @@
 
 package org.gibello.zql;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.gibello.zql.utils.ZCommonConstants;
@@ -43,7 +44,7 @@ public class ZExpression implements ZExp {
     /**
      * The list of operands.
      */
-    private Vector<ZExp> operands = null;
+    private List<ZExp> operands = null;
 
     /**
      * Create an SQL Expression given the operator.
@@ -99,7 +100,7 @@ public class ZExpression implements ZExp {
      * @param operands
      *            A vector that contains all operands (ZExp objects).
      */
-    public void setOperands(final Vector<ZExp> operands) {
+    public void setOperands(final List<ZExp> operands) {
         this.operands = operands;
     }
 
@@ -108,7 +109,7 @@ public class ZExpression implements ZExp {
      * 
      * @return the operands (as a Vector of ZExp objects).
      */
-    public Vector<ZExp> getOperands() {
+    public List<ZExp> getOperands() {
         return this.operands;
     }
 
@@ -122,7 +123,7 @@ public class ZExpression implements ZExp {
         if (this.operands == null) {
             this.operands = new Vector<ZExp>();
         }
-        this.operands.addElement(operand);
+        this.operands.add(operand);
     }
 
     /**
@@ -140,7 +141,7 @@ public class ZExpression implements ZExp {
             result = null;
         }
 
-        result = this.operands.elementAt(pos);
+        result = this.operands.get(pos);
 
         return result;
     }

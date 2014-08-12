@@ -17,6 +17,7 @@
 
 package org.gibello.zql;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.gibello.zql.utils.ZCommonConstants;
@@ -37,7 +38,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * Select query.
      */
-    private Vector<?> select;
+    private List<?> select;
 
     /**
      * Distinct clause.
@@ -47,7 +48,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * From clause.
      */
-    private Vector<?> from;
+    private List<?> from;
 
     /**
      * Where clause.
@@ -67,7 +68,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * Order by clause.
      */
-    private Vector<?> orderby = null;
+    private List<?> orderby = null;
 
     /**
      * For update clause.
@@ -87,7 +88,7 @@ public class ZQuery implements ZStatement, ZExp {
      * @param select
      *            A vector of ZSelectItem objects
      */
-    public void addSelect(final Vector<?> select) {
+    public void addSelect(final List<?> select) {
         this.select = select;
     }
 
@@ -97,7 +98,7 @@ public class ZQuery implements ZStatement, ZExp {
      * @param from
      *            a Vector of ZFromItem objects
      */
-    public void addFrom(final Vector<?> from) {
+    public void addFrom(final List<?> from) {
         this.from = from;
     }
 
@@ -137,7 +138,7 @@ public class ZQuery implements ZStatement, ZExp {
      * @param orderby
      *            A vector of ZOrderBy objects
      */
-    public void addOrderBy(final Vector<?> orderby) {
+    public void addOrderBy(final List<?> orderby) {
         this.orderby = orderby;
     }
 
@@ -146,7 +147,7 @@ public class ZQuery implements ZStatement, ZExp {
      * 
      * @return A vector of ZSelectItem objects
      */
-    public Vector<?> getSelect() {
+    public List<?> getSelect() {
         return this.select;
     }
 
@@ -155,7 +156,7 @@ public class ZQuery implements ZStatement, ZExp {
      * 
      * @return A vector of ZFromItem objects
      */
-    public Vector<?> getFrom() {
+    public List<?> getFrom() {
         return this.from;
     }
 
@@ -191,7 +192,7 @@ public class ZQuery implements ZStatement, ZExp {
      * 
      * @return A vector of ZOrderBy objects
      */
-    public Vector<?> getOrderBy() {
+    public List<?> getOrderBy() {
         return this.orderby;
     }
 
@@ -218,16 +219,16 @@ public class ZQuery implements ZStatement, ZExp {
 
         // buf.append(select_.toString());
         int i;
-        buf.append(this.select.elementAt(0).toString());
+        buf.append(this.select.get(0).toString());
         for (i = 1; i < this.select.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.elementAt(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.get(i).toString());
         }
 
         // buf.append(" from " + from_.toString());
         buf.append(" from ");
-        buf.append(this.from.elementAt(0).toString());
+        buf.append(this.from.get(0).toString());
         for (i = 1; i < this.from.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.elementAt(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.get(i).toString());
         }
 
         if (this.where != null) {
@@ -242,9 +243,9 @@ public class ZQuery implements ZStatement, ZExp {
         if (this.orderby != null) {
             buf.append(" order by ");
             // buf.append(orderby_.toString());
-            buf.append(this.orderby.elementAt(0).toString());
+            buf.append(this.orderby.get(0).toString());
             for (i = 1; i < this.orderby.size(); i++) {
-                buf.append(", " + this.orderby.elementAt(i).toString());
+                buf.append(", " + this.orderby.get(i).toString());
             }
         }
         if (this.forupdate) {
@@ -287,7 +288,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * @return get order by.
      */
-    public Vector<?> getOrderby() {
+    public List<?> getOrderby() {
         return this.orderby;
     }
 

@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.List;
 
 import org.gibello.zql.ZConstant;
 import org.gibello.zql.ZExp;
@@ -165,7 +165,7 @@ public class ZEval {
      * @throws SQLException
      *             the sql exception.
      */
-    final double evalCmp(final ZTuple tuple, final Vector<?> operands) throws SQLException {
+    final double evalCmp(final ZTuple tuple, final List<?> operands) throws SQLException {
 
         if (operands.size() < ZCommonConstants.MAGIC_NUMBER_2) {
             throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
@@ -177,8 +177,8 @@ public class ZEval {
         Object o1 = null;
         Object o2 = null;
 
-        o1 = this.evalExpValue(tuple, (ZExp) operands.elementAt(0));
-        o2 = this.evalExpValue(tuple, (ZExp) operands.elementAt(1));
+        o1 = this.evalExpValue(tuple, (ZExp) operands.get(0));
+        o2 = this.evalExpValue(tuple, (ZExp) operands.get(1));
 
         if (o1 instanceof String || o2 instanceof String) {
             return o1.equals(o2) ? 0 : -1;
@@ -202,7 +202,7 @@ public class ZEval {
      * @throws SQLException
      *             the sql exception.
      */
-    private boolean evalLike(final ZTuple tuple, final Vector<?> operands) throws SQLException {
+    private boolean evalLike(final ZTuple tuple, final List<?> operands) throws SQLException {
         if (operands.size() < ZCommonConstants.MAGIC_NUMBER_2) {
             throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_LESS_THAN_TWO_VALUES);
         }
@@ -210,8 +210,8 @@ public class ZEval {
             throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
         }
 
-        final Object o1 = evalExpValue(tuple, (ZExp) operands.elementAt(0));
-        final Object o2 = evalExpValue(tuple, (ZExp) operands.elementAt(1));
+        final Object o1 = evalExpValue(tuple, (ZExp) operands.get(0));
+        final Object o2 = evalExpValue(tuple, (ZExp) operands.get(1));
 
         if ((o1 instanceof String) && (o2 instanceof String)) {
             final String s1 = (String) o1;

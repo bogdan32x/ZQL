@@ -18,7 +18,7 @@
 package org.gibello.zql;
 
 import java.io.Serializable;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * ZGroupBy: an SQL GROUP BY...HAVING clause.
@@ -36,7 +36,7 @@ public class ZGroupBy implements Serializable {
     /**
      * Group by clause.
      */
-    private Vector<?> groupBy;
+    private List<?> groupBy;
 
     /**
      * Having clause.
@@ -49,7 +49,7 @@ public class ZGroupBy implements Serializable {
      * @param groupBy
      *            A vector of SQL Expressions (ZExp objects).
      */
-    public ZGroupBy(final Vector<?> groupBy) {
+    public ZGroupBy(final List<?> groupBy) {
         this.groupBy = groupBy;
     }
 
@@ -68,7 +68,7 @@ public class ZGroupBy implements Serializable {
      * 
      * @return A vector of SQL Expressions (ZExp objects)
      */
-    public Vector<?> getGroupBy() {
+    public List<?> getGroupBy() {
         return this.groupBy;
     }
 
@@ -86,9 +86,9 @@ public class ZGroupBy implements Serializable {
         final StringBuffer buf = new StringBuffer("group by ");
 
         // buf.append(groupby_.toString());
-        buf.append(this.groupBy.elementAt(0).toString());
+        buf.append(this.groupBy.get(0).toString());
         for (int i = 1; i < this.groupBy.size(); i++) {
-            buf.append(", " + this.groupBy.elementAt(i).toString());
+            buf.append(", " + this.groupBy.get(i).toString());
         }
         if (this.having != null) {
             buf.append(" having " + this.having.toString());

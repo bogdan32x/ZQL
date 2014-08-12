@@ -23,7 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.List;
 
 import org.gibello.zql.data.ZEval;
 import org.gibello.zql.data.ZTuple;
@@ -124,9 +124,9 @@ public final class ZDemo {
     static void queryDB(final ZQuery q) throws IOException, SQLException {
 
         // SELECT part of the query
-        final Vector<?> sel = q.getSelect();
+        final List<?> sel = q.getSelect();
         // FROM part of the query
-        final Vector<?> from = q.getFrom();
+        final List<?> from = q.getFrom();
         // WHERE part of the
         final ZExpression where = (ZExpression) q.getWhere();
         // query
@@ -136,7 +136,7 @@ public final class ZDemo {
         }
 
         // Retrieve the table name in the FROM clause
-        final ZFromItem table = (ZFromItem) from.elementAt(0);
+        final ZFromItem table = (ZFromItem) from.get(0);
 
         // We suppose the data is in a text file called <tableName>.db
         // <tableName> is the table name in the FROM clause
@@ -177,10 +177,10 @@ public final class ZDemo {
      * @throws SQLException
      *             the exception.
      */
-    static void displayTuple(final ZTuple tuple, final Vector<?> map) throws SQLException {
+    static void displayTuple(final ZTuple tuple, final List<?> map) throws SQLException {
 
         // If it is a "select *", display the whole tuple
-        if (((ZSelectItem) map.elementAt(0)).isWildcard()) {
+        if (((ZSelectItem) map.get(0)).isWildcard()) {
             System.out.println(tuple.toString());
             return;
         }
@@ -190,7 +190,7 @@ public final class ZDemo {
         // Evaluate the value of each select item
         for (int i = 0; i < map.size(); i++) {
 
-            final ZSelectItem item = (ZSelectItem) map.elementAt(i);
+            final ZSelectItem item = (ZSelectItem) map.get(i);
             System.out.print(evaluator.evalExpValue(tuple, item.getExpression()).toString());
 
             if (i == map.size() - 1) {
