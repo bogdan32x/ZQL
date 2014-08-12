@@ -24,6 +24,7 @@ import java.util.Vector;
 /**
  * ZUpdate: an SQL UPDATE statement.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZUpdate implements ZStatement {

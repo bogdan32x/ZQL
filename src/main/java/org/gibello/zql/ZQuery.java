@@ -24,6 +24,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * ZQuery: an SQL SELECT statement.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZQuery implements ZStatement, ZExp {

@@ -24,6 +24,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * Utils class.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public final class ZUtils {

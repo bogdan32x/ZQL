@@ -21,7 +21,8 @@ import java.io.Serializable;
 
 /**
  * An SQL query ORDER BY clause.
- * 
+ *
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZOrderBy implements Serializable {

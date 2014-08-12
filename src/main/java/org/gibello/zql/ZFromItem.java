@@ -20,6 +20,7 @@ package org.gibello.zql;
 /**
  * ZFromItem: an SQL FROM clause (example: the FROM part of a SELECT...FROM).
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZFromItem extends ZAliasedName {

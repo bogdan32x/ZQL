@@ -32,6 +32,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * Evaluate SQL expressions.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZEval {

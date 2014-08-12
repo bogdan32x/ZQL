@@ -25,6 +25,7 @@ import org.gibello.zql.utils.ZCommonConstants;
  * ZExpression: an SQL Expression An SQL expression is an operator and one or more operands Example: a AND b AND c -> operator = AND,
  * operands = (a, b, c).
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZExpression implements ZExp {

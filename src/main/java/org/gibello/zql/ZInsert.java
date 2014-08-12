@@ -24,6 +24,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * ZInsert: an SQL INSERT statement.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZInsert implements ZStatement {

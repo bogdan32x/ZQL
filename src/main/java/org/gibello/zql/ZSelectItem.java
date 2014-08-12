@@ -20,6 +20,7 @@ package org.gibello.zql;
 /**
  * ZSelectItem: an item in the SELECT part of an SQL query. (The SELECT part of a query is a Vector of ZSelectItem).
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZSelectItem extends ZAliasedName {

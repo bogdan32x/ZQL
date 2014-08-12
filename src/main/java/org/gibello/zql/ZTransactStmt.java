@@ -20,6 +20,7 @@ package org.gibello.zql;
 /**
  * ZTransactStmt: an SQL statement that concerns database transactions (example: COMMIT, ROLLBACK, SET TRANSACTION).
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZTransactStmt implements ZStatement {

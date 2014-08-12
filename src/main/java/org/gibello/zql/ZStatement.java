@@ -22,6 +22,7 @@ import java.io.Serializable;
 /**
  * ZStatement: a common interface for all SQL statements.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public interface ZStatement extends Serializable {

@@ -20,7 +20,7 @@ package org.gibello.zql.utils;
 /**
  * Common constants class designed to have lightweight code and free of a large amount of code hiding functionality.
  * 
- * @author bogdan.mariesan
+ * @author Bogdan Mariesan, Romania
  *
  */
 public class ZCommonConstants {

@@ -21,6 +21,7 @@ package org.gibello.zql;
  * ZDelete: an SQL DELETE statement.<br>
  * SQL Syntax: DELETE [from] table [where Expression];
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZDelete implements ZStatement {

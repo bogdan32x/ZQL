@@ -28,6 +28,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * ZqlParser: an SQL parser.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZqlParser {

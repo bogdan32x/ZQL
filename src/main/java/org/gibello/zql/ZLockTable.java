@@ -22,6 +22,7 @@ import java.util.Vector;
 /**
  * ZLockTable: an SQL LOCK TABLE statement.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZLockTable implements ZStatement {

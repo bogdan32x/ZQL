@@ -23,6 +23,7 @@ import java.util.Vector;
 /**
  * ZGroupBy: an SQL GROUP BY...HAVING clause.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZGroupBy implements Serializable {

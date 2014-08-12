@@ -20,6 +20,7 @@ package org.gibello.zql;
 /**
  * ZConstant: a representation of SQL constants.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZConstant implements ZExp {

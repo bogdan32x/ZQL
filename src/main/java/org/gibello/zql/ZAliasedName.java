@@ -30,6 +30,7 @@ import org.gibello.zql.utils.ZCommonConstants;
  * <li>FORM_COLUMN for column names ([[schema.]table.]column)</li>
  * </ul>
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZAliasedName implements Serializable {

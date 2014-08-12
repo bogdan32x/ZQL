@@ -26,6 +26,7 @@ import org.gibello.zql.utils.ZCommonConstants;
 /**
  * Handles tuples.
  * 
+ * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZTuple {
