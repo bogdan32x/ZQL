@@ -1,4 +1,4 @@
-package org.gibello.zql;
+package org.gibello.zql.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
