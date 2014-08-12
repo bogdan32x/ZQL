@@ -1,4 +1,7 @@
 ZQL
+
+[ZQL Continous Integration](https://travis-ci.org/bogdan32x/ZQL/builds)
+
 ===
 
     Zql is an SQL parser written in Java.
@@ -22,4 +25,3 @@ ZQL
     Contact details:
      *gmail - bogdan.mariesan@gmail.com
      *skype - bogdan32x
-
