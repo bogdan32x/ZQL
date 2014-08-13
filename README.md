@@ -1,11 +1,13 @@
 ZQL
+===
 
-[ZQL Continous Integration](https://travis-ci.org/bogdan32x/ZQL/builds)
+###Copyright
 
 ===
 
     Zql is an SQL parser written in Java.
-    Zql parses SQL and fills in java structures representing SQL statements and expressions.
+    Zql parses SQL and fills in java structures representing SQL statements
+    and expressions.
     Copyright (C) 1998-2012  Pierre-Yves Gibello
     Copyright (C) 2012 Bogdan Emil Mariesan
 
@@ -25,3 +27,16 @@ ZQL
     Contact details:
      *gmail - bogdan.mariesan@gmail.com
      *skype - bogdan32x
+
+###Continuous Integration
+[ZQL Continous Integration](https://travis-ci.org/bogdan32x/ZQL/builds)
+
+The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
+
+###Usage Eg.
+TBD
+
+###Issues
+[Know Issues and Enhancements](https://github.com/bogdan32x/ZQL/issues)
+
+Any known issues can be found on the GitHub issue tracker. Feel free to add more issues with as much information as possible so that it is easier to reproduce them.
