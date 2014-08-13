@@ -1,7 +1,6 @@
 package org.gibello.zql;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -21,15 +20,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ZqlParserTest {
 
-    private static final String SRC_TEST_RESOURCES_VALID_SELECT_WITH_WILDCARD_SQL = "src/test/resources/valid_select_with_wildcard.sql";
     @Mock
     private ZqlParser zqlParser;
+
+    private static final String TEST_RESOURCE_PATH_VALID_SELECT_WITH_WILDCARD = "src/test/resources/valid_select_with_wildcard.sql";
+    private static final String VALID_SELECT_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s";
 
     @Test
     public void test_simple_select_with_wildcard() throws IOException, ParseException {
         // given
         DataInputStream is = given_a_valid_select_with_a_wildcard_operator();
-        String rawSqlContent = TestUtils.readInputStreamAsString(SRC_TEST_RESOURCES_VALID_SELECT_WITH_WILDCARD_SQL);
+        String rawSqlContent = TestUtils.readInputStreamAsString(TEST_RESOURCE_PATH_VALID_SELECT_WITH_WILDCARD);
         // when
         ZqlParser parser = when_the_parser_is_initialized(is);
         // then
@@ -50,16 +51,13 @@ public class ZqlParserTest {
         }
 
         assertNotNull(rawSqlContent);
-
+        assertEquals(1, parsedExpressions.size());
         for (ZStatement statement : parsedExpressions) {
             if (statement instanceof ZQuery) {
                 ZQuery query = (ZQuery) statement;
-                rawSqlContent = rawSqlContent.replace(query.toString() + ";", "");
+                assertEquals(VALID_SELECT_WITH_WILDCARD_EXPECTED_RESULT, query.toString());
             }
         }
-
-        // if the parsed content and input match the result of the above function will render the raw string as an empty spaces string.
-        assertTrue(rawSqlContent.replaceAll("\\s", "").isEmpty());
     }
 
     private ZqlParser when_the_parser_is_initialized(DataInputStream is) {
@@ -68,7 +66,7 @@ public class ZqlParserTest {
     }
 
     private DataInputStream given_a_valid_select_with_a_wildcard_operator() throws FileNotFoundException {
-        DataInputStream dis = new DataInputStream(new FileInputStream(new File(SRC_TEST_RESOURCES_VALID_SELECT_WITH_WILDCARD_SQL)));
+        DataInputStream dis = new DataInputStream(new FileInputStream(new File(TEST_RESOURCE_PATH_VALID_SELECT_WITH_WILDCARD)));
         return dis;
     }
 
