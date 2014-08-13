@@ -25,6 +25,7 @@ public class ZqlParserTest {
 
     private static final String VALID_SELECT_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s";
     private static final String VALID_SELECT_FROM_TWO_TABLES_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s, Market m";
+    private static final String VALID_SELECT_FROM_MULTIPLE_TABLES_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s, Market m, Shares s, Logs l, Mortgage mm";
 
     @Test
     public void test_simple_select_with_wildcard() throws IOException, ParseException {
@@ -46,6 +47,22 @@ public class ZqlParserTest {
         ZqlParser parser = when_the_parser_is_initialized(is);
         // then
         then_given_sql_should_be_the_same_as_the_parsed_sql(parser, rawSqlContent, VALID_SELECT_FROM_TWO_TABLES_WITH_WILDCARD_EXPECTED_RESULT);
+    }
+
+    @Test
+    public void test_select_from_multiple_tables_with_wildcard() throws IOException, ParseException {
+        // given
+        DataInputStream is = given_a_valid_select_from_multiple_tables_with_a_wildcard_operator();
+        String rawSqlContent = TestUtils.readInputStreamAsString("src/test/resources/valid_select_from_multiple_tables_with_wildcard.sql");
+        // when
+        ZqlParser parser = when_the_parser_is_initialized(is);
+        // then
+        then_given_sql_should_be_the_same_as_the_parsed_sql(parser, rawSqlContent, VALID_SELECT_FROM_MULTIPLE_TABLES_WITH_WILDCARD_EXPECTED_RESULT);
+    }
+
+    private DataInputStream given_a_valid_select_from_multiple_tables_with_a_wildcard_operator() throws FileNotFoundException {
+        DataInputStream dis = new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_from_multiple_tables_with_wildcard.sql")));
+        return dis;
     }
 
     private DataInputStream given_a_valid_select_from_two_tables_with_a_wildcard_operator() throws FileNotFoundException {
