@@ -15,7 +15,8 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.statement;
+
 
 /**
  * ZTransactStmt: an SQL statement that concerns database transactions (example: COMMIT, ROLLBACK, SET TRANSACTION).

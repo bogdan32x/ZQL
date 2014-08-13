@@ -15,12 +15,14 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.expression;
 
 import java.util.List;
 import java.util.Vector;
 
+import org.gibello.zql.query.ZQuery;
 import org.gibello.zql.utils.ZCommonConstants;
+import org.gibello.zql.utils.ZUtils;
 
 /**
  * ZExpression: an SQL Expression An SQL expression is an operator and one or more operands Example: a AND b AND c -> operator = AND,

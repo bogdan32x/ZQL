@@ -15,7 +15,12 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.alias;
+
+import org.gibello.zql.expression.ZConstant;
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.utils.ZUtils;
 
 /**
  * ZSelectItem: an item in the SELECT part of an SQL query. (The SELECT part of a query is a Vector of ZSelectItem).

@@ -15,11 +15,15 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.query;
 
 import java.util.List;
 import java.util.Vector;
 
+import org.gibello.zql.ZGroupBy;
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.ZCommonConstants;
 
 /**

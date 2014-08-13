@@ -15,7 +15,7 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.alias;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;

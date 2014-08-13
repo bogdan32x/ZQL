@@ -15,11 +15,9 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.utils;
 
 import java.util.Hashtable;
-
-import org.gibello.zql.utils.ZCommonConstants;
 
 /**
  * Utils class.

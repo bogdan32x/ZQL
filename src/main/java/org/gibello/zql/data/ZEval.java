@@ -23,10 +23,10 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.gibello.zql.ZConstant;
-import org.gibello.zql.ZExp;
-import org.gibello.zql.ZExpression;
 import org.gibello.zql.ZqlParser;
+import org.gibello.zql.expression.ZConstant;
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.expression.ZExpression;
 import org.gibello.zql.utils.ZCommonConstants;
 
 /**

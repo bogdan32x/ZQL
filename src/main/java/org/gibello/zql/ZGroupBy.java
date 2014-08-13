@@ -20,6 +20,8 @@ package org.gibello.zql;
 import java.io.Serializable;
 import java.util.List;
 
+import org.gibello.zql.expression.ZExp;
+
 /**
  * ZGroupBy: an SQL GROUP BY...HAVING clause.
  * 

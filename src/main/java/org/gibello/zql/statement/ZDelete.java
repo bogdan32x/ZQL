@@ -15,7 +15,10 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.statement;
+
+import org.gibello.zql.expression.ZExp;
+
 
 /**
  * ZDelete: an SQL DELETE statement.<br>

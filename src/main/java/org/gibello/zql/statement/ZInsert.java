@@ -15,10 +15,13 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.statement;
 
 import java.util.List;
 
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.query.ZQuery;
 import org.gibello.zql.utils.ZCommonConstants;
 
 /**

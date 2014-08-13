@@ -28,6 +28,20 @@ package org.gibello.zql;
 import java.io.*;
 import java.util.*;
 
+import org.gibello.zql.alias.ZFromItem;
+import org.gibello.zql.alias.ZSelectItem;
+import org.gibello.zql.expression.ZConstant;
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.query.ZQuery;
+import org.gibello.zql.statement.ZDelete;
+import org.gibello.zql.statement.ZInsert;
+import org.gibello.zql.statement.ZLockTable;
+import org.gibello.zql.statement.ZStatement;
+import org.gibello.zql.statement.ZTransactStmt;
+import org.gibello.zql.statement.ZUpdate;
+import org.gibello.zql.utils.ZUtils;
+
 /**
  * ZqlJJParser: an SQL parser
  */

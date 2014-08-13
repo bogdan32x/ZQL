@@ -19,6 +19,8 @@ package org.gibello.zql;
 
 import java.io.Serializable;
 
+import org.gibello.zql.expression.ZExp;
+
 /**
  * An SQL query ORDER BY clause.
  *

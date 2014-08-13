@@ -15,7 +15,9 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.expression;
+
+
 
 /**
  * ZConstant: a representation of SQL constants.

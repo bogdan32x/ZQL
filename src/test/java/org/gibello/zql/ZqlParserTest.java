@@ -1,6 +1,7 @@
 package org.gibello.zql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -9,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.gibello.zql.query.ZQuery;
+import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

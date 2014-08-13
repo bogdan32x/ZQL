@@ -20,7 +20,10 @@ package org.gibello.zql;
 import java.io.InputStream;
 import java.util.List;
 
+import org.gibello.zql.expression.ZExp;
+import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.ZCommonConstants;
+import org.gibello.zql.utils.ZUtils;
 
 /**
  * ZqlParser: an SQL parser.

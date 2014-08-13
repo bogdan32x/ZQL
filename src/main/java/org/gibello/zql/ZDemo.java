@@ -25,8 +25,14 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.gibello.zql.alias.ZFromItem;
+import org.gibello.zql.alias.ZSelectItem;
 import org.gibello.zql.data.ZEval;
 import org.gibello.zql.data.ZTuple;
+import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.query.ZQuery;
+import org.gibello.zql.statement.ZInsert;
+import org.gibello.zql.statement.ZStatement;
 
 /**
  * <pre>

@@ -15,11 +15,13 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.statement;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.gibello.zql.expression.ZExp;
 
 /**
  * ZUpdate: an SQL UPDATE statement.
