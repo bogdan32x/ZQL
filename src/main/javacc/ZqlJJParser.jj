@@ -192,7 +192,7 @@ TOKEN:
 {
     < S_IDENTIFIER: ( <LETTER> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> | <MISC_UNICODE_CHARACTER> )* >
 |   < #LETTER: ["a"-"z", "A"-"Z"] >
-|   < #SPECIAL_CHARS: "$" | "_" >
+|   < #SPECIAL_CHARS: "$" | "_" | ":" >
 |   < #MISC_UNICODE_CHARACTER: ["\u007B"-"\uFFFF"] >
 |   < S_BIND: ":" <S_IDENTIFIER> ("." <S_IDENTIFIER>)? >
 |   < S_CHAR_LITERAL: "'" (~["'"])* "'" ("'" (~["'"])* "'")* >
