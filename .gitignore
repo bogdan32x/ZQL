@@ -20,9 +20,13 @@
 *.tar
 *.zip
 
-#Eclipse relate
+#Eclipse related
 .classpath
 .settings
 .project
 bin
 target
+
+#Intellij related
+.idea
+*.iml
