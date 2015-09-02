@@ -29,7 +29,7 @@ ZQL
      *skype - bogdan32x
 
 ###Continuous Integration
-[ZQL Continuous Integration](https://travis-ci.org/bogdan32x/ZQL/builds)
+![ZQL Continuous Integration](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)
 
 The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
 
