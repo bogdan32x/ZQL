@@ -17,93 +17,84 @@
 
 package org.gibello.zql.expression;
 
-
-
 /**
  * ZConstant: a representation of SQL constants.
- * 
+ *
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZConstant implements ZExp {
 
-    /**
-     * The serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * ZConstant types.
+	 */
+	public static final int UNKNOWN = -1;
+	/**
+	 * ZConstant types.
+	 */
+	public static final int COLUMNNAME = 0;
+	/**
+	 * ZConstant types.
+	 */
+	public static final int NULL = 1;
+	/**
+	 * ZConstant types.
+	 */
+	public static final int NUMBER = 2;
+	/**
+	 * ZConstant types.
+	 */
+	public static final int STRING = 3;
+	/**
+	 * The serial version UID.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * ZConstant types.
+	 */
+	private int zconstantType = ZConstant.UNKNOWN;
 
-    /**
-     * ZConstant types.
-     */
-    public static final int UNKNOWN = -1;
+	/**
+	 * Values.
+	 */
+	private String values = null;
 
-    /**
-     * ZConstant types.
-     */
-    public static final int COLUMNNAME = 0;
+	/**
+	 * Create a new constant, given its name and type.
+	 *
+	 * @param values
+	 * 		the values.
+	 * @param zconstantTypes
+	 * 		the types.
+	 */
+	public ZConstant(final String values, final int zconstantTypes) {
+		this.values = new String(values);
+		this.zconstantType = zconstantTypes;
+	}
 
-    /**
-     * ZConstant types.
-     */
-    public static final int NULL = 1;
+	/**
+	 * @return the constant value
+	 */
+	public String getValue() {
+		return this.values;
+	}
 
-    /**
-     * ZConstant types.
-     */
-    public static final int NUMBER = 2;
+	/**
+	 * @return the constant type
+	 */
+	public int getType() {
+		return this.zconstantType;
+	}
 
-    /**
-     * ZConstant types.
-     */
-    public static final int STRING = 3;
+	@Override public String toString() {
+		String toString;
 
-    /**
-     * ZConstant types.
-     */
-    private int zconstantType = ZConstant.UNKNOWN;
+		if (this.zconstantType == ZConstant.STRING) {
+			toString = '\'' + this.values + '\'';
+		} else {
+			toString = this.values;
+		}
 
-    /**
-     * Values.
-     */
-    private String values = null;
-
-    /**
-     * Create a new constant, given its name and type.
-     * 
-     * @param values
-     *            the values.
-     * @param zconstantTypes
-     *            the types.
-     */
-    public ZConstant(final String values, final int zconstantTypes) {
-        this.values = new String(values);
-        this.zconstantType = zconstantTypes;
-    }
-
-    /**
-     * @return the constant value
-     */
-    public String getValue() {
-        return this.values;
-    }
-
-    /**
-     * @return the constant type
-     */
-    public int getType() {
-        return this.zconstantType;
-    }
-
-    @Override
-    public String toString() {
-        String toString;
-
-        if (this.zconstantType == ZConstant.STRING) {
-            toString = '\'' + this.values + '\'';
-        } else {
-            toString = this.values;
-        }
-
-        return toString;
-    }
+		return toString;
+	}
 };

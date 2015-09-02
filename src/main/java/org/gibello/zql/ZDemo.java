@@ -17,22 +17,15 @@
 
 package org.gibello.zql;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.util.List;
-
-import org.gibello.zql.alias.ZFromItem;
-import org.gibello.zql.alias.ZSelectItem;
-import org.gibello.zql.data.ZEval;
-import org.gibello.zql.data.ZTuple;
+import org.gibello.zql.alias.*;
+import org.gibello.zql.data.*;
 import org.gibello.zql.expression.ZExpression;
 import org.gibello.zql.query.ZQuery;
-import org.gibello.zql.statement.ZInsert;
-import org.gibello.zql.statement.ZStatement;
+import org.gibello.zql.statement.*;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * <pre>
@@ -60,162 +53,161 @@ import org.gibello.zql.statement.ZStatement;
  *  select * from num where a = b or e = d - 1;
  *  select * from num where b ** a <= 2;
  * </pre>
- * 
+ *
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public final class ZDemo {
 
-    /**
-     * Default constructor.
-     */
-    private ZDemo() {
+	/**
+	 * Default constructor.
+	 */
+	private ZDemo() {
 
-    }
+	}
 
-    /**
-     * Non commented main method.
-     * 
-     * @param args
-     *            args.
-     */
-    public static void main(final String[] args) {
-        try {
+	/**
+	 * Non commented main method.
+	 *
+	 * @param args
+	 * 		args.
+	 */
+	public static void main(final String[] args) {
+		try {
 
-            ZqlParser p = null;
+			ZqlParser p = null;
 
-            if (args.length < 1) {
-                System.out.println("Reading SQL from stdin (quit; or exit; to quit)");
-                p = new ZqlParser(System.in);
-            } else {
-                p = new ZqlParser(new DataInputStream(new FileInputStream(args[0])));
-            }
+			if (args.length < 1) {
+				System.out.println("Reading SQL from stdin (quit; or exit; to quit)");
+				p = new ZqlParser(System.in);
+			} else {
+				p = new ZqlParser(new DataInputStream(new FileInputStream(args[0])));
+			}
 
-            // Read all SQL statements from input
-            ZStatement st;
-            while ((st = p.readStatement()) != null) {
+			// Read all SQL statements from input
+			ZStatement st;
+			while ((st = p.readStatement()) != null) {
 
-                // Display the statement
-                System.out.println(st.toString());
+				// Display the statement
+				System.out.println(st.toString());
 
-                // An SQL query: query the DB
-                if (st instanceof ZQuery) {
-                    queryDB((ZQuery) st);
-                } else
-                // An SQL insert
-                if (st instanceof ZInsert) {
-                    insertDB((ZInsert) st);
-                }
-            }
+				// An SQL query: query the DB
+				if (st instanceof ZQuery) {
+					queryDB((ZQuery) st);
+				} else
+					// An SQL insert
+					if (st instanceof ZInsert) {
+						insertDB((ZInsert) st);
+					}
+			}
 
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final ParseException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (final SQLException | ParseException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Query the database.
-     * 
-     * @param q
-     *            the query.
-     * @throws SQLException
-     *             the exception.
-     * @throws IOException
-     *             the exception.
-     */
-    static void queryDB(final ZQuery q) throws IOException, SQLException {
+	/**
+	 * Query the database.
+	 *
+	 * @param q
+	 * 		the query.
+	 *
+	 * @throws SQLException
+	 * 		the exception.
+	 * @throws IOException
+	 * 		the exception.
+	 */
+	static void queryDB(final ZQuery q) throws IOException, SQLException {
 
-        // SELECT part of the query
-        final List<?> sel = q.getSelect();
-        // FROM part of the query
-        final List<?> from = q.getFrom();
-        // WHERE part of the
-        final ZExpression where = (ZExpression) q.getWhere();
-        // query
+		// SELECT part of the query
+		final List<?> sel = q.getSelect();
+		// FROM part of the query
+		final List<?> from = q.getFrom();
+		// WHERE part of the
+		final ZExpression where = (ZExpression) q.getWhere();
+		// query
 
-        if (from.size() > 1) {
-            throw new SQLException("Joins are not supported");
-        }
+		if (from.size() > 1) {
+			throw new SQLException("Joins are not supported");
+		}
 
-        // Retrieve the table name in the FROM clause
-        final ZFromItem table = (ZFromItem) from.get(0);
+		// Retrieve the table name in the FROM clause
+		final ZFromItem table = (ZFromItem) from.get(0);
 
-        // We suppose the data is in a text file called <tableName>.db
-        // <tableName> is the table name in the FROM clause
-        // BufferedReader db1 = new BufferedReader(new
-        // FileReader(table.getTable() + ".db"));
-        final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable() + ".db")));
+		// We suppose the data is in a text file called <tableName>.db
+		// <tableName> is the table name in the FROM clause
+		// BufferedReader db1 = new BufferedReader(new
+		// FileReader(table.getTable() + ".db"));
+		final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable() + ".db")));
 
-        // Read the column names (the 1st line of the .db file)
-        final ZTuple tuple = new ZTuple(db.readLine());
+		// Read the column names (the 1st line of the .db file)
+		final ZTuple tuple = new ZTuple(db.readLine());
 
-        final ZEval evaluator = new ZEval();
+		final ZEval evaluator = new ZEval();
 
-        // Now, each line in the .db file is a tuple
-        String tpl;
-        while ((tpl = db.readLine()) != null) {
+		// Now, each line in the .db file is a tuple
+		String tpl;
+		while ((tpl = db.readLine()) != null) {
 
-            tuple.setRow(tpl);
+			tuple.setRow(tpl);
 
-            // Evaluate the WHERE expression for the current tuple
-            // Display the tuple if the condition evaluates to true
+			// Evaluate the WHERE expression for the current tuple
+			// Display the tuple if the condition evaluates to true
 
-            if (where == null || evaluator.eval(tuple, where)) {
-                displayTuple(tuple, sel);
-            }
+			if (where == null || evaluator.eval(tuple, where)) {
+				displayTuple(tuple, sel);
+			}
 
-        }
+		}
 
-        db.close();
-    }
+		db.close();
+	}
 
-    /**
-     * Display a tuple, according to a SELECT map.
-     * 
-     * @param tuple
-     *            the tuple.
-     * @param map
-     *            the element map.
-     * @throws SQLException
-     *             the exception.
-     */
-    static void displayTuple(final ZTuple tuple, final List<?> map) throws SQLException {
+	/**
+	 * Display a tuple, according to a SELECT map.
+	 *
+	 * @param tuple
+	 * 		the tuple.
+	 * @param map
+	 * 		the element map.
+	 *
+	 * @throws SQLException
+	 * 		the exception.
+	 */
+	static void displayTuple(final ZTuple tuple, final List<?> map) throws SQLException {
 
-        // If it is a "select *", display the whole tuple
-        if (((ZSelectItem) map.get(0)).isWildcard()) {
-            System.out.println(tuple.toString());
-            return;
-        }
+		// If it is a "select *", display the whole tuple
+		if (((ZSelectItem) map.get(0)).isWildcard()) {
+			System.out.println(tuple.toString());
+			return;
+		}
 
-        final ZEval evaluator = new ZEval();
+		final ZEval evaluator = new ZEval();
 
-        // Evaluate the value of each select item
-        for (int i = 0; i < map.size(); i++) {
+		// Evaluate the value of each select item
+		for (int i = 0; i < map.size(); i++) {
 
-            final ZSelectItem item = (ZSelectItem) map.get(i);
-            System.out.print(evaluator.evalExpValue(tuple, item.getExpression()).toString());
+			final ZSelectItem item = (ZSelectItem) map.get(i);
+			System.out.print(evaluator.evalExpValue(tuple, item.getExpression()).toString());
 
-            if (i == map.size() - 1) {
-                System.out.println("");
-            } else {
-                System.out.print(", ");
-            }
-        }
-    }
+			if (i == map.size() - 1) {
+				System.out.println("");
+			} else {
+				System.out.print(", ");
+			}
+		}
+	}
 
-    /**
-     * @param ins
-     *            insert query.
-     * @throws IOException
-     *             the exception.
-     */
-    static void insertDB(final ZInsert ins) throws IOException {
-        System.out.println("Should implement INSERT here");
-        System.out.println(ins.toString());
-    }
+	/**
+	 * @param ins
+	 * 		insert query.
+	 *
+	 * @throws IOException
+	 * 		the exception.
+	 */
+	static void insertDB(final ZInsert ins) throws IOException {
+		System.out.println("Should implement INSERT here");
+		System.out.println(ins.toString());
+	}
 
 };

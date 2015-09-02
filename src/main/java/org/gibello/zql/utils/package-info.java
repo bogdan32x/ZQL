@@ -17,6 +17,5 @@
 
 /**
  * @author Bogdan Mariesan, Romania
- *
  */
 package org.gibello.zql.utils;

@@ -17,338 +17,335 @@
 
 package org.gibello.zql.query;
 
-import java.util.List;
-import java.util.Vector;
-
 import org.gibello.zql.ZGroupBy;
-import org.gibello.zql.expression.ZExp;
-import org.gibello.zql.expression.ZExpression;
+import org.gibello.zql.expression.*;
 import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.ZCommonConstants;
 
+import java.util.*;
+
 /**
  * ZQuery: an SQL SELECT statement.
- * 
+ *
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
 public class ZQuery implements ZStatement, ZExp {
 
-    /**
-	 * 
+	/**
+	 *
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Select query.
-     */
-    private List<?> select;
+	/**
+	 * Select query.
+	 */
+	private List<?> select;
 
-    /**
-     * Distinct clause.
-     */
-    private boolean distinct = false;
+	/**
+	 * Distinct clause.
+	 */
+	private boolean distinct = false;
 
-    /**
-     * From clause.
-     */
-    private List<?> from;
+	/**
+	 * From clause.
+	 */
+	private List<?> from;
 
-    /**
-     * Where clause.
-     */
-    private ZExp where = null;
+	/**
+	 * Where clause.
+	 */
+	private ZExp where = null;
 
-    /**
-     * Group by clause.
-     */
-    private ZGroupBy groupby = null;
+	/**
+	 * Group by clause.
+	 */
+	private ZGroupBy groupby = null;
 
-    /**
-     * Set clause.
-     */
-    private ZExpression setclause = null;
+	/**
+	 * Set clause.
+	 */
+	private ZExpression setclause = null;
 
-    /**
-     * Order by clause.
-     */
-    private List<?> orderby = null;
+	/**
+	 * Order by clause.
+	 */
+	private List<?> orderby = null;
 
-    /**
-     * For update clause.
-     */
-    private boolean forupdate = false;
+	/**
+	 * For update clause.
+	 */
+	private boolean forupdate = false;
 
-    /**
-     * Create a new SELECT statement.
-     */
-    public ZQuery() {
+	/**
+	 * Create a new SELECT statement.
+	 */
+	public ZQuery() {
 
-    }
+	}
 
-    /**
-     * Insert the SELECT part of the statement.
-     * 
-     * @param select
-     *            A vector of ZSelectItem objects
-     */
-    public void addSelect(final List<?> select) {
-        this.select = select;
-    }
+	/**
+	 * Insert the SELECT part of the statement.
+	 *
+	 * @param select
+	 * 		A vector of ZSelectItem objects
+	 */
+	public void addSelect(final List<?> select) {
+		this.select = select;
+	}
 
-    /**
-     * Insert the FROM part of the statement.
-     * 
-     * @param from
-     *            a Vector of ZFromItem objects
-     */
-    public void addFrom(final List<?> from) {
-        this.from = from;
-    }
+	/**
+	 * Insert the FROM part of the statement.
+	 *
+	 * @param from
+	 * 		a Vector of ZFromItem objects
+	 */
+	public void addFrom(final List<?> from) {
+		this.from = from;
+	}
 
-    /**
-     * Insert a WHERE clause.
-     * 
-     * @param where
-     *            An SQL Expression
-     */
-    public void addWhere(final ZExp where) {
-        this.where = where;
-    }
+	/**
+	 * Insert a WHERE clause.
+	 *
+	 * @param where
+	 * 		An SQL Expression
+	 */
+	public void addWhere(final ZExp where) {
+		this.where = where;
+	}
 
-    /**
-     * Insert a GROUP BY...HAVING clause.
-     * 
-     * @param groupby
-     *            A GROUP BY...HAVING clause
-     */
-    public void addGroupBy(final ZGroupBy groupby) {
-        this.groupby = groupby;
-    }
+	/**
+	 * Insert a GROUP BY...HAVING clause.
+	 *
+	 * @param groupby
+	 * 		A GROUP BY...HAVING clause
+	 */
+	public void addGroupBy(final ZGroupBy groupby) {
+		this.groupby = groupby;
+	}
 
-    /**
-     * Insert a SET clause (generally UNION, INTERSECT or MINUS).
-     * 
-     * @param setclause
-     *            An SQL Expression (generally UNION, INTERSECT or MINUS)
-     */
-    public void addSet(final ZExpression setclause) {
-        this.setclause = setclause;
-    }
+	/**
+	 * Insert a SET clause (generally UNION, INTERSECT or MINUS).
+	 *
+	 * @param setclause
+	 * 		An SQL Expression (generally UNION, INTERSECT or MINUS)
+	 */
+	public void addSet(final ZExpression setclause) {
+		this.setclause = setclause;
+	}
 
-    /**
-     * Insert an ORDER BY clause.
-     * 
-     * @param orderby
-     *            A vector of ZOrderBy objects
-     */
-    public void addOrderBy(final List<?> orderby) {
-        this.orderby = orderby;
-    }
+	/**
+	 * Insert an ORDER BY clause.
+	 *
+	 * @param orderby
+	 * 		A vector of ZOrderBy objects
+	 */
+	public void addOrderBy(final List<?> orderby) {
+		this.orderby = orderby;
+	}
 
-    /**
-     * Get the SELECT part of the statement.
-     * 
-     * @return A vector of ZSelectItem objects
-     */
-    public List<?> getSelect() {
-        return this.select;
-    }
+	/**
+	 * Get the SELECT part of the statement.
+	 *
+	 * @return A vector of ZSelectItem objects
+	 */
+	public List<?> getSelect() {
+		return this.select;
+	}
 
-    /**
-     * Get the FROM part of the statement.
-     * 
-     * @return A vector of ZFromItem objects
-     */
-    public List<?> getFrom() {
-        return this.from;
-    }
+	/**
+	 * @param select
+	 * 		set select.
+	 */
+	public void setSelect(final Vector<?> select) {
+		this.select = select;
+	}
 
-    /**
-     * Get the WHERE part of the statement.
-     * 
-     * @return An SQL Expression or sub-query (ZExpression or ZQuery object)
-     */
-    public ZExp getWhere() {
-        return this.where;
-    }
+	/**
+	 * Get the FROM part of the statement.
+	 *
+	 * @return A vector of ZFromItem objects
+	 */
+	public List<?> getFrom() {
+		return this.from;
+	}
 
-    /**
-     * Get the GROUP BY...HAVING part of the statement.
-     * 
-     * @return A GROUP BY...HAVING clause
-     */
-    public ZGroupBy getGroupBy() {
-        return this.groupby;
-    }
+	/**
+	 * @param from
+	 * 		set from.
+	 */
+	public void setFrom(final Vector<?> from) {
+		this.from = from;
+	}
 
-    /**
-     * Get the SET clause (generally UNION, INTERSECT or MINUS).
-     * 
-     * @return An SQL Expression (generally UNION, INTERSECT or MINUS)
-     */
-    public ZExpression getSet() {
-        return this.setclause;
-    }
+	/**
+	 * Get the WHERE part of the statement.
+	 *
+	 * @return An SQL Expression or sub-query (ZExpression or ZQuery object)
+	 */
+	public ZExp getWhere() {
+		return this.where;
+	}
 
-    /**
-     * Get the ORDER BY clause.
-     * 
-     * @return A vector of ZOrderBy objects
-     */
-    public List<?> getOrderBy() {
-        return this.orderby;
-    }
+	/**
+	 * @param where
+	 * 		set where clause.
+	 */
+	public void setWhere(final ZExp where) {
+		this.where = where;
+	}
 
-    /**
-     * @return true if it is a SELECT DISTINCT query, false otherwise.
-     */
-    public boolean isDistinct() {
-        return this.distinct;
-    }
+	/**
+	 * Get the GROUP BY...HAVING part of the statement.
+	 *
+	 * @return A GROUP BY...HAVING clause
+	 */
+	public ZGroupBy getGroupBy() {
+		return this.groupby;
+	}
 
-    /**
-     * @return true if it is a FOR UPDATE query, false otherwise.
-     */
-    public boolean isForUpdate() {
-        return this.forupdate;
-    }
+	/**
+	 * Get the SET clause (generally UNION, INTERSECT or MINUS).
+	 *
+	 * @return An SQL Expression (generally UNION, INTERSECT or MINUS)
+	 */
+	public ZExpression getSet() {
+		return this.setclause;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuffer buf = new StringBuffer("select ");
-        if (this.distinct) {
-            buf.append("distinct ");
-        }
+	/**
+	 * Get the ORDER BY clause.
+	 *
+	 * @return A vector of ZOrderBy objects
+	 */
+	public List<?> getOrderBy() {
+		return this.orderby;
+	}
 
-        // buf.append(select_.toString());
-        int i;
-        buf.append(this.select.get(0).toString());
-        for (i = 1; i < this.select.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.get(i).toString());
-        }
+	/**
+	 * @return true if it is a SELECT DISTINCT query, false otherwise.
+	 */
+	public boolean isDistinct() {
+		return this.distinct;
+	}
 
-        // buf.append(" from " + from_.toString());
-        buf.append(" from ");
-        buf.append(this.from.get(0).toString());
-        for (i = 1; i < this.from.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.get(i).toString());
-        }
+	/**
+	 * @param distinct
+	 * 		set distinct.
+	 */
+	public void setDistinct(final boolean distinct) {
+		this.distinct = distinct;
+	}
 
-        if (this.where != null) {
-            buf.append(" where " + this.where.toString());
-        }
-        if (this.groupby != null) {
-            buf.append(ZCommonConstants.EMPTY_STRING + this.groupby.toString());
-        }
-        if (this.setclause != null) {
-            buf.append(ZCommonConstants.EMPTY_STRING + this.setclause.toString());
-        }
-        if (this.orderby != null) {
-            buf.append(" order by ");
-            // buf.append(orderby_.toString());
-            buf.append(this.orderby.get(0).toString());
-            for (i = 1; i < this.orderby.size(); i++) {
-                buf.append(", " + this.orderby.get(i).toString());
-            }
-        }
-        if (this.forupdate) {
-            buf.append(" for update");
-        }
+	/**
+	 * @return true if it is a FOR UPDATE query, false otherwise.
+	 */
+	public boolean isForUpdate() {
+		return this.forupdate;
+	}
 
-        return buf.toString();
-    }
+	@Override public String toString() {
+		final StringBuffer buf = new StringBuffer("select ");
+		if (this.distinct) {
+			buf.append("distinct ");
+		}
 
-    /**
-     * @return group by.
-     */
-    public ZGroupBy getGroupby() {
-        return this.groupby;
-    }
+		// buf.append(select_.toString());
+		int i;
+		buf.append(this.select.get(0).toString());
+		for (i = 1; i < this.select.size(); i++) {
+			buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.get(i).toString());
+		}
 
-    /**
-     * @param groupby
-     *            the group by.
-     */
-    public void setGroupby(final ZGroupBy groupby) {
-        this.groupby = groupby;
-    }
+		// buf.append(" from " + from_.toString());
+		buf.append(" from ");
+		buf.append(this.from.get(0).toString());
+		for (i = 1; i < this.from.size(); i++) {
+			buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.get(i).toString());
+		}
 
-    /**
-     * @return the set clause.
-     */
-    public ZExpression getSetclause() {
-        return this.setclause;
-    }
+		if (this.where != null) {
+			buf.append(" where " + this.where.toString());
+		}
+		if (this.groupby != null) {
+			buf.append(ZCommonConstants.EMPTY_STRING + this.groupby.toString());
+		}
+		if (this.setclause != null) {
+			buf.append(ZCommonConstants.EMPTY_STRING + this.setclause.toString());
+		}
+		if (this.orderby != null) {
+			buf.append(" order by ");
+			// buf.append(orderby_.toString());
+			buf.append(this.orderby.get(0).toString());
+			for (i = 1; i < this.orderby.size(); i++) {
+				buf.append(", " + this.orderby.get(i).toString());
+			}
+		}
+		if (this.forupdate) {
+			buf.append(" for update");
+		}
 
-    /**
-     * @param setclause
-     *            the set clause.
-     */
-    public void setSetclause(final ZExpression setclause) {
-        this.setclause = setclause;
-    }
+		return buf.toString();
+	}
 
-    /**
-     * @return get order by.
-     */
-    public List<?> getOrderby() {
-        return this.orderby;
-    }
+	/**
+	 * @return group by.
+	 */
+	public ZGroupBy getGroupby() {
+		return this.groupby;
+	}
 
-    /**
-     * @param orderby
-     *            set order by.
-     */
-    public void setOrderby(final Vector<?> orderby) {
-        this.orderby = orderby;
-    }
+	/**
+	 * @param groupby
+	 * 		the group by.
+	 */
+	public void setGroupby(final ZGroupBy groupby) {
+		this.groupby = groupby;
+	}
 
-    /**
-     * @return is for update.
-     */
-    public boolean isForupdate() {
-        return this.forupdate;
-    }
+	/**
+	 * @return the set clause.
+	 */
+	public ZExpression getSetclause() {
+		return this.setclause;
+	}
 
-    /**
-     * @param forupdate
-     *            set for update.
-     */
-    public void setForupdate(final boolean forupdate) {
-        this.forupdate = forupdate;
-    }
+	/**
+	 * @param setclause
+	 * 		the set clause.
+	 */
+	public void setSetclause(final ZExpression setclause) {
+		this.setclause = setclause;
+	}
 
-    /**
-     * @param select
-     *            set select.
-     */
-    public void setSelect(final Vector<?> select) {
-        this.select = select;
-    }
+	/**
+	 * @return get order by.
+	 */
+	public List<?> getOrderby() {
+		return this.orderby;
+	}
 
-    /**
-     * @param distinct
-     *            set distinct.
-     */
-    public void setDistinct(final boolean distinct) {
-        this.distinct = distinct;
-    }
+	/**
+	 * @param orderby
+	 * 		set order by.
+	 */
+	public void setOrderby(final Vector<?> orderby) {
+		this.orderby = orderby;
+	}
 
-    /**
-     * @param from
-     *            set from.
-     */
-    public void setFrom(final Vector<?> from) {
-        this.from = from;
-    }
+	/**
+	 * @return is for update.
+	 */
+	public boolean isForupdate() {
+		return this.forupdate;
+	}
 
-    /**
-     * @param where
-     *            set where clause.
-     */
-    public void setWhere(final ZExp where) {
-        this.where = where;
-    }
+	/**
+	 * @param forupdate
+	 * 		set for update.
+	 */
+	public void setForupdate(final boolean forupdate) {
+		this.forupdate = forupdate;
+	}
 
 };

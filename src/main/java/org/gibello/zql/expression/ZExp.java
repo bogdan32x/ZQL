@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 /**
  * A common interface for all SQL Expressions (ZQueries, ZExpressions and ZConstants are ZExps).
- * 
+ *
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */

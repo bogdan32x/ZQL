@@ -17,9 +17,9 @@
 
 package org.gibello.zql;
 
-import java.io.Serializable;
-
 import org.gibello.zql.expression.ZExp;
+
+import java.io.Serializable;
 
 /**
  * An SQL query ORDER BY clause.
@@ -29,68 +29,67 @@ import org.gibello.zql.expression.ZExp;
  */
 public class ZOrderBy implements Serializable {
 
-    /**
-     * The default serial UID.
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * The default serial UID.
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * The expression.
-     */
-    private ZExp expression;
+	/**
+	 * The expression.
+	 */
+	private ZExp expression;
 
-    /**
-     * Ascending.
-     */
-    private boolean ascending = true;
+	/**
+	 * Ascending.
+	 */
+	private boolean ascending = true;
 
-    /**
-     * Constructor.
-     * 
-     * @param expression
-     *            the expression.
-     */
-    public ZOrderBy(final ZExp expression) {
-        this.expression = expression;
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param expression
+	 * 		the expression.
+	 */
+	public ZOrderBy(final ZExp expression) {
+		this.expression = expression;
+	}
 
-    /**
-     * Set the order to ascending or descending (default is ascending order).
-     * 
-     * @param ascending
-     *            true for ascending order, false for descending order.
-     */
-    public void setAscOrder(final boolean ascending) {
-        this.ascending = ascending;
-    }
+	/**
+	 * Get the order (ascending or descending).
+	 *
+	 * @return true if ascending order, false if descending order.
+	 */
+	public boolean getAscOrder() {
+		return this.ascending;
+	}
 
-    /**
-     * Get the order (ascending or descending).
-     * 
-     * @return true if ascending order, false if descending order.
-     */
-    public boolean getAscOrder() {
-        return this.ascending;
-    }
+	/**
+	 * Set the order to ascending or descending (default is ascending order).
+	 *
+	 * @param ascending
+	 * 		true for ascending order, false for descending order.
+	 */
+	public void setAscOrder(final boolean ascending) {
+		this.ascending = ascending;
+	}
 
-    /**
-     * Get the ORDER BY expression.
-     * 
-     * @return An expression (generally, a ZConstant that represents a column name).
-     */
-    public ZExp getExpression() {
-        return this.expression;
-    }
+	/**
+	 * Get the ORDER BY expression.
+	 *
+	 * @return An expression (generally, a ZConstant that represents a column name).
+	 */
+	public ZExp getExpression() {
+		return this.expression;
+	}
 
-    @Override
-    public String toString() {
-        String ascending;
+	@Override public String toString() {
+		String ascending;
 
-        if (this.ascending) {
-            ascending = "ASC";
-        } else {
-            ascending = "DESC";
-        }
-        return this.expression.toString() + " " + ascending;
-    }
+		if (this.ascending) {
+			ascending = "ASC";
+		} else {
+			ascending = "DESC";
+		}
+		return this.expression.toString() + " " + ascending;
+	}
 };
