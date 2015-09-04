@@ -27,121 +27,113 @@ import java.util.Hashtable;
  */
 public final class ZUtils {
 
-	/**
-	 * Variable plist.
-	 */
-	public static final int VARIABLE_PLIST = 10000;
+    /**
+     * Variable plist.
+     */
+    public static final int VARIABLE_PLIST = 10000;
 
-	/**
-	 * Functions hash table.
-	 */
-	private static Hashtable<String, Integer> fcts = null;
+    /**
+     * Functions hash table.
+     */
+    private static Hashtable<String, Integer> fcts = new Hashtable<>();
 
-	/**
-	 * Default constructor.
-	 */
-	private ZUtils() {
+    /**
+     * Default constructor.
+     */
+    private ZUtils() {
 
-	}
+    }
 
-	/**
-	 * Add custom function.
-	 *
-	 * @param fct
-	 * 		the function
-	 * @param noParams
-	 * 		the number of parammeters.
-	 */
-	public static void addCustomFunction(final String fct, final int noParams) {
-		int params = noParams;
+    /**
+     * Add custom function.
+     *
+     * @param fct      the function
+     * @param noParams the number of parammeters.
+     */
+    public static void addCustomFunction(final String fct, final int noParams) {
+        int params = noParams;
 
-		if (ZUtils.fcts == null) {
-			ZUtils.fcts = new Hashtable<String, Integer>();
-		}
+        if (ZUtils.fcts == null) {
+            ZUtils.fcts = new Hashtable<>();
+        }
 
-		if (params < 0) {
-			params = 1;
-		}
+        if (params < 0) {
+            params = 1;
+        }
 
-		ZUtils.fcts.put(fct.toUpperCase(), new Integer(params));
-	}
+        ZUtils.fcts.put(fct.toUpperCase(), params);
+    }
 
-	/**
-	 * Check if function is custom.
-	 *
-	 * @param fct
-	 * 		the function name
-	 *
-	 * @return the result of the check.
-	 */
-	public static int isCustomFunction(final String fct) {
-		Integer nparam;
+    /**
+     * Check if function is custom.
+     *
+     * @param fct the function name
+     * @return the result of the check.
+     */
+    public static int isCustomFunction(final String fct) {
+        Integer nparam;
 
-		nparam = (Integer) ZUtils.fcts.get(fct.toUpperCase());
-		if (fct == null || fct.length() < 1 || fcts == null || nparam == null) {
-			nparam = -1;
-		}
+        nparam = ZUtils.fcts.get(fct.toUpperCase());
+        if (fct == null || fct.length() < 1 || fcts == null || nparam == null) {
+            nparam = -1;
+        }
 
-		return nparam.intValue();
-	}
+        return nparam.intValue();
+    }
 
-	/**
-	 * Check if is aggregate.
-	 *
-	 * @param operator
-	 * 		the operator.
-	 *
-	 * @return result of the aggregate check.
-	 */
-	public static boolean isAggregate(final String operator) {
-		final String tmp = operator.toUpperCase().trim();
-		boolean result = false;
+    /**
+     * Check if is aggregate.
+     *
+     * @param operator the operator.
+     * @return result of the aggregate check.
+     */
+    public static boolean isAggregate(final String operator) {
+        final String tmp = operator.toUpperCase().trim();
+        boolean result = false;
 
-		if (tmp.equals(ZCommonConstants.SUM_OPERATOR)) {
-			result = true;
-		} else if (tmp.equals(ZCommonConstants.AVG_OPERATOR)) {
-			result = true;
-		} else if (tmp.equals(ZCommonConstants.MAX_OPERATOR)) {
-			result = true;
-		} else if (tmp.equals(ZCommonConstants.MIN_OPERATOR)) {
-			result = true;
-		} else if (tmp.equals(ZCommonConstants.COUNT_OPERATOR)) {
-			result = true;
-		} else if (fcts != null && fcts.get(tmp) != null) {
-			result = true;
-		}
+        if (tmp.equals(ZCommonConstants.SUM_OPERATOR)) {
+            result = true;
+        } else if (tmp.equals(ZCommonConstants.AVG_OPERATOR)) {
+            result = true;
+        } else if (tmp.equals(ZCommonConstants.MAX_OPERATOR)) {
+            result = true;
+        } else if (tmp.equals(ZCommonConstants.MIN_OPERATOR)) {
+            result = true;
+        } else if (tmp.equals(ZCommonConstants.COUNT_OPERATOR)) {
+            result = true;
+        } else if (fcts != null && fcts.get(tmp) != null) {
+            result = true;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * Get the aggregate call.
-	 *
-	 * @param c
-	 * 		the call string.
-	 *
-	 * @return the aggregate call.
-	 */
-	public static String getAggregateCall(final String c) {
-		final int pos = c.indexOf('(');
+    /**
+     * Get the aggregate call.
+     *
+     * @param c the call string.
+     * @return the aggregate call.
+     */
+    public static String getAggregateCall(final String c) {
+        final int pos = c.indexOf('(');
 
-		String result;
-		if (pos <= 0) {
-			result = null;
-		} else {
-			final String call = c.substring(0, pos);
-			if (ZUtils.isAggregate(call)) {
-				result = call.trim();
-			} else {
-				result = null;
-			}
-		}
+        String result;
+        if (pos <= 0) {
+            result = null;
+        } else {
+            final String call = c.substring(0, pos);
+            if (ZUtils.isAggregate(call)) {
+                result = call.trim();
+            } else {
+                result = null;
+            }
+        }
 
-		if (result == null && c != null) {
-			result = c;
-		}
+        if (result == null && c != null) {
+            result = c;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 };

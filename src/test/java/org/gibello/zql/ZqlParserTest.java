@@ -1,14 +1,5 @@
 package org.gibello.zql;
 
-import static org.junit.Assert.*;
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
 import org.gibello.zql.query.ZQuery;
 import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.TestUtils;
@@ -17,15 +8,19 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.*;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ZqlParserTest {
-
-    @Mock
-    private ZqlParser zqlParser;
 
     private static final String VALID_SELECT_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s";
     private static final String VALID_SELECT_FROM_TWO_TABLES_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s, Market m";
     private static final String VALID_SELECT_FROM_MULTIPLE_TABLES_WITH_WILDCARD_EXPECTED_RESULT = "select * from Stock s, Market m, Shares s, Logs l, Mortgage mm";
+    @Mock
+    private ZqlParser zqlParser;
 
     @Test
     public void test_simple_select_with_wildcard() throws IOException, ParseException {
@@ -80,7 +75,8 @@ public class ZqlParserTest {
         return dis;
     }
 
-    private void then_given_sql_should_be_the_same_as_the_parsed_sql(ZqlParser parser, String rawSqlContent, String expectedResult) throws ParseException, IOException {
+    private void then_given_sql_should_be_the_same_as_the_parsed_sql(ZqlParser parser, String rawSqlContent, String expectedResult)
+            throws ParseException, IOException {
         assertNotNull(parser);
         assertNotNull(rawSqlContent);
 

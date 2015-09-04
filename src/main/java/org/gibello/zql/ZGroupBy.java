@@ -30,70 +30,69 @@ import java.util.List;
  */
 public class ZGroupBy implements Serializable {
 
-	/**
-	 * The default serial version UID.
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * The default serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Group by clause.
-	 */
-	private List<?> groupBy;
+    /**
+     * Group by clause.
+     */
+    private List<?> groupBy;
 
-	/**
-	 * Having clause.
-	 */
-	private ZExp having = null;
+    /**
+     * Having clause.
+     */
+    private ZExp having = null;
 
-	/**
-	 * Create a GROUP BY given a set of Expressions.
-	 *
-	 * @param groupBy
-	 * 		A vector of SQL Expressions (ZExp objects).
-	 */
-	public ZGroupBy(final List<?> groupBy) {
-		this.groupBy = groupBy;
-	}
+    /**
+     * Create a GROUP BY given a set of Expressions.
+     *
+     * @param groupBy A vector of SQL Expressions (ZExp objects).
+     */
+    public ZGroupBy(final List<?> groupBy) {
+        this.groupBy = groupBy;
+    }
 
-	/**
-	 * Get the GROUP BY expressions.
-	 *
-	 * @return A vector of SQL Expressions (ZExp objects)
-	 */
-	public List<?> getGroupBy() {
-		return this.groupBy;
-	}
+    /**
+     * Get the GROUP BY expressions.
+     *
+     * @return A vector of SQL Expressions (ZExp objects)
+     */
+    public List<?> getGroupBy() {
+        return this.groupBy;
+    }
 
-	/**
-	 * Get the HAVING clause.
-	 *
-	 * @return An SQL expression
-	 */
-	public ZExp getHaving() {
-		return this.having;
-	}
+    /**
+     * Get the HAVING clause.
+     *
+     * @return An SQL expression
+     */
+    public ZExp getHaving() {
+        return this.having;
+    }
 
-	/**
-	 * Initiallize the HAVING part of the GROUP BY.
-	 *
-	 * @param having
-	 * 		An SQL Expression (the HAVING clause)
-	 */
-	public void setHaving(final ZExp having) {
-		this.having = having;
-	}
+    /**
+     * Initiallize the HAVING part of the GROUP BY.
+     *
+     * @param having An SQL Expression (the HAVING clause)
+     */
+    public void setHaving(final ZExp having) {
+        this.having = having;
+    }
 
-	@Override public String toString() {
-		final StringBuffer buf = new StringBuffer("group by ");
+    @Override
+    public String toString() {
+        final StringBuffer buf = new StringBuffer("group by ");
 
-		// buf.append(groupby_.toString());
-		buf.append(this.groupBy.get(0).toString());
-		for (int i = 1; i < this.groupBy.size(); i++) {
-			buf.append(", " + this.groupBy.get(i).toString());
-		}
-		if (this.having != null) {
-			buf.append(" having " + this.having.toString());
-		}
-		return buf.toString();
-	}
+        // buf.append(groupby_.toString());
+        buf.append(this.groupBy.get(0).toString());
+        for (int i = 1; i < this.groupBy.size(); i++) {
+            buf.append(", " + this.groupBy.get(i).toString());
+        }
+        if (this.having != null) {
+            buf.append(" having " + this.having.toString());
+        }
+        return buf.toString();
+    }
 };
