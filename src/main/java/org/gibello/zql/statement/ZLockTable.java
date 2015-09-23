@@ -79,7 +79,7 @@ public class ZLockTable implements ZStatement {
      * @param lc sets the lock mode.
      */
     public void setLockMode(final String lc) {
-        this.lockMode = new String(lc);
+        this.lockMode = lc;
     }
 
     /**

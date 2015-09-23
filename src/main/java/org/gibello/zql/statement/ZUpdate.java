@@ -67,7 +67,7 @@ public class ZUpdate implements ZStatement {
      * @param tableName the table name.
      */
     public ZUpdate(final String tableName) {
-        this.tableName = new String(tableName);
+        this.tableName = tableName;
     }
 
     /**
@@ -251,7 +251,7 @@ public class ZUpdate implements ZStatement {
 
         boolean first = true;
         while (e.hasMoreElements()) {
-            final String key = e.nextElement().toString();
+            final String key = e.nextElement();
 
             if (!first) {
                 buf.append(", ");

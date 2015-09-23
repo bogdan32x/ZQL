@@ -214,15 +214,7 @@ public class ZTuple {
      * @return true if there, else false
      */
     public boolean isAttribute(final String attrName) {
-        boolean result;
-
-        if (attrName != null) {
-            result = this.searchTable.containsKey(attrName);
-        } else {
-            result = false;
-        }
-
-        return result;
+        return attrName != null && this.searchTable.containsKey(attrName);
     }
 
     /**

@@ -66,7 +66,7 @@ public class ZConstant implements ZExp {
      * @param zconstantTypes the types.
      */
     public ZConstant(final String values, final int zconstantTypes) {
-        this.values = new String(values);
+        this.values = values;
         this.zconstantType = zconstantTypes;
     }
 

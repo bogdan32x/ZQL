@@ -88,31 +88,31 @@ public class ZAliasedName implements Serializable {
     public ZAliasedName(final String fullname, final int form) {
 
         this.formColumn = form;
-        this.strform = new String(fullname);
+        this.strform = fullname;
 
         final StringTokenizer st = new StringTokenizer(fullname, ".");
         switch (st.countTokens()) {
             case ZCommonConstants.MAGIC_NUMBER_1:
                 if (form == ZAliasedName.FORM_TABLE) {
-                    this.table = new String(st.nextToken());
+                    this.table = st.nextToken();
                 } else {
-                    this.column = new String(st.nextToken());
+                    this.column = st.nextToken();
                 }
                 break;
             case ZCommonConstants.MAGIC_NUMBER_2:
                 if (form == ZAliasedName.FORM_TABLE) {
-                    this.schema = new String(st.nextToken());
-                    this.table = new String(st.nextToken());
+                    this.schema = st.nextToken();
+                    this.table = st.nextToken();
                 } else {
-                    this.table = new String(st.nextToken());
-                    this.column = new String(st.nextToken());
+                    this.table = st.nextToken();
+                    this.column = st.nextToken();
                 }
                 break;
             case ZCommonConstants.MAGIC_NUMBER_3:
             default:
-                this.schema = new String(st.nextToken());
-                this.table = new String(st.nextToken());
-                this.column = new String(st.nextToken());
+                this.schema = st.nextToken();
+                this.table = st.nextToken();
+                this.column = st.nextToken();
                 break;
         }
 
@@ -233,7 +233,7 @@ public class ZAliasedName implements Serializable {
      * @param alias the alias associated to the current name.
      */
     public void setAlias(final String alias) {
-        this.alias = new String(alias);
+        this.alias = alias;
     }
 
     /**

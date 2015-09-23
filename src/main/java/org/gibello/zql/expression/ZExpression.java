@@ -54,7 +54,7 @@ public class ZExpression implements ZExp {
      * @param operator The operator
      */
     public ZExpression(final String operator) {
-        this.operator = new String(operator);
+        this.operator = operator;
     }
 
     /**
@@ -64,7 +64,7 @@ public class ZExpression implements ZExp {
      * @param firstOperand The 1st operand
      */
     public ZExpression(final String operator, final ZExp firstOperand) {
-        this.operator = new String(operator);
+        this.operator = operator;
         this.addOperand(firstOperand);
     }
 
@@ -76,7 +76,7 @@ public class ZExpression implements ZExp {
      * @param thirdOperand  The 2nd operand
      */
     public ZExpression(final String operator, final ZExp secondOperand, final ZExp thirdOperand) {
-        this.operator = new String(operator);
+        this.operator = operator;
         this.addOperand(secondOperand);
         this.addOperand(thirdOperand);
     }
@@ -211,19 +211,19 @@ public class ZExpression implements ZExp {
                     else if (this.operator.equals(ZCommonConstants.COMMA)) {
                         buf.append(operand.toString());
                     } else {
-                        buf.append(this.operator + ZCommonConstants.EMPTY_STRING + operand.toString());
+                        buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(operand.toString());
                     }
                 } else if (operand instanceof ZQuery) {
-                    buf.append(this.operator + ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET + operand.toString() + ZCommonConstants.RIGHT_BRACKET);
+                    buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(ZCommonConstants.LEFT_BRACKET).append(operand.toString()).append(ZCommonConstants.RIGHT_BRACKET);
                 } else {
                     if (this.operator.equals(ZCommonConstants.IS_NULL) || this.operator.equals(ZCommonConstants.IS_NOT_NULL)) {
-                        buf.append(operand.toString() + ZCommonConstants.EMPTY_STRING + this.operator);
+                        buf.append(operand.toString()).append(ZCommonConstants.EMPTY_STRING).append(this.operator);
                     }
                     // "," = list of values, here just one single value
                     else if (this.operator.equals(ZCommonConstants.COMMA)) {
                         buf.append(operand.toString());
                     } else {
-                        buf.append(this.operator + ZCommonConstants.EMPTY_STRING + operand.toString());
+                        buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(operand.toString());
                     }
                 }
                 break;

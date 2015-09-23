@@ -58,7 +58,7 @@ public class ZInsert implements ZStatement {
      * @param tableName the table name.
      */
     public ZInsert(final String tableName) {
-        this.tableName = new String(tableName);
+        this.tableName = tableName;
     }
 
     /**

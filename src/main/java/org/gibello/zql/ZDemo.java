@@ -194,9 +194,8 @@ public final class ZDemo {
 
     /**
      * @param ins insert query.
-     * @throws IOException the exception.
      */
-    static void insertDB(final ZInsert ins) throws IOException {
+    static void insertDB(final ZInsert ins) {
         System.out.println("Should implement INSERT here");
         System.out.println(ins.toString());
     }

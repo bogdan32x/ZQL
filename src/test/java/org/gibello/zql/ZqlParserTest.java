@@ -56,23 +56,19 @@ public class ZqlParserTest {
     }
 
     private DataInputStream given_a_valid_select_from_multiple_tables_with_a_wildcard_operator() throws FileNotFoundException {
-        DataInputStream dis = new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_from_multiple_tables_with_wildcard.sql")));
-        return dis;
+        return new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_from_multiple_tables_with_wildcard.sql")));
     }
 
     private DataInputStream given_a_valid_select_from_two_tables_with_a_wildcard_operator() throws FileNotFoundException {
-        DataInputStream dis = new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_from_two_tables_with_wildcard.sql")));
-        return dis;
+        return new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_from_two_tables_with_wildcard.sql")));
     }
 
     private ZqlParser when_the_parser_is_initialized(DataInputStream is) {
-        ZqlParser parser = new ZqlParser(is);
-        return parser;
+        return new ZqlParser(is);
     }
 
     private DataInputStream given_a_valid_select_with_a_wildcard_operator() throws FileNotFoundException {
-        DataInputStream dis = new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_with_wildcard.sql")));
-        return dis;
+        return new DataInputStream(new FileInputStream(new File("src/test/resources/valid_select_with_wildcard.sql")));
     }
 
     private void then_given_sql_should_be_the_same_as_the_parsed_sql(ZqlParser parser, String rawSqlContent, String expectedResult)

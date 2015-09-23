@@ -51,7 +51,7 @@ public class ZTransactStmt implements ZStatement {
      * @param statement the statement string.
      */
     public ZTransactStmt(final String statement) {
-        this.setStatement(new String(statement));
+        this.setStatement(statement);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ZTransactStmt implements ZStatement {
      * @param comment the comment.
      */
     public void setComment(final String comment) {
-        this.comment = new String(comment);
+        this.comment = comment;
     }
 
     /**

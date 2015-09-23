@@ -49,7 +49,7 @@ public class ZDelete implements ZStatement {
      * @param tab the table name
      */
     public ZDelete(final String tab) {
-        this.table = new String(tab);
+        this.table = tab;
     }
 
     /**
@@ -83,7 +83,7 @@ public class ZDelete implements ZStatement {
         }
         buf.append(this.table);
         if (this.where != null) {
-            buf.append(" where " + this.where.toString());
+            buf.append(" where ").append(this.where.toString());
         }
         return buf.toString();
     }
