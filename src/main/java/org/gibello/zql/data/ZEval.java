@@ -267,7 +267,7 @@ public class ZEval {
 
         final String op = exp.getOperator();
 
-        final Object o1 = this.evalExpValue(tuple, (ZExp) exp.getOperand(0));
+        final Object o1 = this.evalExpValue(tuple, exp.getOperand(0));
         if (!(o1 instanceof Double)) {
             throw new SQLException(ZCommonConstants.ZEVAL_NUMERIC_EXP_EXPRESSION_NOT_NUMERIC);
         }
@@ -278,7 +278,7 @@ public class ZEval {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, (ZExp) exp.getOperand(i));
+                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                 val += ((Number) obj).doubleValue();
             }
             return val;
@@ -290,7 +290,7 @@ public class ZEval {
                 return -val;
             }
             for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, (ZExp) exp.getOperand(i));
+                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                 val -= ((Number) obj).doubleValue();
             }
             return val;
@@ -299,7 +299,7 @@ public class ZEval {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, (ZExp) exp.getOperand(i));
+                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                 val *= ((Number) obj).doubleValue();
             }
             return val;
@@ -308,7 +308,7 @@ public class ZEval {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, (ZExp) exp.getOperand(i));
+                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                 val /= ((Number) obj).doubleValue();
             }
             return val;
@@ -317,7 +317,7 @@ public class ZEval {
 
             double val = dobj.doubleValue();
             for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, (ZExp) exp.getOperand(i));
+                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                 val = Math.pow(val, ((Number) obj).doubleValue());
             }
             return val;
@@ -368,7 +368,7 @@ public class ZEval {
                     break;
             }
         } else if (exp instanceof ZExpression) {
-            o2 = new Double(this.evalNumericExp(tuple, (ZExpression) exp));
+            o2 = this.evalNumericExp(tuple, (ZExpression) exp);
         }
         return o2;
     }

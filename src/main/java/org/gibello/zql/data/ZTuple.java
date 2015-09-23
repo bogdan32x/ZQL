@@ -109,13 +109,13 @@ public class ZTuple {
             final boolean exist = this.searchTable.containsKey(name);
 
             if (exist) {
-                final int i = ((Integer) this.searchTable.get(name)).intValue();
+                final int i = this.searchTable.get(name);
                 this.values.setElementAt(value, i);
             } else {
                 final int i = this.attributes.size();
                 this.attributes.addElement(name);
                 this.values.addElement(value);
-                this.searchTable.put(name, new Integer(i));
+                this.searchTable.put(name, i);
             }
         }
     }
@@ -130,7 +130,7 @@ public class ZTuple {
         String getAttributeName;
 
         try {
-            getAttributeName = (String) this.attributes.elementAt(index);
+            getAttributeName = this.attributes.elementAt(index);
         } catch (final ArrayIndexOutOfBoundsException e) {
             getAttributeName = null;
         }
@@ -152,10 +152,10 @@ public class ZTuple {
             result = -1;
         }
 
-        final Integer index = (Integer) this.searchTable.get(name);
+        final Integer index = this.searchTable.get(name);
 
         if (index != null) {
-            result = index.intValue();
+            result = index;
         } else {
             result = -1;
         }
@@ -198,7 +198,7 @@ public class ZTuple {
         Object getAttributeValue;
 
         if (exist) {
-            final int index = ((Integer) this.searchTable.get(name)).intValue();
+            final int index = this.searchTable.get(name);
             getAttributeValue = this.values.elementAt(index);
         } else {
             getAttributeValue = null;
