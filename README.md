@@ -28,7 +28,7 @@ ZQL
      *gmail - bogdan.mariesan@gmail.com
      *skype - bogdan32x
 
-###Continuous Integration
+###Travis Continuous Integration
 ![ZQL Continuous Integration](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)
 
 The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
