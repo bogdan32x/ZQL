@@ -122,9 +122,9 @@ public class ZInsert implements ZStatement {
         final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
         if (this.tableColumns != null && this.tableColumns.size() > 0) {
             // buf.append(" " + columns_.toString());
-            buf.append(ZCommonConstants.LEFT_BRACKET + this.tableColumns.get(0));
+            buf.append(ZCommonConstants.LEFT_BRACKET).append(this.tableColumns.get(0));
             for (int i = 1; i < this.tableColumns.size(); i++) {
-                buf.append("," + this.tableColumns.get(i));
+                buf.append(",").append(this.tableColumns.get(i));
             }
             buf.append(ZCommonConstants.RIGHT_BRACKET);
         }
@@ -137,7 +137,7 @@ public class ZInsert implements ZStatement {
         if (vlist.startsWith(ZCommonConstants.LEFT_BRACKET)) {
             buf.append(vlist);
         } else {
-            buf.append(ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET + vlist + ZCommonConstants.RIGHT_BRACKET);
+            buf.append(ZCommonConstants.EMPTY_STRING + ZCommonConstants.LEFT_BRACKET).append(vlist).append(ZCommonConstants.RIGHT_BRACKET);
         }
 
         return buf.toString();

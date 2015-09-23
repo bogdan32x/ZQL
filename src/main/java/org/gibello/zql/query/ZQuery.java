@@ -247,31 +247,31 @@ public class ZQuery implements ZStatement, ZExp {
         int i;
         buf.append(this.select.get(0).toString());
         for (i = 1; i < this.select.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.select.get(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING).append(this.select.get(i).toString());
         }
 
         // buf.append(" from " + from_.toString());
         buf.append(" from ");
         buf.append(this.from.get(0).toString());
         for (i = 1; i < this.from.size(); i++) {
-            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING + this.from.get(i).toString());
+            buf.append(ZCommonConstants.COMMA + ZCommonConstants.EMPTY_STRING).append(this.from.get(i).toString());
         }
 
         if (this.where != null) {
-            buf.append(" where " + this.where.toString());
+            buf.append(" where ").append(this.where.toString());
         }
         if (this.groupby != null) {
-            buf.append(ZCommonConstants.EMPTY_STRING + this.groupby.toString());
+            buf.append(ZCommonConstants.EMPTY_STRING).append(this.groupby.toString());
         }
         if (this.setclause != null) {
-            buf.append(ZCommonConstants.EMPTY_STRING + this.setclause.toString());
+            buf.append(ZCommonConstants.EMPTY_STRING).append(this.setclause.toString());
         }
         if (this.orderby != null) {
             buf.append(" order by ");
             // buf.append(orderby_.toString());
             buf.append(this.orderby.get(0).toString());
             for (i = 1; i < this.orderby.size(); i++) {
-                buf.append(", " + this.orderby.get(i).toString());
+                buf.append(", ").append(this.orderby.get(i).toString());
             }
         }
         if (this.forupdate) {

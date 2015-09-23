@@ -88,10 +88,10 @@ public class ZGroupBy implements Serializable {
         // buf.append(groupby_.toString());
         buf.append(this.groupBy.get(0).toString());
         for (int i = 1; i < this.groupBy.size(); i++) {
-            buf.append(", " + this.groupBy.get(i).toString());
+            buf.append(", ").append(this.groupBy.get(i).toString());
         }
         if (this.having != null) {
-            buf.append(" having " + this.having.toString());
+            buf.append(" having ").append(this.having.toString());
         }
         return buf.toString();
     }

@@ -255,7 +255,7 @@ public class ZTuple {
             } else {
                 valueS = value.toString();
             }
-            resp.append(attS + ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING + valueS);
+            resp.append(attS).append(ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING).append(valueS);
         }
 
         for (int i = 1; i < this.attributes.size(); i++) {
@@ -272,7 +272,7 @@ public class ZTuple {
             } else {
                 valueS = value.toString();
             }
-            resp.append(", " + attS + ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING + valueS);
+            resp.append(", ").append(attS).append(ZCommonConstants.EQUALS_WITH_WHITESPACE_STRING).append(valueS);
         }
         resp.append("]");
         return resp.toString();

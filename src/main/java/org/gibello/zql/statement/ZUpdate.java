@@ -207,7 +207,7 @@ public class ZUpdate implements ZStatement {
     public String toString() {
         final StringBuffer buf = new StringBuffer("update " + this.tableName);
         if (this.tableAlias != null) {
-            buf.append(" " + this.tableAlias);
+            buf.append(" ").append(this.tableAlias);
         }
 
         buf.append(" set ");
@@ -227,12 +227,12 @@ public class ZUpdate implements ZStatement {
                 buf.append(", ");
             }
 
-            buf.append(key + "=" + this.setValues.get(key).toString());
+            buf.append(key).append("=").append(this.setValues.get(key).toString());
             first = false;
         }
 
         if (this.whereClause != null) {
-            buf.append(" where " + this.whereClause.toString());
+            buf.append(" where ").append(this.whereClause.toString());
         }
 
         return buf.toString();

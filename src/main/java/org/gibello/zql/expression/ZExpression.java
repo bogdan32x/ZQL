@@ -214,8 +214,8 @@ public class ZExpression implements ZExp {
 
             case ZCommonConstants.MAGIC_NUMBER_3:
                 if (this.operator.toUpperCase().endsWith("BETWEEN")) {
-                    buf.append(this.getOperand(0).toString() + ZCommonConstants.EMPTY_STRING + this.operator + ZCommonConstants.EMPTY_STRING + this.getOperand(1)
-                            .toString() + " AND " + this.getOperand(ZCommonConstants.MAGIC_NUMBER_2).toString());
+                    buf.append(this.getOperand(0).toString()).append(ZCommonConstants.EMPTY_STRING).append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(this.getOperand(1)
+                            .toString()).append(" AND ").append(this.getOperand(ZCommonConstants.MAGIC_NUMBER_2).toString());
                     break;
                 }
 
@@ -230,12 +230,12 @@ public class ZExpression implements ZExp {
                 for (int i = 0; i < nb; i++) {
 
                     if (inOperator && i == 1) {
-                        buf.append(ZCommonConstants.EMPTY_STRING + this.operator + " (");
+                        buf.append(ZCommonConstants.EMPTY_STRING).append(this.operator).append(" (");
                     }
 
                     operand = this.getOperand(i);
                     if (operand instanceof ZQuery && !inOperator) {
-                        buf.append(ZCommonConstants.LEFT_BRACKET + operand.toString() + ZCommonConstants.RIGHT_BRACKET);
+                        buf.append(ZCommonConstants.LEFT_BRACKET).append(operand.toString()).append(ZCommonConstants.RIGHT_BRACKET);
                     } else {
                         buf.append(operand.toString());
                     }
@@ -243,7 +243,7 @@ public class ZExpression implements ZExp {
                         if (this.operator.equals(ZCommonConstants.COMMA) || (inOperator && i > 0)) {
                             buf.append(", ");
                         } else if (!inOperator) {
-                            buf.append(ZCommonConstants.EMPTY_STRING + this.operator + ZCommonConstants.EMPTY_STRING);
+                            buf.append(ZCommonConstants.EMPTY_STRING).append(this.operator).append(ZCommonConstants.EMPTY_STRING);
                         }
                     }
                 }
@@ -280,7 +280,7 @@ public class ZExpression implements ZExp {
         final StringBuffer b = new StringBuffer(this.operator + ZCommonConstants.LEFT_BRACKET);
         final int nb = this.nbOperands();
         for (int i = 0; i < nb; i++) {
-            b.append(this.getOperand(i).toString() + (i < nb - 1 ? ZCommonConstants.COMMA : ""));
+            b.append(this.getOperand(i).toString()).append(i < nb - 1 ? ZCommonConstants.COMMA : "");
         }
         b.append(ZCommonConstants.RIGHT_BRACKET);
         return b.toString();
