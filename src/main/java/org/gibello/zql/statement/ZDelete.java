@@ -77,7 +77,7 @@ public class ZDelete implements ZStatement {
 
     @Override
     public String toString() {
-        final StringBuffer buf = new StringBuffer("delete ");
+        final StringBuilder buf = new StringBuilder("delete ");
         if (this.where != null) {
             buf.append("from ");
         }

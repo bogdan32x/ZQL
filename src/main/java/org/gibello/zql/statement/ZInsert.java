@@ -119,7 +119,7 @@ public class ZInsert implements ZStatement {
 
     @Override
     public String toString() {
-        final StringBuffer buf = new StringBuffer("insert into " + this.tableName);
+        final StringBuilder buf = new StringBuilder("insert into " + this.tableName);
         if (this.tableColumns != null && this.tableColumns.size() > 0) {
             // buf.append(" " + columns_.toString());
             buf.append(ZCommonConstants.LEFT_BRACKET).append(this.tableColumns.get(0));

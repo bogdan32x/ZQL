@@ -95,89 +95,97 @@ public class ZEval {
         final ZExpression pred = (ZExpression) exp;
         final String op = pred.getOperator();
 
-        if (op.equals(ZCommonConstants.AND)) {
-            boolean and = true;
-            for (int i = 0; i < pred.nbOperands(); i++) {
-                and &= this.eval(tuple, pred.getOperand(i));
+        switch (op) {
+            case ZCommonConstants.AND:
+                boolean and = true;
+                for (int i = 0; i < pred.nbOperands(); i++) {
+                    and &= this.eval(tuple, pred.getOperand(i));
+                }
+                return and;
+            case ZCommonConstants.OR:
+                boolean or = false;
+                for (int i = 0; i < pred.nbOperands(); i++) {
+                    or |= this.eval(tuple, pred.getOperand(i));
+                }
+                return or;
+            case ZCommonConstants.NOT:
+                return !this.eval(tuple, pred.getOperand(0));
+
+            case ZCommonConstants.EQUALS:
+                return evalCmp(tuple, pred.getOperands()) == 0;
+            case ZCommonConstants.NOT_EQUALS:
+                return evalCmp(tuple, pred.getOperands()) != 0;
+            case ZCommonConstants.EXCLUDING:
+                return evalCmp(tuple, pred.getOperands()) != 0;
+            case ZCommonConstants.DIEZ:
+                throw new SQLException(ZCommonConstants.ZEVAL_OPERATOR_NOT_SUPPORTED);
+            case ZCommonConstants.GREATER_THAN:
+                return evalCmp(tuple, pred.getOperands()) > 0;
+            case ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS:
+                return evalCmp(tuple, pred.getOperands()) >= 0;
+            case ZCommonConstants.LESSER_THAN:
+                return evalCmp(tuple, pred.getOperands()) < 0;
+            case ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS:
+                return evalCmp(tuple, pred.getOperands()) <= 0;
+
+            case ZCommonConstants.BETWEEN:
+            case ZCommonConstants.NOT_BETWEEN: {
+
+                // Between: borders included
+                final ZExpression newexp = new ZExpression(ZCommonConstants.AND,
+                        new ZExpression(ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(1)),
+                        new ZExpression(ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(2)));
+
+                if (op.equals(ZCommonConstants.NOT_BETWEEN)) {
+                    return !this.eval(tuple, newexp);
+                } else {
+                    return this.eval(tuple, newexp);
+                }
+
             }
-            return and;
-        } else if (op.equals(ZCommonConstants.OR)) {
-            boolean or = false;
-            for (int i = 0; i < pred.nbOperands(); i++) {
-                or |= this.eval(tuple, pred.getOperand(i));
+            case ZCommonConstants.LIKE:
+            case ZCommonConstants.NOT_LIKE:
+                final boolean like = this.evalLike(tuple, pred.getOperands());
+                return op.equals(ZCommonConstants.LIKE) ? like : !like;
+
+            case ZCommonConstants.IN:
+            case ZCommonConstants.NOT_IN: {
+
+                final ZExpression newexp = new ZExpression(ZCommonConstants.OR);
+
+                for (int i = 1; i < pred.nbOperands(); i++) {
+                    newexp.addOperand(new ZExpression(ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(i)));
+                }
+
+                if (op.equals(ZCommonConstants.NOT_IN)) {
+                    return !this.eval(tuple, newexp);
+                } else {
+                    return this.eval(tuple, newexp);
+                }
+
             }
-            return or;
-        } else if (op.equals(ZCommonConstants.NOT)) {
-            return !this.eval(tuple, pred.getOperand(0));
+            case ZCommonConstants.IS_NULL: {
 
-        } else if (op.equals(ZCommonConstants.EQUALS)) {
-            return evalCmp(tuple, pred.getOperands()) == 0;
-        } else if (op.equals(ZCommonConstants.NOT_EQUALS)) {
-            return evalCmp(tuple, pred.getOperands()) != 0;
-        } else if (op.equals(ZCommonConstants.EXCLUDING)) {
-            return evalCmp(tuple, pred.getOperands()) != 0;
-        } else if (op.equals(ZCommonConstants.DIEZ)) {
-            throw new SQLException(ZCommonConstants.ZEVAL_OPERATOR_NOT_SUPPORTED);
-        } else if (op.equals(ZCommonConstants.GREATER_THAN)) {
-            return evalCmp(tuple, pred.getOperands()) > 0;
-        } else if (op.equals(ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS)) {
-            return evalCmp(tuple, pred.getOperands()) >= 0;
-        } else if (op.equals(ZCommonConstants.LESSER_THAN)) {
-            return evalCmp(tuple, pred.getOperands()) < 0;
-        } else if (op.equals(ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS)) {
-            return evalCmp(tuple, pred.getOperands()) <= 0;
+                if (pred.nbOperands() <= 0 || pred.getOperand(0) == null) {
+                    return true;
+                }
+                final ZExp x = pred.getOperand(0);
+                if (x instanceof ZConstant) {
+                    return ((ZConstant) x).getType() == ZConstant.NULL;
+                } else {
+                    throw new SQLException(ZCommonConstants.ZEVAL_CAN_T_EVAL_IS_NOT_NULL);
+                }
 
-        } else if (op.equals(ZCommonConstants.BETWEEN) || op.equals(ZCommonConstants.NOT_BETWEEN)) {
-
-            // Between: borders included
-            final ZExpression newexp = new ZExpression(ZCommonConstants.AND,
-                    new ZExpression(ZCommonConstants.GREATER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(1)),
-                    new ZExpression(ZCommonConstants.LESSER_THAN + ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(2)));
-
-            if (op.equals(ZCommonConstants.NOT_BETWEEN)) {
-                return !this.eval(tuple, newexp);
-            } else {
-                return this.eval(tuple, newexp);
             }
+            case ZCommonConstants.IS_NOT_NULL: {
 
-        } else if (op.equals(ZCommonConstants.LIKE) || op.equals(ZCommonConstants.NOT_LIKE)) {
-            final boolean like = this.evalLike(tuple, pred.getOperands());
-            return op.equals(ZCommonConstants.LIKE) ? like : !like;
+                final ZExpression x = new ZExpression(ZCommonConstants.IS_NULL);
+                x.setOperands(pred.getOperands());
+                return !this.eval(tuple, x);
 
-        } else if (op.equals(ZCommonConstants.IN) || op.equals(ZCommonConstants.NOT_IN)) {
-
-            final ZExpression newexp = new ZExpression(ZCommonConstants.OR);
-
-            for (int i = 1; i < pred.nbOperands(); i++) {
-                newexp.addOperand(new ZExpression(ZCommonConstants.EQUALS, pred.getOperand(0), pred.getOperand(i)));
             }
-
-            if (op.equals(ZCommonConstants.NOT_IN)) {
-                return !this.eval(tuple, newexp);
-            } else {
-                return this.eval(tuple, newexp);
-            }
-
-        } else if (op.equals(ZCommonConstants.IS_NULL)) {
-
-            if (pred.nbOperands() <= 0 || pred.getOperand(0) == null) {
-                return true;
-            }
-            final ZExp x = pred.getOperand(0);
-            if (x instanceof ZConstant) {
-                return ((ZConstant) x).getType() == ZConstant.NULL;
-            } else {
-                throw new SQLException(ZCommonConstants.ZEVAL_CAN_T_EVAL_IS_NOT_NULL);
-            }
-
-        } else if (op.equals(ZCommonConstants.IS_NOT_NULL)) {
-
-            final ZExpression x = new ZExpression(ZCommonConstants.IS_NULL);
-            x.setOperands(pred.getOperands());
-            return !this.eval(tuple, x);
-
-        } else {
-            throw new SQLException(ZCommonConstants.ZEVAL_UNKNOWN_OPERATOR + op);
+            default:
+                throw new SQLException(ZCommonConstants.ZEVAL_UNKNOWN_OPERATOR + op);
         }
 
     }
@@ -271,56 +279,62 @@ public class ZEval {
 
         final Double dobj = (Double) o1;
 
-        if (op.equals(ZCommonConstants.PLUS)) {
+        switch (op) {
+            case ZCommonConstants.PLUS: {
 
-            double val = dobj.doubleValue();
-            for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
-                val += ((Number) obj).doubleValue();
+                double val = dobj.doubleValue();
+                for (int i = 1; i < exp.nbOperands(); i++) {
+                    final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
+                    val += ((Number) obj).doubleValue();
+                }
+                return val;
+
             }
-            return val;
+            case ZCommonConstants.MINUS: {
 
-        } else if (op.equals(ZCommonConstants.MINUS)) {
+                double val = dobj.doubleValue();
+                if (exp.nbOperands() == 1) {
+                    return -val;
+                }
+                for (int i = 1; i < exp.nbOperands(); i++) {
+                    final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
+                    val -= ((Number) obj).doubleValue();
+                }
+                return val;
 
-            double val = dobj.doubleValue();
-            if (exp.nbOperands() == 1) {
-                return -val;
             }
-            for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
-                val -= ((Number) obj).doubleValue();
+            case ZCommonConstants.MULTIPLICATION: {
+
+                double val = dobj.doubleValue();
+                for (int i = 1; i < exp.nbOperands(); i++) {
+                    final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
+                    val *= ((Number) obj).doubleValue();
+                }
+                return val;
+
             }
-            return val;
+            case ZCommonConstants.SLASH: {
 
-        } else if (op.equals(ZCommonConstants.MULTIPLICATION)) {
+                double val = dobj.doubleValue();
+                for (int i = 1; i < exp.nbOperands(); i++) {
+                    final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
+                    val /= ((Number) obj).doubleValue();
+                }
+                return val;
 
-            double val = dobj.doubleValue();
-            for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
-                val *= ((Number) obj).doubleValue();
             }
-            return val;
+            case ZCommonConstants.MULTIPLICATION + ZCommonConstants.MULTIPLICATION: {
 
-        } else if (op.equals(ZCommonConstants.SLASH)) {
+                double val = dobj.doubleValue();
+                for (int i = 1; i < exp.nbOperands(); i++) {
+                    final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
+                    val = Math.pow(val, ((Number) obj).doubleValue());
+                }
+                return val;
 
-            double val = dobj.doubleValue();
-            for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
-                val /= ((Number) obj).doubleValue();
             }
-            return val;
-
-        } else if (op.equals(ZCommonConstants.MULTIPLICATION + ZCommonConstants.MULTIPLICATION)) {
-
-            double val = dobj.doubleValue();
-            for (int i = 1; i < exp.nbOperands(); i++) {
-                final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
-                val = Math.pow(val, ((Number) obj).doubleValue());
-            }
-            return val;
-
-        } else {
-            throw new SQLException("ZConstans.evalNumericExp(): Unknown operator " + op);
+            default:
+                throw new SQLException("ZConstans.evalNumericExp(): Unknown operator " + op);
         }
     }
 

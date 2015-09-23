@@ -83,7 +83,7 @@ public class ZGroupBy implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer buf = new StringBuffer("group by ");
+        final StringBuilder buf = new StringBuilder("group by ");
 
         // buf.append(groupby_.toString());
         buf.append(this.groupBy.get(0).toString());

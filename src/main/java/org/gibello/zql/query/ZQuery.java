@@ -238,7 +238,7 @@ public class ZQuery implements ZStatement, ZExp {
 
     @Override
     public String toString() {
-        final StringBuffer buf = new StringBuffer("select ");
+        final StringBuilder buf = new StringBuilder("select ");
         if (this.distinct) {
             buf.append("distinct ");
         }

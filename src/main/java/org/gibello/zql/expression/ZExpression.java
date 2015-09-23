@@ -115,7 +115,7 @@ public class ZExpression implements ZExp {
      */
     public void addOperand(final ZExp operand) {
         if (this.operands == null) {
-            this.operands = new Vector<ZExp>();
+            this.operands = new Vector<>();
         }
         this.operands.add(operand);
     }
@@ -145,7 +145,7 @@ public class ZExpression implements ZExp {
      * @return The current expression in reverse polish notation (a String)
      */
     public String toReversePolish() {
-        final StringBuffer buf = new StringBuffer(ZCommonConstants.LEFT_BRACKET);
+        final StringBuilder buf = new StringBuilder(ZCommonConstants.LEFT_BRACKET);
         buf.append(this.operator);
         for (int i = 0; i < this.nbOperands(); i++) {
             final ZExp opr = this.getOperand(i);
@@ -174,7 +174,7 @@ public class ZExpression implements ZExp {
             return this.formatFunction();
         }
 
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         if (needPar(this.operator)) {
             buf.append(ZCommonConstants.LEFT_BRACKET);
         }
@@ -200,14 +200,18 @@ public class ZExpression implements ZExp {
                 } else if (operand instanceof ZQuery) {
                     buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(ZCommonConstants.LEFT_BRACKET).append(operand.toString()).append(ZCommonConstants.RIGHT_BRACKET);
                 } else {
-                    if (this.operator.equals(ZCommonConstants.IS_NULL) || this.operator.equals(ZCommonConstants.IS_NOT_NULL)) {
-                        buf.append(operand.toString()).append(ZCommonConstants.EMPTY_STRING).append(this.operator);
-                    }
-                    // "," = list of values, here just one single value
-                    else if (this.operator.equals(ZCommonConstants.COMMA)) {
-                        buf.append(operand.toString());
-                    } else {
-                        buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(operand.toString());
+                    switch (this.operator) {
+                        case ZCommonConstants.IS_NULL:
+                        case ZCommonConstants.IS_NOT_NULL:
+                            buf.append(operand.toString()).append(ZCommonConstants.EMPTY_STRING).append(this.operator);
+                            break;
+                        // "," = list of values, here just one single value
+                        case ZCommonConstants.COMMA:
+                            buf.append(operand.toString());
+                            break;
+                        default:
+                            buf.append(this.operator).append(ZCommonConstants.EMPTY_STRING).append(operand.toString());
+                            break;
                     }
                 }
                 break;
@@ -277,7 +281,7 @@ public class ZExpression implements ZExp {
      * @return the formatted string.
      */
     private String formatFunction() {
-        final StringBuffer b = new StringBuffer(this.operator + ZCommonConstants.LEFT_BRACKET);
+        final StringBuilder b = new StringBuilder(this.operator + ZCommonConstants.LEFT_BRACKET);
         final int nb = this.nbOperands();
         for (int i = 0; i < nb; i++) {
             b.append(this.getOperand(i).toString()).append(i < nb - 1 ? ZCommonConstants.COMMA : "");

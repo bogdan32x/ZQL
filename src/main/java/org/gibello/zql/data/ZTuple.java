@@ -50,9 +50,9 @@ public class ZTuple {
      * The default constructor.
      */
     public ZTuple() {
-        this.attributes = new Vector<String>();
-        this.values = new Vector<Object>();
-        this.searchTable = new Hashtable<String, Integer>();
+        this.attributes = new Vector<>();
+        this.values = new Vector<>();
+        this.searchTable = new Hashtable<>();
     }
 
     /**
@@ -239,7 +239,7 @@ public class ZTuple {
         String attS;
         String valueS;
 
-        final StringBuffer resp = new StringBuffer();
+        final StringBuilder resp = new StringBuilder();
         resp.append("[");
         if (this.attributes.size() > 0) {
             att = this.attributes.elementAt(0);

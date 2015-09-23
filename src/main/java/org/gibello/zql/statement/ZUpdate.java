@@ -125,13 +125,13 @@ public class ZUpdate implements ZStatement {
      */
     public void addColumnUpdate(final String col, final ZExp val) {
         if (this.setValues == null) {
-            this.setValues = new Hashtable<String, ZExp>();
+            this.setValues = new Hashtable<>();
         }
 
         this.setValues.put(col, val);
 
         if (this.tableColumns == null) {
-            this.tableColumns = new Vector<String>();
+            this.tableColumns = new Vector<>();
         }
 
         this.tableColumns.addElement(col);
@@ -205,7 +205,7 @@ public class ZUpdate implements ZStatement {
 
     @Override
     public String toString() {
-        final StringBuffer buf = new StringBuffer("update " + this.tableName);
+        final StringBuilder buf = new StringBuilder("update " + this.tableName);
         if (this.tableAlias != null) {
             buf.append(" ").append(this.tableAlias);
         }

@@ -141,10 +141,10 @@ public class ZAliasedName implements Serializable {
         if (val == null) {
             result = null;
         }
-        if (val.indexOf(ZCommonConstants.LEFT_BRACKET) >= 0) {
+        if (val.contains(ZCommonConstants.LEFT_BRACKET)) {
             result = val.substring(val.lastIndexOf(ZCommonConstants.LEFT_BRACKET) + 1);
         }
-        if (val.indexOf(ZCommonConstants.RIGHT_BRACKET) >= 0) {
+        if (val.contains(ZCommonConstants.RIGHT_BRACKET)) {
             result = val.substring(0, val.indexOf(ZCommonConstants.RIGHT_BRACKET));
         }
 
