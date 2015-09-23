@@ -104,15 +104,7 @@ public class ZInsert implements ZStatement {
      * @return A vector of SQL Expressions (ZExp objects); If there's no VALUES but a subquery, returns null (use getQuery() method).
      */
     public List<ZExp> getValues() {
-
-        List<ZExp> result;
-
-        if (!(this.specifiedValues instanceof ZExpression)) {
-            result = null;
-        }
-        result = ((ZExpression) this.specifiedValues).getOperands();
-
-        return result;
+        return ((ZExpression) this.specifiedValues).getOperands();
     }
 
     /**
@@ -122,14 +114,7 @@ public class ZInsert implements ZStatement {
      * VALUES part).
      */
     public ZQuery getQuery() {
-        ZQuery result;
-
-        if (!(this.specifiedValues instanceof ZQuery)) {
-            result = null;
-        }
-        result = (ZQuery) this.specifiedValues;
-
-        return result;
+        return (ZQuery) this.specifiedValues;
     }
 
     @Override

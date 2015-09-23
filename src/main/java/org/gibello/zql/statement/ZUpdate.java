@@ -156,16 +156,7 @@ public class ZUpdate implements ZStatement {
      * @return a ZExp, like a ZConstant representing a value, or a more complex SQL expression.
      */
     public ZExp getColumnUpdate(final int index) {
-        int i = index;
         ZExp result;
-
-        if (--i < 0) {
-            result = null;
-        }
-
-        if (this.tableColumns == null || i >= this.tableColumns.size()) {
-            result = null;
-        }
 
         final String col = this.tableColumns.elementAt(index);
         result = this.setValues.get(col);
@@ -182,20 +173,7 @@ public class ZUpdate implements ZStatement {
      * @return The corresponding column name.
      */
     public String getColumnUpdateName(final int index) {
-        int i = index;
-        String result;
-
-        if (--i < 0) {
-            result = null;
-        }
-
-        if (this.tableColumns == null || i >= this.tableColumns.size()) {
-            result = null;
-        }
-
-        result = this.tableColumns.elementAt(index);
-
-        return result;
+        return this.tableColumns.elementAt(index);
     }
 
     /**
@@ -204,15 +182,7 @@ public class ZUpdate implements ZStatement {
      * @return the number of pairs in the SET clause.
      */
     public int getColumnUpdateCount() {
-        int result;
-
-        if (this.setValues == null) {
-            result = 0;
-        }
-
-        result = this.setValues.size();
-
-        return result;
+        return this.setValues.size();
     }
 
     /**

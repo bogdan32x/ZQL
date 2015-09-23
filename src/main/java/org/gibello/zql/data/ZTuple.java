@@ -152,12 +152,14 @@ public class ZTuple {
             result = -1;
         }
 
-        final Integer index = this.searchTable.get(name);
-
-        if (index != null) {
-            result = index;
-        } else {
-            result = -1;
+        final Integer index;
+        if (name != null) {
+            index = this.searchTable.get(name);
+            if (index != null) {
+                result = index;
+            } else {
+                result = -1;
+            }
         }
 
         return result;

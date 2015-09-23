@@ -77,7 +77,7 @@ public final class ZDemo {
     public static void main(final String[] args) {
         try {
 
-            ZqlParser p = null;
+            ZqlParser p;
 
             if (args.length < 1) {
                 System.out.println("Reading SQL from stdin (quit; or exit; to quit)");

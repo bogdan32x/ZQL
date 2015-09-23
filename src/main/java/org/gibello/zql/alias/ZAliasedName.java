@@ -209,7 +209,7 @@ public class ZAliasedName implements Serializable {
      * @return true if column is "*", false otherwise. Example: *, table.* are wildcards.
      */
     public boolean isWildcard() {
-        boolean result = false;
+        boolean result;
 
         if (this.formColumn == ZAliasedName.FORM_TABLE) {
             result = this.table != null && this.table.equals("*");

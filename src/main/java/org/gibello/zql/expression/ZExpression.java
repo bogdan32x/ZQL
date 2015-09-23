@@ -127,16 +127,7 @@ public class ZExpression implements ZExp {
      * @return The operand at the specified index, null if out of bounds.
      */
     public ZExp getOperand(final int pos) {
-
-        ZExp result;
-
-        if (this.operands == null || pos >= this.operands.size()) {
-            result = null;
-        }
-
-        result = this.operands.get(pos);
-
-        return result;
+        return this.operands.get(pos);
     }
 
     /**
@@ -145,14 +136,7 @@ public class ZExpression implements ZExp {
      * @return The number of operands
      */
     public int nbOperands() {
-        int result;
-
-        if (this.operands == null) {
-            result = 0;
-        }
-
-        result = this.operands.size();
-        return result;
+        return this.operands.size();
     }
 
     /**

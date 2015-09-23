@@ -199,11 +199,8 @@ public class ZEval {
             throw new SQLException(ZCommonConstants.ZEVAL_CMP_TRYING_TO_COMPARE_MORE_THAN_TWO_VALUES);
         }
 
-        Object o1 = null;
-        Object o2 = null;
-
-        o1 = this.evalExpValue(tuple, (ZExp) operands.get(0));
-        o2 = this.evalExpValue(tuple, (ZExp) operands.get(1));
+        Object o1 = this.evalExpValue(tuple, (ZExp) operands.get(0));
+        Object o2 = this.evalExpValue(tuple, (ZExp) operands.get(1));
 
         if (o1 instanceof String || o2 instanceof String) {
             return o1.equals(o2) ? 0 : -1;
