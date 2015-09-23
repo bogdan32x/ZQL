@@ -282,7 +282,7 @@ public class ZEval {
         switch (op) {
             case ZCommonConstants.PLUS: {
 
-                double val = dobj.doubleValue();
+                double val = dobj;
                 for (int i = 1; i < exp.nbOperands(); i++) {
                     final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                     val += ((Number) obj).doubleValue();
@@ -292,7 +292,7 @@ public class ZEval {
             }
             case ZCommonConstants.MINUS: {
 
-                double val = dobj.doubleValue();
+                double val = dobj;
                 if (exp.nbOperands() == 1) {
                     return -val;
                 }
@@ -305,7 +305,7 @@ public class ZEval {
             }
             case ZCommonConstants.MULTIPLICATION: {
 
-                double val = dobj.doubleValue();
+                double val = dobj;
                 for (int i = 1; i < exp.nbOperands(); i++) {
                     final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                     val *= ((Number) obj).doubleValue();
@@ -315,7 +315,7 @@ public class ZEval {
             }
             case ZCommonConstants.SLASH: {
 
-                double val = dobj.doubleValue();
+                double val = dobj;
                 for (int i = 1; i < exp.nbOperands(); i++) {
                     final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                     val /= ((Number) obj).doubleValue();
@@ -325,7 +325,7 @@ public class ZEval {
             }
             case ZCommonConstants.MULTIPLICATION + ZCommonConstants.MULTIPLICATION: {
 
-                double val = dobj.doubleValue();
+                double val = dobj;
                 for (int i = 1; i < exp.nbOperands(); i++) {
                     final Object obj = this.evalExpValue(tuple, exp.getOperand(i));
                     val = Math.pow(val, ((Number) obj).doubleValue());

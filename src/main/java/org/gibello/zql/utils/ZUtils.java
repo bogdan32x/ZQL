@@ -78,7 +78,7 @@ public final class ZUtils {
             nparam = -1;
         }
 
-        return nparam.intValue();
+        return nparam;
     }
 
     /**
