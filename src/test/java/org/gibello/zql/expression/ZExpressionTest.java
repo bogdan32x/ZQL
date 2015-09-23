@@ -17,15 +17,46 @@ public class ZExpressionTest {
 
     private static final Logger LOGGER = LogManager.getLogger(ZExpressionTest.class);
 
+    /* Unit test written for fixing issue #8 */
     @Test
-    public void zExpressionToStringNPE() throws ParseException {
-        String sqlString = "WHERE a = b OR c > 20";
-        ZqlJJParser parser = new ZqlJJParser(new StringReader(sqlString));
-        ZExp whereClause = parser.WhereClause();
+    public void zExpressionToStringNPEWhereClauseWithOrOperator() throws ParseException {
+        //given
+        final ZqlJJParser parser = givenAParserForTheSQLExpression("WHERE a = b OR c > 20");
+        //when
+        final ZExp whereClause = parser.WhereClause();
+        //then
+        assertExpressionToStringWorks(whereClause);
+    }
 
+    @Test
+    public void zExpressionToStringNPEWhereClauseWithAndOperator() throws ParseException {
+        //given
+        final ZqlJJParser parser = givenAParserForTheSQLExpression("WHERE a = b AND c > 20");
+        //when
+        final ZExp whereClause = parser.WhereClause();
+        //then
+        assertExpressionToStringWorks(whereClause);
+    }
+
+    /* Invalid operators will be removed from the WHERE clause */
+    @Test
+    public void zExpressionToStringNPEWhereClauseWithInvalidOperator() throws ParseException {
+        //given
+        final ZqlJJParser parser = givenAParserForTheSQLExpression("WHERE a = b INVALID c > 20");
+        //when
+        final ZExp whereClause = parser.WhereClause();
+        //then
+        assertExpressionToStringWorks(whereClause);
+    }
+
+    private void assertExpressionToStringWorks(ZExp whereClause) {
         assertNotNull(whereClause);
         String toString = whereClause.toString();
-        LOGGER.debug(toString);
         assertNotNull(toString);
+        LOGGER.debug(toString);
+    }
+
+    private ZqlJJParser givenAParserForTheSQLExpression(String sqlExpression) {
+        return new ZqlJJParser(new StringReader(sqlExpression));
     }
 }
