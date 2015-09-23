@@ -91,4 +91,4 @@ public class ZOrderBy implements Serializable {
         }
         return this.expression.toString() + " " + ascending;
     }
-};
+}

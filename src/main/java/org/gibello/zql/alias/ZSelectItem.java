@@ -126,4 +126,4 @@ public class ZSelectItem extends ZAliasedName {
     /**
      * TBD public String toString() { String agg = getAggregate(); if(agg == null) agg = ""; return agg + super.toString(); }
      **/
-};
+}

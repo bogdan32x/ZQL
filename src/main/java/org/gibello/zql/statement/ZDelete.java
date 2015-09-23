@@ -87,4 +87,4 @@ public class ZDelete implements ZStatement {
         }
         return buf.toString();
     }
-};
+}

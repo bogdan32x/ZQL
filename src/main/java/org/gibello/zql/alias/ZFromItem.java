@@ -46,4 +46,4 @@ public class ZFromItem extends ZAliasedName {
         super(fullname, ZAliasedName.FORM_TABLE);
     }
 
-};
+}

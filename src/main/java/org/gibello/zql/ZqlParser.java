@@ -54,8 +54,6 @@ public class ZqlParser {
 
     }
 
-    ;
-
     /**
      * Initialize (or re-initialize) the input stream for the parser.
      *
@@ -118,4 +116,4 @@ public class ZqlParser {
         return this.parser.SQLExpression();
     }
 
-};
+}

@@ -95,4 +95,4 @@ public class ZLockTable implements ZStatement {
     public void setNowait(final boolean noWait) {
         this.noWait = noWait;
     }
-};
+}

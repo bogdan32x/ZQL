@@ -267,4 +267,4 @@ public class ZUpdate implements ZStatement {
 
         return buf.toString();
     }
-};
+}

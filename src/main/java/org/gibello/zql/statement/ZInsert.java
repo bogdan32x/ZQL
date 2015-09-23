@@ -157,4 +157,4 @@ public class ZInsert implements ZStatement {
 
         return buf.toString();
     }
-};
+}

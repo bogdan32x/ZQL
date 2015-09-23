@@ -337,4 +337,4 @@ public class ZQuery implements ZStatement, ZExp {
         this.forupdate = forupdate;
     }
 
-};
+}

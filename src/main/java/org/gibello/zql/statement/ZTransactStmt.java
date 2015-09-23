@@ -101,4 +101,4 @@ public class ZTransactStmt implements ZStatement {
     public void setStatement(final String statement) {
         this.statement = statement;
     }
-};
+}

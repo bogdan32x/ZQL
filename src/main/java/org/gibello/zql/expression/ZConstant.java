@@ -96,4 +96,4 @@ public class ZConstant implements ZExp {
 
         return toString;
     }
-};
+}
