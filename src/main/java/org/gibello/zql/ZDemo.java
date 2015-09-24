@@ -136,7 +136,7 @@ public final class ZDemo {
         // <tableName> is the table name in the FROM clause
         // BufferedReader db1 = new BufferedReader(new
         // FileReader(table.getTable() + ".db"));
-        final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getResourceAsStream(table.getTable() + ".db")));
+        final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getClassLoader().getResourceAsStream(table.getTable() + ".db")));
 
         // Read the column names (the 1st line of the .db file)
         final ZTuple tuple = new ZTuple(db.readLine());

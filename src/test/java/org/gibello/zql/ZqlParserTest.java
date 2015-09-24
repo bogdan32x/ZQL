@@ -72,7 +72,7 @@ public class ZqlParserTest {
     }
 
     private void then_given_sql_should_be_the_same_as_the_parsed_sql(ZqlParser parser, String rawSqlContent, String expectedResult)
-            throws ParseException, IOException {
+            throws ParseException {
         assertNotNull(parser);
         assertNotNull(rawSqlContent);
 
