@@ -1,5 +1,24 @@
 ZQL
 ===
+###Contributing
+
+If you would like to contribute please contact me using the details below:
+
+    * email: bogdan.mariesan@gmail.com
+    * skype: bogdan32x
+
+###Travis Continuous Integration
+![ZQL Continuous Integration](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)
+
+The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
+
+###Usage Eg.
+TBD
+
+###Issues
+[Know Issues and Enhancements](https://github.com/bogdan32x/ZQL/issues)
+
+Any known issues can be found on the GitHub issue tracker. Feel free to add more issues with as much information as possible so that it is easier to reproduce them.
 
 ###Copyright
 
@@ -27,16 +46,3 @@ ZQL
     Contact details:
      *gmail - bogdan.mariesan@gmail.com
      *skype - bogdan32x
-
-###Travis Continuous Integration
-![ZQL Continuous Integration](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)
-
-The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
-
-###Usage Eg.
-TBD
-
-###Issues
-[Know Issues and Enhancements](https://github.com/bogdan32x/ZQL/issues)
-
-Any known issues can be found on the GitHub issue tracker. Feel free to add more issues with as much information as possible so that it is easier to reproduce them.
