@@ -1,3 +1,7 @@
 sudo: false
 language: java
+before_script:
+  - pip install --user codecov
 script: mvn clean test
+after_success:
+  - codecov
