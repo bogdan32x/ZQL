@@ -8,7 +8,7 @@ If you would like to contribute please contact me using the details below:
     * skype: bogdan32x
 
 ###Travis Continuous Integration
-![ZQL Continuous Integration](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)
+[![Build Status](https://api.travis-ci.org/bogdan32x/ZQL.svg?branch=master)](https://travis-ci.org/bogdan32x/ZQL) [![Coverage Status](https://img.shields.io/codecov/c/github/bogdan32x/ZQL.svg)](https://codecov.io/github/bogdan32x/ZQL)
 
 The CI server ensures that code quality is kept within standards. If you want to contribute make sure that each time you commit something new the latest CI build is still working.
 
