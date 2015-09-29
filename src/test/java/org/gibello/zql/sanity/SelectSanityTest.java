@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Bogdan Mariesan, Romania, on 29-09-2015
  */
-public class SelectSanityTests {
+public class SelectSanityTest {
 
     ZQLTestUtils testUtils = new ZQLTestUtils();
 
