@@ -44,7 +44,6 @@ public class ZEval {
 
     }
 
-    // CHECKSTYLE:OFF
     // FIXME extract to proper test module!!!
     // test
     public static void main(String args[]) {
@@ -380,8 +379,7 @@ public class ZEval {
             }
         } else if (exp instanceof ZExpression) {
             o2 = this.evalNumericExp(tuple, (ZExpression) exp);
-        }
+            }
         return o2;
     }
-    // CHECKSTYLE:ON
 }

@@ -15,8 +15,10 @@
  * along with Zql.  If not, see http://www.gnu.org/licenses.
  */
 
-package org.gibello.zql;
+package org.gibello.zql.sanity;
 
+import org.gibello.zql.ParseException;
+import org.gibello.zql.ZqlParser;
 import org.gibello.zql.alias.ZFromItem;
 import org.gibello.zql.alias.ZSelectItem;
 import org.gibello.zql.data.ZEval;
@@ -32,7 +34,7 @@ import java.util.List;
 
 /**
  * <pre>
- * ZDemo is able to send SQL queries to simple CSV (comma-separated values)
+ * ZQLTestUtils is able to send SQL queries to simple CSV (comma-separated values)
  * files; the CSV syntax used here is very simple:
  *  The 1st line contains the column names
  *  Other lines contain column values (tuples)
@@ -45,7 +47,7 @@ import java.util.List;
  *  2,2,2,2,2
  *  1,2,3,4,5
  *  5,4,3,2,1
- * You can then run ZDemo, and query it; some legal queries follow:
+ * You can then run ZQLTestUtils, and query it; some legal queries follow:
  *  select * from num;
  *  select a, b from num;
  *  select a+b, c from num;
@@ -60,52 +62,23 @@ import java.util.List;
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
-public final class ZDemo {
+public final class ZQLTestUtils {
 
     /**
      * Default constructor.
      */
-    private ZDemo() {
+    public ZQLTestUtils() {
 
     }
 
-    /**
-     * Non commented main method.
-     *
-     * @param args args.
-     */
-    public static void main(final String[] args) {
-        try {
 
-            ZqlParser p;
+    public List<ZStatement> parseSql(String sqlScript) throws ParseException {
+        return parseSQL(new ByteArrayInputStream(sqlScript.getBytes()));
+    }
 
-            if (args.length < 1) {
-                System.out.println("Reading SQL from stdin (quit; or exit; to quit)");
-                p = new ZqlParser(System.in);
-            } else {
-                p = new ZqlParser(new DataInputStream(new FileInputStream(args[0])));
-            }
-
-            // Read all SQL statements from input
-            ZStatement st;
-            while ((st = p.readStatement()) != null) {
-
-                // Display the statement
-                System.out.println(st.toString());
-
-                // An SQL query: query the DB
-                if (st instanceof ZQuery) {
-                    queryDB((ZQuery) st);
-                } else
-                    // An SQL insert
-                    if (st instanceof ZInsert) {
-                        insertDB((ZInsert) st);
-                    }
-            }
-
-        } catch (final SQLException | ParseException | IOException e) {
-            e.printStackTrace();
-        }
+    public List<ZStatement> parseSQL(InputStream inputStream) throws ParseException {
+        final ZqlParser p = new ZqlParser(inputStream);
+        return p.readStatements();
     }
 
     /**
@@ -115,7 +88,9 @@ public final class ZDemo {
      * @throws SQLException the exception.
      * @throws IOException  the exception.
      */
-    static void queryDB(final ZQuery q) throws IOException, SQLException {
+    public String queryDB(final ZQuery q) throws IOException, SQLException {
+
+        StringBuilder sb = new StringBuilder();
 
         // SELECT part of the query
         final List<?> sel = q.getSelect();
@@ -123,8 +98,8 @@ public final class ZDemo {
         final List<?> from = q.getFrom();
         // WHERE part of the
         final ZExpression where = (ZExpression) q.getWhere();
-        // query
 
+        // query
         if (from.size() > 1) {
             throw new SQLException("Joins are not supported");
         }
@@ -136,7 +111,7 @@ public final class ZDemo {
         // <tableName> is the table name in the FROM clause
         // BufferedReader db1 = new BufferedReader(new
         // FileReader(table.getTable() + ".db"));
-        final BufferedReader db = new BufferedReader(new InputStreamReader(ZDemo.class.getClassLoader().getResourceAsStream(table.getTable() + ".db")));
+        final BufferedReader db = new BufferedReader(new InputStreamReader(ZQLTestUtils.class.getClassLoader().getResourceAsStream(table.getTable() + ".db")));
 
         // Read the column names (the 1st line of the .db file)
         final ZTuple tuple = new ZTuple(db.readLine());
@@ -153,12 +128,22 @@ public final class ZDemo {
             // Display the tuple if the condition evaluates to true
 
             if (where == null || evaluator.eval(tuple, where)) {
-                displayTuple(tuple, sel);
+                sb.append(displayTuple(tuple, sel));
             }
 
         }
 
         db.close();
+
+        return sb.toString();
+    }
+
+    /**
+     * @param ins insert query.
+     */
+    public void insertDB(final ZInsert ins) {
+        System.out.println("Should implement INSERT here");
+        System.out.println(ins.toString());
     }
 
     /**
@@ -168,12 +153,12 @@ public final class ZDemo {
      * @param map   the element map.
      * @throws SQLException the exception.
      */
-    static void displayTuple(final ZTuple tuple, final List<?> map) throws SQLException {
+    private String displayTuple(final ZTuple tuple, final List<?> map) throws SQLException {
+        StringBuilder sb = new StringBuilder();
 
         // If it is a "select *", display the whole tuple
         if (((ZSelectItem) map.get(0)).isWildcard()) {
-            System.out.println(tuple.toString());
-            return;
+            sb.append(tuple.toString()).append("\n");
         }
 
         final ZEval evaluator = new ZEval();
@@ -182,22 +167,20 @@ public final class ZDemo {
         for (int i = 0; i < map.size(); i++) {
 
             final ZSelectItem item = (ZSelectItem) map.get(i);
-            System.out.print(evaluator.evalExpValue(tuple, item.getExpression()).toString());
+            Object expValue = evaluator.evalExpValue(tuple, item.getExpression());
+
+            if (expValue != null) {
+                sb.append(expValue.toString());
+            }
 
             if (i == map.size() - 1) {
-                System.out.println("");
+                sb.append("\n");
             } else {
-                System.out.print(", ");
+                sb.append(", ");
             }
         }
-    }
 
-    /**
-     * @param ins insert query.
-     */
-    static void insertDB(final ZInsert ins) {
-        System.out.println("Should implement INSERT here");
-        System.out.println(ins.toString());
+        return sb.toString();
     }
 
 }
