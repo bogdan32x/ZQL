@@ -391,7 +391,7 @@ ZInsert InsertStatement():
   "INSERT" "INTO" s = TableReference() { ins = new ZInsert(s); }
    ["(" s = TableColumn() { v = new ArrayList(); v.add(s); }
     ("," s = TableColumn() { v.add(s); } )* ")" { ins.addColumns(v); } ]
-   ( "VALUES" "(" v = SQLExpressionList() ")"
+   ( "VALUES" "(" v = SQLExpressionList() ")" ( "," "(" v = SQLExpressionList() ")" )*
      { ZExpression e = new ZExpression(",");
        e.setOperands(v); ins.addValueSpec(e); }
      |
