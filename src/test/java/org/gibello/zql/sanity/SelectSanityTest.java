@@ -20,6 +20,7 @@ package org.gibello.zql.sanity;
 import org.gibello.zql.ParseException;
 import org.gibello.zql.query.ZQuery;
 import org.gibello.zql.statement.ZStatement;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -32,17 +33,15 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Bogdan Mariesan, Romania, on 29-09-2015
  */
-public class SelectSanityTest {
-
-    ZQLTestUtils testUtils = new ZQLTestUtils();
+public class SelectSanityTest extends ZQLTestCase {
 
     @Test
     public void selectWithWildCardShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num;");
+        List<ZStatement> statements = parseSQL("select * from num;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("[a = 1, b = 1, c = 1, d = 1, e = 1]"));
@@ -54,10 +53,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithSpecificColumnNamesShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select a, b from num;");
+        List<ZStatement> statements = parseSQL("select a, b from num;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("1.0, 1.0"));
@@ -69,10 +68,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithSpecificColumnNamesAndConcatenatedColumnsShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select a+b, c from num;");
+        List<ZStatement> statements = parseSQL("select a+b, c from num;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("2.0, 1.0"));
@@ -84,10 +83,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithWildcardAndOrInWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num where a = 1 or e = 1;");
+        List<ZStatement> statements = parseSQL("select * from num where a = 1 or e = 1;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("[a = 1, b = 1, c = 1, d = 1, e = 1]"));
@@ -98,10 +97,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithWildcardWithComplexWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num where a = 1 and b = 1 or e = 1;");
+        List<ZStatement> statements = parseSQL("select * from num where a = 1 and b = 1 or e = 1;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("[a = 1, b = 1, c = 1, d = 1, e = 1]"));
@@ -111,10 +110,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithSpecificColumnNamesWithComplexWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select d, e from num where a + b + c <= 3;");
+        List<ZStatement> statements = parseSQL("select d, e from num where a + b + c <= 3;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("1.0, 1.0"));
@@ -126,10 +125,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithWildcardAndCompoundExpressionInWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num where 3 = a + b + c;");
+        List<ZStatement> statements = parseSQL("select * from num where 3 = a + b + c;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertTrue(queryResult.contains("[a = 1, b = 1, c = 1, d = 1, e = 1]"));
     }
@@ -137,10 +136,10 @@ public class SelectSanityTest {
     @Test
     public void selectWithWildcardAndMultipleCompoundExpressionsInWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num where a = b or e = d - 1;");
+        List<ZStatement> statements = parseSQL("select * from num where a = b or e = d - 1;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("[a = 1, b = 1, c = 1, d = 1, e = 1]"));
@@ -151,10 +150,29 @@ public class SelectSanityTest {
     @Test
     public void selectWithWildcardAndMultipleCompoundExpressionsAndSpecialOperatorInWhereClauseShouldWork() throws ParseException, IOException, SQLException {
         //given
-        List<ZStatement> statements = testUtils.parseSql("select * from num where b ** a <= 2;");
+        List<ZStatement> statements = parseSQL("select * from num where b ** a <= 2;");
         ZQuery statement = (ZQuery) statements.get(0);
         //when
-        String queryResult = testUtils.queryDB(statement);
+        String queryResult = queryDB(statement);
+        //then
+        assertNotNull(queryResult);
+        assertTrue(queryResult.contains("[a = 2, b = 2, c = 2, d = 2, e = 2]"));
+        assertTrue(queryResult.contains("[a = 1, b = 2, c = 3, d = 4, e = 5]"));
+        assertTrue(queryResult.contains("[a = 5, b = 4, c = 3, d = 2, e = 1]"));
+    }
+
+    /**
+     * Test implementation in progress...
+     */
+    @Ignore
+    @Test
+    public void selectWithWildcardAndOrderByShouldWork() throws ParseException, IOException, SQLException {
+        //given
+        List<ZStatement> statements = parseSQL("select * from num order by a desc;");
+        ZQuery statement = (ZQuery) statements.get(0);
+        //when
+        String queryResult = queryDB(statement);
+        System.out.println(queryResult);
         //then
         assertNotNull(queryResult);
         assertTrue(queryResult.contains("[a = 2, b = 2, c = 2, d = 2, e = 2]"));

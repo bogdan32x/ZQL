@@ -68,7 +68,7 @@ public class ZqlParser {
     }
 
     /**
-     * Adds a custom fuction string.
+     * Adds a custom function string.
      *
      * @param fct   the function names.
      * @param nparm the function params.
@@ -107,7 +107,7 @@ public class ZqlParser {
      * Parse an SQL Expression (like the WHERE clause of an SQL query).
      *
      * @return An SQL expression.
-     * @throws ParseException the parase exception.
+     * @throws ParseException the parse exception.
      */
     public ZExp readExpression() throws ParseException {
         if (this.parser == null) {

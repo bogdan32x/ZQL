@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * <pre>
- * ZQLTestUtils is able to send SQL queries to simple CSV (comma-separated values)
+ * ZQLTestCase is able to send SQL queries to simple CSV (comma-separated values)
  * files; the CSV syntax used here is very simple:
  *  The 1st line contains the column names
  *  Other lines contain column values (tuples)
@@ -47,32 +47,21 @@ import java.util.List;
  *  2,2,2,2,2
  *  1,2,3,4,5
  *  5,4,3,2,1
- * You can then run ZQLTestUtils, and query it; some legal queries follow:
- *  select * from num;
- *  select a, b from num;
- *  select a+b, c from num;
- *  select * from num where a = 1 or e = 1;
- *  select * from num where a = 1 and b = 1 or e = 1;
- *  select d, e from num where a + b + c <= 3;
- *  select * from num where 3 = a + b + c;
- *  select * from num where a = b or e = d - 1;
- *  select * from num where b ** a <= 2;
  * </pre>
  *
  * @author Pierre-Yves Gibello
  * @author Bogdan Mariesan, Romania
  */
-public final class ZQLTestUtils {
+public class ZQLTestCase {
 
     /**
      * Default constructor.
      */
-    public ZQLTestUtils() {
+    public ZQLTestCase() {
 
     }
 
-
-    public List<ZStatement> parseSql(String sqlScript) throws ParseException {
+    public List<ZStatement> parseSQL(String sqlScript) throws ParseException {
         return parseSQL(new ByteArrayInputStream(sqlScript.getBytes()));
     }
 
@@ -89,15 +78,16 @@ public final class ZQLTestUtils {
      * @throws IOException  the exception.
      */
     public String queryDB(final ZQuery q) throws IOException, SQLException {
-
         StringBuilder sb = new StringBuilder();
 
         // SELECT part of the query
         final List<?> sel = q.getSelect();
         // FROM part of the query
         final List<?> from = q.getFrom();
-        // WHERE part of the
+        // WHERE part of the query
         final ZExpression where = (ZExpression) q.getWhere();
+        // ORDER BY part of the query
+        final List<?> orderBy = q.getOrderBy();
 
         // query
         if (from.size() > 1) {
@@ -111,7 +101,7 @@ public final class ZQLTestUtils {
         // <tableName> is the table name in the FROM clause
         // BufferedReader db1 = new BufferedReader(new
         // FileReader(table.getTable() + ".db"));
-        final BufferedReader db = new BufferedReader(new InputStreamReader(ZQLTestUtils.class.getClassLoader().getResourceAsStream(table.getTable() + ".db")));
+        final BufferedReader db = new BufferedReader(new InputStreamReader(ZQLTestCase.class.getClassLoader().getResourceAsStream(table.getTable() + ".db")));
 
         // Read the column names (the 1st line of the .db file)
         final ZTuple tuple = new ZTuple(db.readLine());
@@ -141,9 +131,58 @@ public final class ZQLTestUtils {
     /**
      * @param ins insert query.
      */
-    public void insertDB(final ZInsert ins) {
-        System.out.println("Should implement INSERT here");
-        System.out.println(ins.toString());
+    public String insertDB(final ZInsert ins) throws SQLException, IOException {
+        StringBuilder sb = new StringBuilder();
+//
+//        // get table name
+//        final String table = ins.getTable();
+//        //
+//        ins.get
+//
+//        // SELECT part of the query
+//        final List<?> sel = q.getSelect();
+//        // FROM part of the query
+//        final List<?> from = q.getFrom();
+//        // WHERE part of the query
+//        final ZExpression where = (ZExpression) q.getWhere();
+//        // ORDER BY part of the query
+//        final List<?> orderBy = q.getOrderBy();
+//
+//
+//        // query
+//        if (from.size() > 1) {
+//            throw new SQLException("Joins are not supported");
+//        }
+//
+//        // We suppose the data is in a text file called <tableName>.db
+//        // <tableName> is the table name in the FROM clause
+//        // BufferedReader db1 = new BufferedReader(new
+//        // FileReader(table.getTable() + ".db"));
+//        final BufferedReader db = new BufferedReader(new InputStreamReader(ZQLTestCase.class.getClassLoader().getResourceAsStream(table + ".db")));
+//
+//        // Read the column names (the 1st line of the .db file)
+//        final ZTuple tuple = new ZTuple(db.readLine());
+//
+//        final ZEval evaluator = new ZEval();
+//
+//        // Now, each line in the .db file is a tuple
+//        String tpl;
+//        while ((tpl = db.readLine()) != null) {
+//
+//            tuple.setRow(tpl);
+//
+//            // Evaluate the WHERE expression for the current tuple
+//            // Display the tuple if the condition evaluates to true
+//
+//            if (where == null || evaluator.eval(tuple, where)) {
+//                sb.append(displayTuple(tuple, sel));
+//            }
+//
+//        }
+//
+//        db.close();
+
+        return sb.toString();
     }
 
     /**
