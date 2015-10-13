@@ -1,5 +1,13 @@
-sudo: false
 language: java
+sudo: false
+branches:
+  only:
+  - master
+jdk:
+  - oraclejdk7
+cache:
+  directories:
+    - '$HOME/.m2/repository'
 before_script:
   - pip install --user codecov
 script: mvn clean test
