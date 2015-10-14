@@ -17,6 +17,8 @@
 
 package org.gibello.zql.expression;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.gibello.zql.query.ZQuery;
 import org.gibello.zql.utils.ZCommonConstants;
 import org.gibello.zql.utils.ZUtils;
@@ -288,5 +290,27 @@ public class ZExpression implements ZExp {
         }
         b.append(ZCommonConstants.RIGHT_BRACKET);
         return b.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ZExpression that = (ZExpression) o;
+
+        return new EqualsBuilder()
+                .append(getOperator(), that.getOperator())
+                .append(getOperands(), that.getOperands())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getOperator())
+                .append(getOperands())
+                .toHashCode();
     }
 }

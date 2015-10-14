@@ -87,4 +87,16 @@ public class InsertSanityTest extends ZQLTestCase {
         assertNull(insert.getQuery());
     }
 
+    @Test
+    public void insertSanityCheck1() throws ParseException {
+        final List<ZStatement> statements = parseSQL("INSERT INTO ANTIQUES VALUES (21, 01, 'Ottoman', 200.00);");
+        assertEquals("insert into ANTIQUES values (21, 01, 'Ottoman', 200.00)", statements.get(0).toString());
+    }
+
+    @Test
+    public void insertSanityCheck2() throws ParseException {
+        final List<ZStatement> statements = parseSQL("INSERT INTO ANTIQUES (BUYERID, SELLERID, ITEM) VALUES (01, 21, 'Ottoman');");
+        assertEquals("insert into ANTIQUES(BUYERID,SELLERID,ITEM) values (01, 21, 'Ottoman')", statements.get(0).toString());
+    }
+
 }

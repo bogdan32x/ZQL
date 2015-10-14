@@ -17,6 +17,8 @@
 
 package org.gibello.zql.query;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.gibello.zql.ZGroupBy;
 import org.gibello.zql.expression.ZExp;
 import org.gibello.zql.expression.ZExpression;
@@ -24,7 +26,6 @@ import org.gibello.zql.statement.ZStatement;
 import org.gibello.zql.utils.ZCommonConstants;
 
 import java.util.List;
-import java.util.Vector;
 
 /**
  * ZQuery: an SQL SELECT statement.
@@ -152,7 +153,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * @param select set select.
      */
-    public void setSelect(final Vector<?> select) {
+    public void setSelect(final List<?> select) {
         this.select = select;
     }
 
@@ -168,7 +169,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * @param from set from.
      */
-    public void setFrom(final Vector<?> from) {
+    public void setFrom(final List<?> from) {
         this.from = from;
     }
 
@@ -319,7 +320,7 @@ public class ZQuery implements ZStatement, ZExp {
     /**
      * @param orderby set order by.
      */
-    public void setOrderby(final Vector<?> orderby) {
+    public void setOrderby(final List<?> orderby) {
         this.orderby = orderby;
     }
 
@@ -337,4 +338,37 @@ public class ZQuery implements ZStatement, ZExp {
         this.forupdate = forupdate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ZQuery query = (ZQuery) o;
+
+        return new EqualsBuilder()
+                .append(isDistinct(), query.isDistinct())
+                .append(isForupdate(), query.isForupdate())
+                .append(getSelect(), query.getSelect())
+                .append(getFrom(), query.getFrom())
+                .append(getWhere(), query.getWhere())
+                .append(getGroupby(), query.getGroupby())
+                .append(getSetclause(), query.getSetclause())
+                .append(getOrderby(), query.getOrderby())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getSelect())
+                .append(isDistinct())
+                .append(getFrom())
+                .append(getWhere())
+                .append(getGroupby())
+                .append(getSetclause())
+                .append(getOrderby())
+                .append(isForupdate())
+                .toHashCode();
+    }
 }

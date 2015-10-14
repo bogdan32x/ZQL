@@ -17,7 +17,8 @@
 
 package org.gibello.zql.expression;
 
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ZConstant: a representation of SQL constants.
@@ -102,14 +103,22 @@ public class ZConstant implements ZExp {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         ZConstant zConstant = (ZConstant) o;
-        return Objects.equals(zconstantType, zConstant.zconstantType) &&
-                Objects.equals(values, zConstant.values);
+
+        return new EqualsBuilder()
+                .append(zconstantType, zConstant.zconstantType)
+                .append(values, zConstant.values)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(zconstantType, values);
+        return new HashCodeBuilder(17, 37)
+                .append(zconstantType)
+                .append(values)
+                .toHashCode();
     }
 }

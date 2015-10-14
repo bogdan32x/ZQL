@@ -17,6 +17,8 @@
 
 package org.gibello.zql.alias;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.gibello.zql.utils.ZCommonConstants;
 
 import java.io.Serializable;
@@ -262,5 +264,35 @@ public class ZAliasedName implements Serializable {
      */
     public void setFormColumn(final int formColumn) {
         this.formColumn = formColumn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ZAliasedName that = (ZAliasedName) o;
+
+        return new EqualsBuilder()
+                .append(getFormColumn(), that.getFormColumn())
+                .append(getStrform(), that.getStrform())
+                .append(getSchema(), that.getSchema())
+                .append(getTable(), that.getTable())
+                .append(getColumn(), that.getColumn())
+                .append(getAlias(), that.getAlias())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getStrform())
+                .append(getSchema())
+                .append(getTable())
+                .append(getColumn())
+                .append(getAlias())
+                .append(getFormColumn())
+                .toHashCode();
     }
 }

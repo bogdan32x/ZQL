@@ -795,7 +795,7 @@ ZExp SQLRelationalExpression():
      if(eright == null) return eleft;
      List v2 = eright.getOperands();
      if(v2 == null) v2 = new ArrayList(); //For IS NULL, which is unary!
-     v2.add(eleft);
+     v2.add(0,eleft);
      eright.setOperands(v2);
      return eright;
    }

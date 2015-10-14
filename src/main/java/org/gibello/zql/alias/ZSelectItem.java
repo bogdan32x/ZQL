@@ -17,6 +17,8 @@
 
 package org.gibello.zql.alias;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.gibello.zql.expression.ZConstant;
 import org.gibello.zql.expression.ZExp;
 import org.gibello.zql.expression.ZExpression;
@@ -126,4 +128,28 @@ public class ZSelectItem extends ZAliasedName {
     /**
      * TBD public String toString() { String agg = getAggregate(); if(agg == null) agg = ""; return agg + super.toString(); }
      **/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ZSelectItem that = (ZSelectItem) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(getExpression(), that.getExpression())
+                .append(getAggregate(), that.getAggregate())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(getExpression())
+                .append(getAggregate())
+                .toHashCode();
+    }
 }
